@@ -1,0 +1,3 @@
+* Introduction to karabiner-configurator
+
+TODO: write [[http://jacobian.org/writing/what-to-write/][great documentation]]

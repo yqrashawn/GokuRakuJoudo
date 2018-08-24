@@ -1,0 +1,63 @@
+{;;;; define things
+ ;; define devices
+ :devices {:hhkb-bt {:vendor 1278 :product 51966}
+           :hhkb {:vendor 2131 :product 256}}
+
+ ;; define application identifiers
+ :applications {:chrom "^com\\.google\\.Chrome$"
+                :chrom-canary "^com\\.google\\.Chrome\\.canary$"}
+
+ ;; define alias for modifers
+ :modifiers {:11 [:left_command :left_control]
+             :111 [:left_command :left_control :left_option]
+             :1111 [:left_command :left_control :left_option :left_shift]
+             :ccos [:left_command :left_control :left_option :left_shift]
+             :11111 [:fn :left_command :left_control :left_option :left_shift]
+             :fn&lcommand&lcontrol&loption&lshift [:fn :left_command :left_control :left_option :left_shift]}
+
+ ;; define froms
+ ;; use in <from>
+ :froms {:my-spacebar {:key :spacebar :mandatory :11 :optional [:left_shift]}
+         :jk {:key [:j :k]}}
+
+ ;; define tos
+ ;; use in <to>
+ :tos {:macos-defin {:key :d :modifiers [:left_command :left_control]}
+       :alf--search-help "osascript -e 'tell application \"Alfred 3\" to run trigger \"helpSearch\" in workflow \"com.tedwise.menubarsearch\" with argument \"\"'"}
+
+ ;;;; helper function to generate things little bit `quicker`
+ ;; quick define layers or we can call it state feature as it use set_variable
+ ;; {:<layer name> {:from <froms>} }
+ :layers {:vi-mode {:from :d}} ;; key "d" to set_variable "vi-mode" 1, to_if_alone "d", to_after_key_up set_variable "vi-mode" 0
+
+ ;; swap keys, only support single key, like the simple modifications functionality in karabiner gui
+ ;; {<single key> <single key>}
+ :swaps [{:a :b}] ;; swap a and b
+
+
+ ;; fallback to raw defination
+ ;; similar to karabiner.json, can use definations in :froms and :tos
+ :raws [{:from :caps_lock :to :left_control :alone :escape}
+        {:from [:f :j] :to :alf--search-help :alone :escape}]
+
+
+
+ :enabled
+ ;; [<from> <to> <conditions>]
+ [[:a :1] ;; a to 1
+  [:#a :$1] ;; command a to control 1
+  [:my-spacebar :$1] ;; my-spacebar to control 1
+  [:b [:1 :2]]  ;; key to key
+  [:c "osascript -e 'display dialog \"Enter your text here...\"'"] ;; key to shell script
+  [:d [:1 "osascript -e 'display dialog \"Enter your text here...\"'"]] ;; key to key then shell script
+  [[:e :f] :3] ;; simultaneous key to key
+  [:g :4 :vi-mode]
+  [:j :7  :hhkb-bt]] ;; key to key in layer b (in layer a) specific to hhkb-bt device
+ :disabled []
+ :cheatsheet {:#a "command a" ;; mandatory left_command, optional any
+              :$a "control a" ;; mandatory left_control, optional any
+              :%a "option a"
+              :&a "shift a"
+              :#$%a "command control option a"
+              :#spacebar "command space"
+              :*a "fn a"}}

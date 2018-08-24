@@ -1,0 +1,23 @@
+* Change Log
+All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
+
+** [Unreleased]
+*** Changed
+- placeholder
+
+** [0.1.1] - 2018-08-24
+*** Changed
+- placeholder
+
+*** Removed
+- placeholder
+
+*** Fixed
+- placeholder
+
+** 0.1.0 - 2018-08-24
+*** Added
+- Files from the new template.
+
+[Unreleased]: https://github.com/yqrashawn/karabiner-configurator/compare/0.1.1...HEAD
+[0.1.1]: https://github.com/yqrashawn/karabiner-configurator/compare/0.1.0...0.1.1

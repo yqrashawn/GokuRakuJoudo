@@ -1,0 +1,9 @@
+* karabiner-configurator
+
+Tool to manage karabiner's configuration.
+
+Still in contruction.
+
+** Usage
+
+** License
