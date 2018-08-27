@@ -16,9 +16,9 @@
     (catch RuntimeException e
       (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
 
-(def key-info (load-edn "src/karabiner_generator/keycode.edn"))
+(def key-info (load-edn "resources/configurations/keycode.edn"))
 
-(def config (load-edn "src/karabiner_generator/config.edn"))
+(def config (load-edn "resources/configurations/config.edn"))
 
 (defn from-simu
   "generate simultaneous from key config"
