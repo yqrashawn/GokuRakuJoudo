@@ -1,3 +1,4 @@
+;; edn spec https://github.com/edn-format/edn
 {;;;; define things
  ;; define devices
  :devices {:hhkb-bt {:vendor 1278 :product 51966}
@@ -5,7 +6,8 @@
 
  ;; define application identifiers
  :applications {:chrom "^com\\.google\\.Chrome$"
-                :chrom-canary "^com\\.google\\.Chrome\\.canary$"}
+                :chrom-canary "^com\\.google\\.Chrome\\.canary$"
+                :chroms ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
 
  ;; define alias for modifers
  :modifiers {:11 [:left_command :left_control]
@@ -18,6 +20,7 @@
  ;; define froms
  ;; use in <from>
  :froms {:my-spacebar {:key :spacebar :mandatory :11 :optional [:left_shift]}
+         :my-spacebar {:key :spacebar :mandatory [:left_command :left_control] :optional [:left_shift]}
          :jk {:key [:j :k]}}
 
  ;; define tos
@@ -25,9 +28,10 @@
  :tos {:macos-defin {:key :d :modifiers [:left_command :left_control]}
        :alf--search-help "osascript -e 'tell application \"Alfred 3\" to run trigger \"helpSearch\" in workflow \"com.tedwise.menubarsearch\" with argument \"\"'"}
 
- ;;;; helper function to generate things little bit `quicker`
- ;; quick define layers or we can call it state feature as it use set_variable
- ;; {:<layer name> {:from <froms>} }
+ ;;;; helper function to generate things little bit quicker
+ ;; quick define "layers" or "state" feature(use set_variable)
+ ;; can use as conditions in rule list
+ ;; {:<layer name> {:from <froms>}}
  :layers {:vi-mode {:from :d}} ;; key "d" to set_variable "vi-mode" 1, to_if_alone "d", to_after_key_up set_variable "vi-mode" 0
 
  ;; swap keys, only support single key, like the simple modifications functionality in karabiner gui
@@ -38,26 +42,30 @@
  ;; fallback to raw defination
  ;; similar to karabiner.json, can use definations in :froms and :tos
  :raws [{:from :caps_lock :to :left_control :alone :escape}
-        {:from [:f :j] :to :alf--search-help :alone :escape}]
+        {:from [:f :j], :to :alf--search-help, :alone :escape}] ;; comma considered whitespace
 
-
-
+ ;; rule list
  :enabled
  ;; [<from> <to> <conditions>]
+ ;; <from> can be keywords defined in froms or keycodes without `{:not-from true}`
+ ;; <to> can be keywords defined in tos, keycodes without `{:not-to true}`, string (shell script)
+ ;; <conditions> can be keywords defined in layers, devices(can't prefix with !), applications
  [[:a :1] ;; a to 1
-  [:#a :$1] ;; command a to control 1
+  [:Ca :$1] ;; command a to control 1
   [:my-spacebar :$1] ;; my-spacebar to control 1
   [:b [:1 :2]]  ;; key to key
-  [:c "osascript -e 'display dialog \"Enter your text here...\"'"] ;; key to shell script
-  [:d [:1 "osascript -e 'display dialog \"Enter your text here...\"'"]] ;; key to key then shell script
+  [:c "osascript -e 'display dialog \"example apple script\"'"] ;; key to shell script
+  [:d [:1 "osascript -e 'display dialog \"example apple script\"'"]] ;; key to key then shell script
   [[:e :f] :3] ;; simultaneous key to key
-  [:g :4 :vi-mode]
-  [:j :7  :hhkb-bt]] ;; key to key in layer b (in layer a) specific to hhkb-bt device
+  [:g :4 :vi-mode] ;; vi-mode is 1
+  [:h :5 :!vi-mode] ;; vi-mode is 0
+  [:i :6 :hhkb-bt] ;; key to key in layer b (in layer a) specific to hhkb-bt device
+  [:j :7 [:vi-mode :hhkb-bt]]] ;; multiple condition
  :disabled []
- :cheatsheet {:#a "command a" ;; mandatory left_command, optional any
-              :$a "control a" ;; mandatory left_control, optional any
-              :%a "option a"
-              :&a "shift a"
-              :#$%a "command control option a"
-              :#spacebar "command space"
-              :*a "fn a"}}
+ :cheatsheet {:Ca "command a" ;; mandatory left_command, optional any
+              :Ta "control a" ;; mandatory left_control, optional any
+              :Oa "option a"
+              :Sa "shift a"
+              :CTOa "command control option a"
+              :Cspacebar "command space"
+              :Fa "fn a"}}
