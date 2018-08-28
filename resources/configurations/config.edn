@@ -42,14 +42,21 @@
  ;; fallback to raw defination
  ;; similar to karabiner.json, can use definations in :froms and :tos
  :raws [{:from :caps_lock :to :left_control :alone :escape}
+        {:from :right_shift
+         :to [:set {"right_shift pressed" 1} :right_shift]
+         :to_delayed_action {:invoked {:set ["right_shift pressed" 0]}
+                             :cancled {:set ["right_shift pressed" 0]}}}
         {:from [:f :j], :to :alf--search-help, :alone :escape}] ;; comma considered whitespace
 
  ;; rule list
  :enabled
- ;; [<from> <to> <conditions>]
+ ;; [<from> <to>] or
+ ;; [<from> <to> <conditions>] or
+ ;; [<from> <to> <conditions> <other options>]
  ;; <from> can be keywords defined in froms or keycodes without `{:not-from true}`
  ;; <to> can be keywords defined in tos, keycodes without `{:not-to true}`, string (shell script)
- ;; <conditions> can be keywords defined in layers, devices(can't prefix with !), applications
+ ;; <conditions> can be keywords defined in layers, devices, applications
+ ;; <other options> {:other {:parameters {:to_delayed_action_delay_milliseconds 100}} }
  [[:a :1] ;; a to 1
   [:Ca :$1] ;; command a to control 1
   [:my-spacebar :$1] ;; my-spacebar to control 1
@@ -60,12 +67,14 @@
   [:g :4 :vi-mode] ;; vi-mode is 1
   [:h :5 :!vi-mode] ;; vi-mode is 0
   [:i :6 :hhkb-bt] ;; key to key in layer b (in layer a) specific to hhkb-bt device
-  [:j :7 [:vi-mode :hhkb-bt]]] ;; multiple condition
+  [:j :7 [:vi-mode :hhkb-bt]] ;; multiple condition
+  [:h [:8 {:set ["some-mode" 0]}]]] ;; h to 8 and set_variable
  :disabled []
  :cheatsheet {:Ca "command a" ;; mandatory left_command, optional any
               :Ta "control a" ;; mandatory left_control, optional any
               :Oa "option a"
               :Sa "shift a"
+              :#Sa "shift a" ;; keycode a, optional left_shift
               :CTOa "command control option a"
               :Cspacebar "command space"
               :Fa "fn a"}}

@@ -1,9 +1,9 @@
 (ns karabiner-configurator.core
   (:require
    [clojure.java.io :as io]
+   [clojure.data.json :as json]
    [schema.core :as s]
-   [clojure.edn :as edn])
-  (:gen-class))
+   [clojure.edn :as edn]))
 
 (defn load-edn
   "Load edn from an io/reader source (filename or io/resource)."
@@ -18,16 +18,11 @@
 
 (def key-info (load-edn "resources/configurations/keycode.edn"))
 
-(def config (load-edn "resources/configurations/config.edn"))
-
-(defn from-simu
-  "generate simultaneous from key config"
-  [from])
+(def config (load-edn "resources/configurations/test/keytokey.edn"))
 
 (defn from-key
   "generate normal from key config"
-  [from]
-  (cond))
+  [from])
 
 (defn to-key
   "generate to config"
@@ -41,14 +36,25 @@
   "generate layer config"
   [layer])
 
-(defn new-conf
+(defn froms [f])
+(defn tos [t])
+(defn parse-optional-arg [arg])
+
+(defn parse-rules
   "generate one configuration"
   ([from to]
    (str (from-key from) (to-key to)))
-  ([from to layer]
-   (str (from-key from) (to-key to) (layer-cond layer)))
-  ([from to layer device]
-   (str (from-key from) (to-key to) (layer-cond layer) (device-cond))))
+  ([from to arg3]
+   (str (from-key from) (to-key to) (parse-optional-arg arg3)))
+  ([from to arg3 arg4]
+   (str (from-key from) (to-key to) (parse-optional-arg arg3) (parse-optional-arg arg4))))
+
+(defn parse
+  "parse configuration"
+  [conf]
+  (prn conf))
+
+(parse config)
 
 (defn -main
  [])

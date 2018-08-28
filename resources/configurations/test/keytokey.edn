@@ -1,0 +1,9 @@
+{:modifiers {:1 [:left_control :left_command]}
+ :tos {:tob {:key :b}}
+ :froms {:froma {:key :a}
+         :from-command-control-a {:key :a :modifier :1}}
+ :enabled [
+           [:a :b]
+           [:froma :tob]
+           [:Ca :Sb]
+           [:from-command-control-a :b]]}
