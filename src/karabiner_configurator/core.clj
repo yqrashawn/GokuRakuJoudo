@@ -1,60 +1,42 @@
 (ns karabiner-configurator.core
   (:require
-   [clojure.java.io :as io]
    [clojure.data.json :as json]
    [schema.core :as s]
+   [karabiner-configurator.modifiers :refer :all]
+   [karabiner-configurator.misc :refer :all]
+   [karabiner-configurator.data :refer :all]
+   [karabiner-configurator.layers :refer :all]
+   [karabiner-configurator.froms :refer :all]
+   [karabiner-configurator.tos :refer :all]
    [clojure.edn :as edn]))
-
-(defn load-edn
-  "Load edn from an io/reader source (filename or io/resource)."
-  [source]
-  (try
-    (with-open [r (io/reader source)]
-      (edn/read (java.io.PushbackReader. r)))
-    (catch java.io.IOException e
-      (printf "Couldn't open '%s': %s\n" source (.getMessage e)))
-    (catch RuntimeException e
-      (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
-
-(def key-info (load-edn "resources/configurations/keycode.edn"))
 
 (def config (load-edn "resources/configurations/test/keytokey.edn"))
 
-(defn from-key
-  "generate normal from key config"
-  [from])
-
-(defn to-key
-  "generate to config"
-  [to])
-
-(defn layer-cond
-  "generate layer config"
-  [layer])
-
-(defn device-cond
-  "generate layer config"
-  [layer])
-
-(defn froms [f])
-(defn tos [t])
-(defn parse-optional-arg [arg])
-
-(defn parse-rules
-  "generate one configuration"
-  ([from to]
-   (str (from-key from) (to-key to)))
-  ([from to arg3]
-   (str (from-key from) (to-key to) (parse-optional-arg arg3)))
-  ([from to arg3 arg4]
-   (str (from-key from) (to-key to) (parse-optional-arg arg3) (parse-optional-arg arg4))))
+(defn update-static-conf
+  "update conf-data from reading rules"
+  [key conf]
+  (if (nn? conf)
+    (update-conf-data (assoc conf-data key conf))))
 
 (defn parse
   "parse configuration"
   [conf]
-  (prn conf))
+  (let [{:keys [applications devices keyboard-type input-source tos froms modifiers layers simlayers raws rules]} conf]
+    (update-static-conf :applications applications)
+    (update-static-conf :devices devices)
+    (update-static-conf :keyboard-type keyboard-type)
+    (update-static-conf :input-source tos)
+    (parse-modifiers modifiers)
+    (parse-layers layers)
+    (parse-simlayers simlayers)
+    (parse-froms froms)
+    (parse-tos tos)
+    ;; (update-static-conf :tos tos)
+    ;; (update-static-conf :froms froms)
+    (parse-rules rules)))
+
 
 (parse config)
 
 (defn -main
- [])
+  [])

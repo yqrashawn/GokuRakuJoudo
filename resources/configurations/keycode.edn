@@ -1,4 +1,9 @@
-{:caps_lock {:modifier true}
+{:any {:modifier true :both true}
+ :command {:modifier true :both true}
+ :shift {:modifier true :both true}
+ :option {:modifier true :both true}
+ :control {:modifier true :both true}
+ :caps_lock {:modifier true}
  :left_control {:modifier true}
  :left_shift {:modifier true}
  :left_option {:modifier true}
