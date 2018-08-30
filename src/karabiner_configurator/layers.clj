@@ -18,7 +18,3 @@
 
 (defn parse-simlayers [simlayers])
 
-{:froms {:chunkwm-mode {:from {:key_code :tab}
-                        :to {:set_variable {:name "chunkwm-mode" :value 1}}
-                        :to_if_alone {:key_code :tab}
-                        :type "basic"}}}

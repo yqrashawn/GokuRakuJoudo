@@ -2,6 +2,13 @@
   (:require [karabiner-configurator.misc :refer :all]
             [karabiner-configurator.data :refer :all]))
 
+;; this file parse modifier defination
+;; spec https://pqrs.org/osx/karabiner/json.html#from-event-definition-modifiers
+
+;; user can define modifier combination in advance and use it in `froms`, `tos` or `rules`
+;; it will generate a {:mandatory ["modifiers or empty"] :optional ["modifiers or any or empty"]} data structure
+;; when used in `tos` or `<to>` section in rules, it will use the :mandatory section as to key modifier
+
 (defn parse-modifier-arr-or-keyword
   [modi modifier-name]
   (cond (keyword? modi)
@@ -35,6 +42,20 @@
   (assert (modifier-k? modifier-info) (str "invalid modifier " modifier-info " in " modifier-name))
   {:mandatory [(name modifier-info)]})
 
+(defn parse-single-modifier-defination
+  "parse a modifer defination into a map with mandatory and optional
+  used both in here and parsing froms, tos as well"
+  [modifier-info & modifier-name]
+  (let [modifier-name (first modifier-name)
+        mname (if (nn? modifier-name)
+               modifier-name
+               :anonymous-modifier)]
+    (cond (vector? modifier-info)
+          (parse-vector-modifiers mname modifier-info)
+          (map? modifier-info)
+          (parse-map-modifiers mname modifier-info)
+          (keyword? modifier-info)
+          (parse-keyword-modifiers mname modifier-info))))
 
 (defn generate
   [modifiers]
@@ -43,23 +64,10 @@
           {}
           (for [[modifier-name modifier-info] modifiers]
             {modifier-name
-             (cond (vector? modifier-info)
-                   (parse-vector-modifiers modifier-name modifier-info)
-                   (map? modifier-info)
-                   (parse-map-modifiers modifier-name modifier-info)
-                   (keyword? modifier-info)
-                   (parse-keyword-modifiers modifier-name modifier-info))}))))
+             (parse-single-modifier-defination modifier-info modifier-name)}))))
 
 (defn parse-modifiers
   "parse modifires to string"
   [modifiers]
   (if (nn? modifiers)
     (update-conf-data (generate modifiers))))
-
-(def example-modifers {:modifiers {
-                                   :111 [:left_command :left_control]
-                                   :222 {:mandatory [:left_command :left_shift]}
-                                   :3 {:mandatory :left_command}
-                                   :444 {:optional :any}}})
-
-(generate (:modifiers example-modifers))

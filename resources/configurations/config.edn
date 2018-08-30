@@ -15,12 +15,16 @@
              :1111 [:left_command :left_control :left_option :left_shift]
              :ccos [:left_command :left_control :left_option :left_shift]
              :11111 [:fn :left_command :left_control :left_option :left_shift]
+             :spacebar-modifier {:mandatory [:left_command :left_control] :optional [:left_shift]}
              :fn&lcommand&lcontrol&loption&lshift [:fn :left_command :left_control :left_option :left_shift]}
 
  ;; define froms
  ;; use in <from>
- :froms {:my-spacebar {:key :spacebar :mandatory :11 :optional [:left_shift]}
-         :my-spacebar {:key :spacebar :mandatory [:left_command :left_control] :optional [:left_shift]}
+ :froms {:any-keycode {:any :key_code}
+         :any-button {:any :pointing_button}
+         :any-consumerkeycode {:any :consumer_key_code}
+         :my-spacebar {:key :spacebar :modi {:mandatory [:left_command :left_control] :optional [:left_shift]}}
+         :my-spacebar {:key :spacebar :modi :spacebar-modifier}
          :jk {:key [:j :k]}}
 
  ;; define tos

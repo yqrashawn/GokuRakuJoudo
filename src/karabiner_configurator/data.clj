@@ -31,9 +31,24 @@
 
 (defn modifier-k?
   [k]
-  (assert (keyword? k) (str "invalid key keyword " k))
   (k? k)
   (true? (:modifier (k keys-info))))
+
+(defn from-k?
+  [k]
+  (k? k)
+  (nil? (:not-from (k keys-info))))
+
+(defn consumer-k?
+  [k]
+  (k? k)
+  (true? (:consumer-key (k keys-info))))
+
+(defn pointing-k?
+  [k]
+  (k? k)
+  (true? (:button (k keys-info))))
+
 
 (defn update-conf-data
   [data]
