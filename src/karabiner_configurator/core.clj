@@ -8,6 +8,7 @@
    [karabiner-configurator.layers :refer :all]
    [karabiner-configurator.froms :refer :all]
    [karabiner-configurator.tos :refer :all]
+   [karabiner-configurator.rules :refer :all]
    [clojure.edn :as edn]))
 
 (def config (load-edn "resources/configurations/test/keytokey.edn"))
@@ -31,8 +32,6 @@
     (parse-simlayers simlayers)
     (parse-froms froms)
     (parse-tos tos)
-    ;; (update-static-conf :tos tos)
-    ;; (update-static-conf :froms froms)
     (parse-rules rules)))
 
 

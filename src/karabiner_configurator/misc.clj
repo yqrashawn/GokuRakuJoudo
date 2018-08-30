@@ -3,7 +3,7 @@
             [clojure.edn :as edn]))
 
 
-(defn nn? "not nil" [arg] (complement nil?))
+(def nn? "not nil" (complement nil?))
 
 (defn load-edn
   "Load edn from an io/reader source (filename or io/resource)."

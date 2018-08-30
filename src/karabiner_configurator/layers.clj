@@ -1,5 +1,6 @@
 (ns karabiner-configurator.layers
   (:require
+   [karabiner-configurator.data :refer :all]
    [karabiner-configurator.misc :refer :all]))
 
 
@@ -8,10 +9,10 @@
 (defn parse-layers [layers]
   (if (nn? layers)
     (for [[layer-name layer-info] layers]
-      (let [{:keys [from-value]} layer-info]
-        (if (k? from-value)
-          {:from {:key_code from-value}}
-          (if (froms)))))))
+      (let [{:keys [from-value]} layer-info]))))
+        ;; (if (k? from-value)
+        ;;   {:from {:key_code from-value}}
+        ;;   (if (froms)))))))
 
 (parse-layers example-layers)
 
