@@ -23,7 +23,6 @@
 (defn layers? [k] (nn? (k (:layers conf-data))))
 (defn simlayers? [k] (nn? (k (:simlayers conf-data))))
 
-
 (defn k?
   [k]
   (assert (keyword? k) (str "invalid key keyword " k))
@@ -48,7 +47,6 @@
   [k]
   (k? k)
   (true? (:button (k keys-info))))
-
 
 (defn update-conf-data
   [data]

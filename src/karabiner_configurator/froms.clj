@@ -1,7 +1,9 @@
 (ns karabiner-configurator.froms
-  (:require [karabiner-configurator.misc :refer :all]
-            [karabiner-configurator.data :refer :all]
-            [karabiner-configurator.modifiers :as kmodifier]))
+  (:require
+   [karabiner-configurator.misc :refer :all]
+   [karabiner-configurator.data :refer :all]
+   [karabiner-configurator.keys :refer :all]
+   [karabiner-configurator.modifiers :as kmodifier]))
 
 ;; this file parse from event definition
 ;; spec: https://pqrs.org/osx/karabiner/json.html#from-event-definition
@@ -50,10 +52,6 @@
 ;;             |     }
 ;;             | }
 
-(def any-key-keywords {:consumer_key_code {}
-                       :pointing_button {}
-                       :key_code {}})
-
 (def simo-keywords
   "keyword while parsing froms, fisrt in vactor is the default value"
   {:interrupt {:values [false true]
@@ -69,42 +67,6 @@
             :json-values ["any" "all"]
             :name :key_up_when}})
 
-(defn parse-keycode [keycode]
-  (assert (from-k? keycode) (str "invalid key code " keycode " can't be used in from"))
-  keycode)
-
-(defn parse-ckey [ckey]
-  (assert (consumer-k? ckey) (str "invalid consumer key code " ckey))
-  ckey)
-
-(defn parse-pkey [pkey]
-  (assert (pointing-k? pkey) (str "invalid pointing key code " pkey))
-  pkey)
-
-(defn parse-key
-  [fname finfo]
-  (let [{:keys [key ckey pkey any modi]} finfo
-        result {}
-        result (if (and (nn? modi) (not (keyword? modi)))
-                 (assoc result :modifiers (kmodifier/parse-single-modifier-defination modi fname))
-                 result)
-        result (if (keyword? modi)
-                 (do
-                   (cond (modifier-k? modi)
-                         (assoc result :modifiers (kmodifier/parse-single-modifier-defination modi fname))
-                         (contains?? (:modifiers conf-data) modi)
-                         (assoc result :modifiers (modi (:modifiers conf-data)))
-                         :else
-                         (assert (and (modifier-k? modi) (contains?? (:modifiers conf-data) modi))
-                                 (str "invalid modifier keyword " modi ", neither defined in modifiers, nor a modifer key keyword"))))
-                 result)
-
-        result (if (nn? key) (assoc result :key_code (name (parse-keycode key))) result)
-        result (if (nn? ckey) (assoc result :consumer_key_code (name (parse-ckey ckey))) result)
-        result (if (nn? pkey) (assoc result :pointing_button (name (parse-pkey pkey))) result)
-        result (if (and (nn? any) (any any-key-keywords)) (assoc result :any (name any-key-keywords)) result)]
-    result))
-
 (defn parse-keycode-vec
   [vec]
   (assert (vector? vec) (str "invalid vector " vec))
@@ -118,13 +80,13 @@
   (if (and (nn? sim) (nn? simo-op-value))
     (do (assert (or (contains?? [true false] simo-op-value)
                     (and (keyword? simo-op-value)
-                         (contains?? (:values (simo-op-keyword simo-keywords) ) simo-op-value)))
+                         (contains?? (:values (simo-op-keyword simo-keywords)) simo-op-value)))
                 (str "invalid detect_key_down_uninterruptedly keyword " simo-op-value))
         (if (keyword? simo-op-value) ;; there're true false
           (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] (name simo-op-value))
           (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] simo-op-value)))
     (if (nn? sim)
-      (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords)) ] (first (:json-values (simo-op-keyword simo-keywords))))
+      (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] (first (:json-values (simo-op-keyword simo-keywords))))
       result)))
 
 (defn parse-sim
