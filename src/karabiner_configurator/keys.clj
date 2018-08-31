@@ -20,16 +20,24 @@
   (assert (pointing-k? pkey) (str "invalid pointing key code " pkey))
   pkey)
 
+(defn parse-mkey
+  [mkey]
+  (doseq [[k v] mkey]
+    (let [kwname (mouse-key-name k)
+          mkey (assoc mkey kwname (k mkey))
+          mkey (dissoc mkey k)]))
+  mkey)
+
 (defn parse-key
   "this function is used in froms and tos for parsing key ckey pkey modi any"
   [kname kinfo & [mandatory-only]]
   (let [{:keys [key ckey pkey any modi mkey]} kinfo
         result {}
+        predefined-modi? (and (keyword? modi) (contains?? (:modifiers conf-data) modi))
         valid-modifier-defination? (assert (or (nil? modi) (map? modi)
                                                (vector? modi) (modifier-k? modi)
                                                predefined-modi?)
                                            (str "invalid modifier defination " modi))
-        predefined-modi? (and (keyword? modi) (contains?? (:modifiers conf-data) modi))
         mandatory-only? (true? mandatory-only)
         result (if (nn? modi)
                  (if (not predefined-modi?)
@@ -43,5 +51,6 @@
         result (if (nn? key) (assoc result :key_code (name (parse-keycode key))) result)
         result (if (nn? ckey) (assoc result :consumer_key_code (name (parse-ckey ckey))) result)
         result (if (nn? pkey) (assoc result :pointing_button (name (parse-pkey pkey))) result)
-        result (if (and (nn? any) (any any-key-keywords)) (assoc result :any (name any-key-keywords)) result)]
+        result (if (and (nn? any) (any any-key-keywords)) (assoc result :any (name any-key-keywords)) result)
+        result (if (nn? mkey) (assoc result :mouse_key (parse-mkey mkey)) result)]
     result))

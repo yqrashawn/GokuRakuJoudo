@@ -48,6 +48,20 @@
   (k? k)
   (true? (:button (k keys-info))))
 
+(def mkey-keyword {:x {:name :x}
+                   :y {:name :y}
+                   :vwheel {:name :vertical_wheel}
+                   :hwheel {:name :horizontal_wheel}
+                   :speed {:name :speed_multiplier}})
+(defn mouse-keyword?
+  [k]
+  (nn? (k mkey-keyword)))
+
+(defn mouse-key-name
+  [k]
+  (assert (mouse-keyword? k) (str "invalid mouse key keyword " k))
+  (:name (k mkey-keyword)))
+
 (defn update-conf-data
   [data]
   (def conf-data data))
