@@ -5,10 +5,10 @@
    [karabiner-configurator.modifiers :refer :all]
    [karabiner-configurator.misc :refer :all]
    [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.layers :refer :all]
-   [karabiner-configurator.froms :refer :all]
-   [karabiner-configurator.tos :refer :all]
-   [karabiner-configurator.rules :refer :all]
+   [karabiner-configurator.layers :as layers]
+   [karabiner-configurator.froms :as froms]
+   [karabiner-configurator.tos :as tos]
+   [karabiner-configurator.rules :as rules]
    [clojure.edn :as edn]))
 
 (def config (load-edn "resources/configurations/test/keytokey.edn"))
@@ -28,11 +28,11 @@
     (update-static-conf :keyboard-type keyboard-type)
     (update-static-conf :input-source tos)
     (parse-modifiers modifiers)
-    (parse-layers layers)
-    (parse-simlayers simlayers)
-    (parse-froms froms)
-    (parse-tos tos)
-    (parse-rules rules)))
+    (layers/parse-layers layers)
+    (layers/parse-simlayers simlayers)
+    (froms/parse-froms froms)
+    (tos/parse-tos tos)
+    (rules/parse-rules rules)))
 
 
 (parse config)

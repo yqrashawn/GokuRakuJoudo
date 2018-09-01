@@ -9,6 +9,13 @@
                 :chrom-canary "^com\\.google\\.Chrome\\.canary$"
                 :chroms ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
 
+ :input_sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
+                            :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
+                            :language "zh-Hans"}
+                 :us {:input_mode_id ""
+                      :input_source_id "com.apple.keylayout.US"
+                      :language "en"}}
+
  ;; define alias for modifers
  :modifiers {:11 [:left_command :left_control]
              :111 [:left_command :left_control :left_option]

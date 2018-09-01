@@ -2,16 +2,7 @@
   (:require
    [karabiner-configurator.misc :refer :all]))
 
-(def conf-data {:applications {}
-                :devices {}
-                :input-source {}
-                :modifiers {}
-                :froms {}
-                :tos {}
-                :layers {}
-                :simlayers {}
-                :swaps {}
-                :raws {}})
+
 
 (def keys-info (load-edn "resources/configurations/keycode.edn"))
 
@@ -53,6 +44,7 @@
                    :vwheel {:name :vertical_wheel}
                    :hwheel {:name :horizontal_wheel}
                    :speed {:name :speed_multiplier}})
+
 (defn mouse-keyword?
   [k]
   (nn? (k mkey-keyword)))
@@ -61,6 +53,20 @@
   [k]
   (assert (mouse-keyword? k) (str "invalid mouse key keyword " k))
   (:name (k mkey-keyword)))
+
+(defn init-conf-data
+  []
+  (def conf-data {:applications {}
+                  :devices {}
+                  :input-source {}
+                  :modifiers {}
+                  :froms {}
+                  :tos {}
+                  :layers {}
+                  :simlayers {}
+                  :swaps {}
+                  :raws {}}))
+
 
 (defn update-conf-data
   [data]
@@ -75,3 +81,5 @@
   (def conf-data (assoc-in conf-data keys-vector data)))
 
 (def output "output data that will convert into json string" [])
+
+(init-conf-data)

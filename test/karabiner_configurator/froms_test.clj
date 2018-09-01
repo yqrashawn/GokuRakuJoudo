@@ -4,7 +4,10 @@
    [karabiner-configurator.data :refer :all]
    [karabiner-configurator.froms :as sut]))
 
-(update-conf-data (assoc conf-data :modifiers {:1 ["left_command", "right_shift"]}))
+(init-conf-data)
+
+(update-conf-data (assoc conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]
+                                                   :optional ["any"]}}))
 
 (def example-froms
   {:1 {:key :d}
@@ -25,12 +28,13 @@
 
 (def result
  {:applications {},
-  :tos {} ,
-  :swaps {} ,
-  :input-source {} ,
-  :modifiers {:1 ["left_command" "right_shift"]} ,
-  :devices {} ,
-  :layers {} ,
+  :tos {},
+  :swaps {},
+  :input-source {},
+  :modifiers {:1 {:mandatory ["left_command" "right_shift"],
+                  :optional ["any"]}},
+  :devices {},
+  :layers {},
   :froms {:11 {:modifiers {:mandatory ["left_command"]},
                :simultaneous ["a" "b"],
                :simultaneous_options {:detect_key_down_uninterruptedly true,
@@ -51,7 +55,8 @@
               :consumer_key_code "display_brightness_decrement"},
           :9 {:modifiers {:mandatory ["left_command"]},
               :pointing_button "button4"},
-          :2 {:modifiers ["left_command" "right_shift"],
+          :2 {:modifiers {:mandatory ["left_command" "right_shift"],
+                          :optional ["any"]},
               :key_code "d"},
           :5 {:modifiers {:mandatory ["left_command" "right_shift"]},
               :key_code "d"},
@@ -59,8 +64,8 @@
               :key_code "d"},
           :6 {:modifiers {:mandatory ["left_command" "right_shift"],
                           :optional ["caps_lock"]},
-              :key_code "d"}} ,
-  :raws {} ,
+              :key_code "d"}},
+  :raws {},
   :simlayers {}})
 
 ;; (sut/generate example-froms)

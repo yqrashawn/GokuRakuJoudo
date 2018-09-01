@@ -20,13 +20,13 @@
   (assert (pointing-k? pkey) (str "invalid pointing key code " pkey))
   pkey)
 
+(defn update-mouse-map
+  [[k v]]
+  [(mouse-key-name k) v])
+
 (defn parse-mkey
   [mkey]
-  (doseq [[k v] mkey]
-    (let [kwname (mouse-key-name k)
-          mkey (assoc mkey kwname (k mkey))
-          mkey (dissoc mkey k)]))
-  mkey)
+  (into {} (map update-mouse-map mkey)))
 
 (defn parse-key
   "this function is used in froms and tos for parsing key ckey pkey modi any"
