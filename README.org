@@ -7,3 +7,4 @@ Still in contruction.
 ** Usage
 
 ** License
+GNU General Public License v3.0
