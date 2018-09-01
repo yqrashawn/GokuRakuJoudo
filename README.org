@@ -1,4 +1,4 @@
-* karabiner-configurator
+* GokuRakuJoudo
 
 Tool to manage karabiner's configuration.
 
