@@ -2,7 +2,7 @@
   (:require
    [karabiner-configurator.misc :refer :all]))
 
-
+(declare conf-data)
 
 (def keys-info (load-edn "resources/configurations/keycode.edn"))
 
@@ -66,7 +66,6 @@
                   :simlayers {}
                   :swaps {}
                   :raws {}}))
-
 
 (defn update-conf-data
   [data]

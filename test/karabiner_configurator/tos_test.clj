@@ -35,7 +35,10 @@
          :optional [:caps_lock]}
         {:key :d :modi :1 :lazy true :repeat false :halt true :hold_down_ms 30}
         {:input :us}
-        {:ckey :display_brightness_decrement}]})
+        {:ckey :display_brightness_decrement}]
+   :17 {:key :!CT#OFa}})
+
+
 
 (def result {:applications {},
              :tos {:14 [{:mouse_key {:x -123,
@@ -70,6 +73,8 @@
                         :consumer_key_code "display_brightness_decrement"}],
                    :9 [{:modifiers ["left_command"],
                         :pointing_button "button4"}],
+                   :17 [{:key_code "a",
+                         :modifiers {:mandatory ["left_command" "left_control"]}}],
                    :2 [{:modifiers ["left_command" "right_shift"],
                         :key_code "d"}],
                    :5 [{:modifiers ["left_command" "right_shift"],
