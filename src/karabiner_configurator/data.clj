@@ -3,6 +3,20 @@
    [karabiner-configurator.misc :refer :all]))
 
 (declare conf-data)
+(defn init-conf-data
+  []
+  (def conf-data {:applications {}
+                  :devices {}
+                  :input-source {}
+                  :modifiers {}
+                  :froms {}
+                  :tos {}
+                  :layers {}
+                  :simlayers {}
+                  :swaps {}
+                  :raws {}}))
+
+;; (init-conf-data)
 
 (def keys-info (load-edn "resources/configurations/keycode.edn"))
 
@@ -54,18 +68,7 @@
   (assert (mouse-keyword? k) (str "invalid mouse key keyword " k))
   (:name (k mkey-keyword)))
 
-(defn init-conf-data
-  []
-  (def conf-data {:applications {}
-                  :devices {}
-                  :input-source {}
-                  :modifiers {}
-                  :froms {}
-                  :tos {}
-                  :layers {}
-                  :simlayers {}
-                  :swaps {}
-                  :raws {}}))
+
 
 (defn update-conf-data
   [data]
@@ -80,5 +83,3 @@
   (def conf-data (assoc-in conf-data keys-vector data)))
 
 (def output "output data that will convert into json string" [])
-
-(init-conf-data)

@@ -1,10 +1,10 @@
 * GokuRakuJoudo
-
 Tool to manage karabiner's configuration.
 
-Still in contruction.
-
 ** Usage
+Still in contruction. Not usable right now.
 
-** License
-GNU General Public License v3.0
+** Discussion
+
+** The name
+It the name of the song I'm lisening while writing this.

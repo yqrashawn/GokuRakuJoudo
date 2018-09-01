@@ -35,7 +35,7 @@
     (rules/parse-rules rules)))
 
 
-(parse config)
+;; (parse config)
 
 (defn -main
   [])

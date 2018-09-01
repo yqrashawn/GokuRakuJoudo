@@ -1,5 +1,6 @@
 (ns karabiner-configurator.modifiers-test
   (:require [karabiner-configurator.modifiers :as sut]
+            [karabiner-configurator.data :refer :all]
             [clojure.test :refer :all]))
 
 (def example-modifers {:modifiers {:111 [:left_command :left_control]
@@ -22,5 +23,6 @@
              :simlayers {}})
 
 (deftest convert-modifiers
+  (init-conf-data)
   (testing "FIXME, convert-modifiers fail."
     (is (= (sut/generate (:modifiers example-modifers)) result))))

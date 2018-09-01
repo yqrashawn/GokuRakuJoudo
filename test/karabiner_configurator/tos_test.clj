@@ -3,19 +3,9 @@
             [karabiner-configurator.data :refer :all]
             [clojure.test :as t]))
 
-(init-conf-data)
-
-(update-conf-data (assoc conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]
-                                                   :optional ["any"]}}))
-(update-conf-data (assoc conf-data :input-source {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
-                                                             :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
-                                                             :language "zh-Hans"}
-                                                  :us {:input_mode_id ""
-                                                       :input_source_id "com.apple.keylayout.US"
-                                                       :language "en"}}))
-
 (def tos-example
-  {:1 {:key :d}
+  {
+   :1 {:key :d}
    :2 {:key :d :modi :1}
    :3 {:key :d :modi :left_command}
    :4 {:key :d :modi [:left_command :right_shift]}
@@ -37,8 +27,6 @@
         {:input :us}
         {:ckey :display_brightness_decrement}]
    :17 {:key :!CT#OFa}})
-
-
 
 (def result {:applications {},
              :tos {:14 [{:mouse_key {:x -123,
@@ -96,8 +84,7 @@
                             :us {:input_mode_id "",
                                  :input_source_id "com.apple.keylayout.US",
                                  :language "en"}},
-             :modifiers {:1 {:mandatory ["left_command" "right_shift"],
-                             :optional ["any"]}},
+             :modifiers {:1 {:mandatory ["left_command" "right_shift"]}},
              :devices {},
              :layers {},
              :froms {},
@@ -107,5 +94,15 @@
 ;; (sut/generate tos-example)
 
 (t/deftest convert-tos
+  (init-conf-data)
+  (update-conf-data (assoc conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]}}))
+  (update-conf-data (assoc conf-data :input-source {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
+                                                               :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
+                                                               :language "zh-Hans"}
+                                                    :us {:input_mode_id ""
+                                                         :input_source_id "com.apple.keylayout.US"
+                                                         :language "en"}}))
   (t/testing
    (t/is (= (sut/generate tos-example) result))))
+
+;; (sut/generate tos-example)
