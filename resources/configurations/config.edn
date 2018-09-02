@@ -1,12 +1,12 @@
 ;; edn spec https://github.com/edn-format/edn
 {;;;; define things
  ;; define devices
- :devices {:hhkb-bt {:vendor 1278 :product 51966}
-           :hhkb {:vendor 2131 :product 256}}
+ :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
+           :hhkb [{:vendor_id 2131 :product_id 256}]}
 
  ;; define application identifiers
- :applications {:chrom "^com\\.google\\.Chrome$"
-                :chrom-canary "^com\\.google\\.Chrome\\.canary$"
+ :applications {:chrom ["^com\\.google\\.Chrome$"]
+                :chrom-canary [ "^com\\.google\\.Chrome\\.canary$"]
                 :chroms ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
 
  :input_sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
@@ -23,25 +23,25 @@
              :ccos [:left_command :left_control :left_option :left_shift]
              :11111 [:fn :left_command :left_control :left_option :left_shift]
              :spacebar-modifier {:mandatory [:left_command :left_control] :optional [:left_shift]}
-             :fn&lcommand&lcontrol&loption&lshift [:fn :left_command :left_control :left_option :left_shift]}}
+             :fn&lcommand&lcontrol&loption&lshift [:fn :left_command :left_control :left_option :left_shift]}
 
  ;; define froms
  ;; use in <from>
-:froms {:1 {:key :d}
-        :2 {:key :d :modi :1}
-        :3 {:key :d :modi :left_command}
-        :4 {:key :d :modi [:left_command :right_shift]}
-        :5 {:key :d :modi {:mandatory [:left_command :right_shift]}}
-        :6 {:key :d :modi {:mandatory [:left_command :right_shift]
-                           :optional [:caps_lock]}}
-        :7 {:ckey :display_brightness_decrement}
-        :8 {:ckey :display_brightness_decrement :modi :left_command}
-        :9 {:pkey :button4 :modi :left_command}
-        :10 {:sim [:a :b] :modi :left_command}
-        :11 {:sim [:a :b]
-             :simo {:interrupt true
-                    :dorder :insensitive}
-             :modi :left_command}}
+ :froms {:1 {:key :d}
+         :2 {:key :d :modi :1}
+         :3 {:key :d :modi :left_command}
+         :4 {:key :d :modi [:left_command :right_shift]}
+         :5 {:key :d :modi {:mandatory [:left_command :right_shift]}}
+         :6 {:key :d :modi {:mandatory [:left_command :right_shift]
+                            :optional [:caps_lock]}}
+         :7 {:ckey :display_brightness_decrement}
+         :8 {:ckey :display_brightness_decrement :modi :left_command}
+         :9 {:pkey :button4 :modi :left_command}
+         :10 {:sim [:a :b] :modi :left_command}
+         :11 {:sim [:a :b]
+              :simo {:interrupt true
+                     :dorder :insensitive}
+              :modi :left_command}}
 
  ;; define tos
  ;; use in <to>
@@ -53,7 +53,8 @@
  ;; can use as conditions in rule list
  ;; {:<layer name> {:from <froms>}}
  :layers {:chunkwm {:from :tab}} ;; key "d" to set_variable "vi-mode" 1, to_if_alone "d", to_after_key_up set_variable "vi-mode" 0
- :simlayers {:vi-mode {:from :d}}
+ :simlayers {:vi-mode {:key :d}}
+ :simlayer-threshold 250
 
  ;; swap keys, only support single key, like the simple modifications functionality in karabiner gui
  ;; {<single key> <single key>}
@@ -97,4 +98,4 @@
               :#Sa "shift a" ;; keycode a, optional left_shift
               :CTOa "command control option a"
               :Cspacebar "command space"
-              :Fa "fn a"}
+              :Fa "fn a"}}

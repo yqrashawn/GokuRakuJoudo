@@ -22,11 +22,13 @@
 (defn parse
   "parse configuration"
   [conf]
-  (let [{:keys [applications devices keyboard-type input-source tos froms modifiers layers simlayers raws rules]} conf]
+  (let [{:keys [applications devices keyboard-type input-source tos froms modifiers layers simlayers raws rules simlayer-threshold]} conf]
     (update-static-conf :applications applications)
     (update-static-conf :devices devices)
     (update-static-conf :keyboard-type keyboard-type)
     (update-static-conf :input-source tos)
+    (if (number? simlayer-threshold)
+      (update-static-conf :simlayer-threshold simlayer-threshold))
     (parse-modifiers modifiers)
     (layers/parse-layers layers)
     (layers/parse-simlayers simlayers)
