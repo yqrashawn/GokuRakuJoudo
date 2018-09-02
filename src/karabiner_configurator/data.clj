@@ -31,8 +31,8 @@
 
 (defn k?
   [k]
-  (assert (keyword? k) (str "invalid key keyword " k))
-  (nn? (k keys-info)))
+  (if (keyword? k)
+    (nn? (k keys-info))))
 
 (defn modifier-k?
   [k]
@@ -69,7 +69,25 @@
   (assert (mouse-keyword? k) (str "invalid mouse key keyword " k))
   (:name (k mkey-keyword)))
 
+(defn special-modi-k?
+  [k]
+  (if (keyword? k)
+    (contains?? [\! \#] (first (name k)))))
 
+(defn find-condition-keyword
+  [kw]
+  (cond (contains? (:applications conf-data))
+        {:name :application
+         :value (kw (:applications conf-data))}
+        (contains? (:devices conf-data))
+        {:name :devices
+         :value (kw (:devices conf-data))}
+        (contains? (:input-source conf-data))
+        {:name :input-source
+         :value (kw (:input-source conf-data))}
+        (contains? (:simlayers conf-data))
+        {:name :simlayers
+         :value (kw (:simlayers conf-data))}))
 
 (defn update-conf-data
   [data]

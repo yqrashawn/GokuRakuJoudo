@@ -69,7 +69,6 @@
                                 (str "invalid `input` in to defination " tname " " input ", should be a keyword"))
          validate-set (assert (or (vector? set) (nil? set))
                               (str "invalid `set` in to defination " tname " " set ", should be a vector"))
-         result (assoc result :type "basic")
          result (if (keyword? input)
                   (assoc result :select_input_source (input (:input-source conf-data)))
                   result)

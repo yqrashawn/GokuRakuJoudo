@@ -32,6 +32,28 @@
 (def special-modi-mandatory-re #"(^![CSTOF]+)")
 (def special-modi-optional-re #"(^#[CSTOF]+)")
 
+(defn special-modi-realkey [smodi]
+  (let [keystr (name smodi)
+        both (re-find special-modi-re keystr)
+        mandatory (if both
+                    (re-find special-modi-mandatory-re (first both))
+                    (re-find special-modi-mandatory-re keystr))
+        optional (if both
+                   (re-find special-modi-optional-re (first both))
+                   (re-find special-modi-optional-re keystr))
+        validate (assert (or both mandatory optional)
+                         (str "invalid special modifier keyword " smodi))
+        mandatory (if mandatory (first mandatory) nil)
+        optional (if optional (first optional) nil)
+        realkey (cond both
+                      (keyword (subs keystr (count (first both))))
+                      (and mandatory (not both))
+                      (keyword (subs keystr (count mandatory)))
+                      (and optional (not both))
+                      (keyword (subs keystr (count optional))))]
+    realkey))
+
+
 (defn special-modi-vector-to-modifiers
   [vec]
   (if (vector? vec)
@@ -45,7 +67,7 @@
     nil))
 
 (defn parse-special-modi
-  [smodi prevresult]
+  [smodi prevresult & [mandatory-only]]
   (let [result prevresult
         keystr (name smodi)
         both (re-find special-modi-re keystr)
@@ -70,8 +92,9 @@
         result (assoc result :key_code (name realkey))
         mandatory (if mandatory (into [] (subs mandatory 1)) nil)
         optional (if optional (into [] (subs optional 1)) nil)
-        result (if mandatory (assoc-in result [:modifiers :mandatory] (special-modi-vector-to-modifiers mandatory)) result)
-        result (if optional (assoc-in result [:modifiers :optional] (special-modi-vector-to-modifiers optional)) result)]
+        result (if (and (not (true? mandatory-only)) mandatory) (assoc-in result [:modifiers :mandatory] (special-modi-vector-to-modifiers mandatory)) result)
+        result (if (and (true? mandatory-only) mandatory) (assoc result :modifiers (special-modi-vector-to-modifiers mandatory)) result)
+        result (if (and (not (true? mandatory-only)) optional) (assoc-in result [:modifiers :optional] (special-modi-vector-to-modifiers optional)) result)]
     result))
 
 (defn parse-key
@@ -87,7 +110,7 @@
                                                predefined-modi?)
                                            (str "invalid modifier defination " modi))
         mandatory-only? (true? mandatory-only)
-        result (if special-modi? (parse-special-modi key result) result)
+        result (if special-modi? (parse-special-modi key result mandatory-only) result)
         result (if (and (not special-modi?) (nn? modi))
                  (if (not predefined-modi?)
                    (if mandatory-only?

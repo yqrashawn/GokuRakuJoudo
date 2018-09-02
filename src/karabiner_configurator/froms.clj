@@ -74,7 +74,7 @@
   (into []
         (for [v vec]
           (do (assert (from-k? v) (str "keycode " v " can't be used as from keycode"))
-              (name v)))))
+              {:key_code (name v)}))))
 
 (defn parse-simo
   [sim simo simo-op-value simo-op-keyword result]

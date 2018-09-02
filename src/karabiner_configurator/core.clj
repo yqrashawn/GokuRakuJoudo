@@ -22,7 +22,7 @@
 (defn parse
   "parse configuration"
   [conf]
-  (let [{:keys [applications devices keyboard-type input-source tos froms modifiers layers simlayers raws rules simlayer-threshold]} conf]
+  (let [{:keys [applications devices keyboard-type input-source tos froms modifiers layers simlayers raws main simlayer-threshold]} conf]
     (update-static-conf :applications applications)
     (update-static-conf :devices devices)
     (update-static-conf :keyboard-type keyboard-type)
@@ -34,7 +34,7 @@
     (layers/parse-simlayers simlayers)
     (froms/parse-froms froms)
     (tos/parse-tos tos)
-    (rules/parse-rules rules)))
+    (rules/parse-mains main)))
 
 
 ;; (parse config)

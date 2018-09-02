@@ -11,6 +11,9 @@ Still in contruction. Not usable right now.
   #+begin_src shell
   keybase team request-access karabiner
   #+end_src
+** Note
+- only normal key support special modifier i.e. :!Ca
+- mouse key has no abbreviation keyword in main rules
 
 ** The name
 It the name of the song I'm lisening while writing this.

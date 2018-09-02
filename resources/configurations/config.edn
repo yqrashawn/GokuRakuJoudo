@@ -5,9 +5,9 @@
            :hhkb [{:vendor_id 2131 :product_id 256}]}
 
  ;; define application identifiers
- :applications {:chrom ["^com\\.google\\.Chrome$"]
-                :chrom-canary [ "^com\\.google\\.Chrome\\.canary$"]
-                :chroms ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
+ :applications {:chrome ["^com\\.google\\.Chrome$"]
+                :chrome-canary [ "^com\\.google\\.Chrome\\.canary$"]
+                :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
 
  :input_sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
                             :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
@@ -63,39 +63,46 @@
 
  ;; fallback to raw defination
  ;; similar to karabiner.json, can use definations in :froms and :tos
- :raws [{:from :caps_lock :to :left_control :alone :escape}
-        {:from :right_shift
-         :to [:set {"right_shift pressed" 1} :right_shift]
-         :to_delayed_action {:invoked {:set ["right_shift pressed" 0]}
-                             :cancled {:set ["right_shift pressed" 0]}}}
-        {:from [:f :j], :to :alf--search-help, :alone :escape}] ;; comma considered whitespace
+ ;; :raws [{:from :caps_lock :to :left_control :alone :escape}
+ ;;        {:from :right_shift
+ ;;         :to [:set {"right_shift pressed" 1} :right_shift]
+ ;;         :to_delayed_action {:invoked {:set ["right_shift pressed" 0]}
+ ;;                             :cancled {:set ["right_shift pressed" 0]}}}
+ ;;        {:from [:f :j], :to :alf--search-help, :alone :escape}] ;; comma considered whitespace
 
- ;; rule list
- :rules
+ ;; main list
+ :main
  ;; [<from> <to>] or
  ;; [<from> <to> <conditions>] or
  ;; [<from> <to> <conditions> <other options>]
  ;; <from> can be keywords defined in froms or keycodes without `{:not-from true}`
  ;; <to> can be keywords defined in tos, keycodes without `{:not-to true}`, string (shell script)
  ;; <conditions> can be keywords defined in layers, devices, applications
- ;; <other options> {:other {:parameters {:to_delayed_action_delay_milliseconds 100}} }
- [[:a :1] ;; a to 1
-  [:Ca :$1] ;; command a to control 1
-  [:my-spacebar :$1] ;; my-spacebar to control 1
-  [:b [:1 :2]]  ;; key to key
-  [:c "osascript -e 'display dialog \"example apple script\"'"] ;; key to shell script
-  [:d [:1 "osascript -e 'display dialog \"example apple script\"'"]] ;; key to key then shell script
-  [[:e :f] :3] ;; simultaneous key to key
-  [:g :4 :vi-mode] ;; vi-mode is 1
-  [:h :5 :!vi-mode] ;; vi-mode is 0
-  [:i :6 :hhkb-bt] ;; key to key in layer b (in layer a) specific to hhkb-bt device
-  [:j :7 [:vi-mode :hhkb-bt]] ;; multiple condition
-  [:h [:8 {:set ["some-mode" 0]}]]] ;; h to 8 and set_variable
- :cheatsheet {:Ca "command a" ;; mandatory left_command, optional any
-              :Ta "control a" ;; mandatory left_control, optional any
-              :Oa "option a"
-              :Sa "shift a"
+ ;; <other options> {:other {:parameters {:to_delayed_action_delay_milliseconds 100 :basic.to_if_alone_timeout_milliseconds 500 :basic.to_if_held_down_threshold_milliseconds 250}} }
+ [{:des "a to 1" :rules [[:a :1]]} ;; a to 1
+  {:des "command a to control 1" [:!Ca :!T1]} ;; command a to control 1
+  {:des "my spacebar to control 1" [:my-spacebar :!T1]} ;; my-spacebar to control 1
+  {:des "press b to insert 12" [:b [:1 :2]]}  ;; key to key
+  {:des "c to example osascript" [:c "osascript -e 'display dialog \"example apple script\"'"]} ;; key to shell script
+  {:des "d to 1 then example osascript" [:d [:1 "osascript -e 'display dialog \"example apple script\"'"]]} ;; key to key then shell script
+  {:des "simultaneous e f to 3" [[:e :f] :3]} ;; simultaneous key to key
+  {:des "g to 4 when variable vi-mode is 1" [:g :4 :vi-mode]} ;; vi-mode is 1
+  {:des "h to 5 when variable vi-mode is not 1" [:h :5 :!vi-mode]} ;; vi-mode is 0
+  {:des "i to 6 only for device hhkb-bt" [:i :6 :hhkb-bt]} ;; key to key in layer b (in layer a) specific to hhkb-bt device
+  {:des "j to 7 on hhkb-bt when variable vi-mode is 1" [:j :7 [:vi-mode :hhkb-bt]]} ;; multiple condition
+  {:des "press h insert 8 then set variable some-mode to 0" [:h [:8 {:set ["some-mode" 0]}]]}] ;; h to 8 and set_variable
+
+ ;; code won't read cheatsheet section
+ ;; ! stand for mandatory
+ ;; # stand for optional
+ ;; C T O S for left command control optional shift
+ ;; F for fn
+ ;; need to prefix C T O S F with ! or #
+ :cheatsheet {:!Ca "command a" ;; mandatory left_command
+              :!Ta "control a" ;; mandatory left_control
+              :!Oa "option a"
+              :!Sa "shift a"
               :#Sa "shift a" ;; keycode a, optional left_shift
-              :CTOa "command control option a"
-              :Cspacebar "command space"
-              :Fa "fn a"}}
+              :!CTOa "command control option a"
+              :!Cspacebar "command space"
+              :!Fa "fn a"}}
