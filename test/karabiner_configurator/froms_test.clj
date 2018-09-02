@@ -18,6 +18,7 @@
    :10 {:sim [:a :b] :modi :left_command}
    :11 {:sim [:a :b]
         :simo {:interrupt true
+               :afterup [{:set ["haha" 1]}]
                :dorder :insensitive}
         :modi :left_command}
    :12 {:key :!CSd}})
@@ -29,6 +30,7 @@
    :input-source {},
    :modifiers {:1 {:mandatory ["left_command" "right_shift"],
                    :optional ["any"]}},
+   :simlayer-threshold 250,
    :devices {},
    :layers {},
    :froms {:12 {:key_code "d",
@@ -38,7 +40,9 @@
                 :simultaneous_options {:detect_key_down_uninterruptedly true,
                                        :key_down_order "insensitive",
                                        :key_up_order "insensitive",
-                                       :key_up_when "any"}},
+                                       :key_up_when "any",
+                                       :to_after_keyup [{:type "basic",
+                                                         :set_variable {:name "haha", :value 1}}]}},
            :10 {:modifiers {:mandatory ["left_command"]},
                 :simultaneous ["a" "b"],
                 :simultaneous_options {:detect_key_down_uninterruptedly false,
@@ -65,6 +69,7 @@
                :key_code "d"}},
    :raws {},
    :simlayers {}})
+
 
 ;; (sut/generate example-froms)
 (t/deftest convert-froms

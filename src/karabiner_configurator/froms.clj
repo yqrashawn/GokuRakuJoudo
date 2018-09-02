@@ -3,6 +3,7 @@
    [karabiner-configurator.misc :refer :all]
    [karabiner-configurator.data :refer :all]
    [karabiner-configurator.keys :refer :all]
+   [karabiner-configurator.tos :as tos]
    [karabiner-configurator.modifiers :as kmodifier]))
 
 ;; this file parse from event definition
@@ -86,7 +87,10 @@
           (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] (name simo-op-value))
           (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] simo-op-value)))
     (if (nn? sim)
-      (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] (first (:json-values (simo-op-keyword simo-keywords))))
+      (assoc-in
+       result
+       [:simultaneous_options (:name (simo-op-keyword simo-keywords))]
+       (first (:json-values (simo-op-keyword simo-keywords))))
       result)))
 
 (defn parse-sim
@@ -98,10 +102,13 @@
         result (parse-simo sim simo interrupt :interrupt result)
         result (parse-simo sim simo dorder :dorder result)
         result (parse-simo sim simo uorder :uorder result)
-        result (parse-simo sim simo upwhen :upwhen result)]
+        result (parse-simo sim simo upwhen :upwhen result)
+        result (if (vector? (:afterup simo))
+                 (assoc-in result
+                           [:simultaneous_options :to_after_keyup]
+                           (into [] (tos/parse-to :tempto (:afterup simo))))
+                 result)]
     result))
-
-;; TODO parse to_after_key_up
 
 (defn parse-from
   [fname finfo]

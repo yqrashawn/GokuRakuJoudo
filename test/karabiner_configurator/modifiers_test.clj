@@ -16,6 +16,7 @@
                          :222 {:mandatory ["left_command" "left_shift"]},
                          :3 {:mandatory ["left_command"]},
                          :444 {:optional ["any"]}},
+             :simlayer-threshold 250,
              :devices {},
              :layers {},
              :froms {},
