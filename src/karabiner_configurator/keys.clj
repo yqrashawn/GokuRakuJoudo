@@ -28,9 +28,10 @@
   [mkey]
   (into {} (map update-mouse-map mkey)))
 
-(def special-modi-re #"(^![CSTOF]+#[CSTOF]+)")
-(def special-modi-mandatory-re #"(^![CSTOF]+)")
-(def special-modi-optional-re #"(^#[CSTOF]+)")
+(def special-modi-re #"(^![!CSTOFP]+#[#CSTOFP]+)")
+(def special-modi-mandatory-re #"(^![!CSTOFP]+)")
+(def special-modi-optional-re #"(^#[#CSTOFP]+)")
+(def special-modi-optional-both-re #"(#[#CSTOFP]+)")
 
 (defn special-modi-realkey [smodi]
   (let [keystr (name smodi)
@@ -39,7 +40,7 @@
                     (re-find special-modi-mandatory-re (first both))
                     (re-find special-modi-mandatory-re keystr))
         optional (if both
-                   (re-find special-modi-optional-re (first both))
+                   (re-find special-modi-optional-both-re (first both))
                    (re-find special-modi-optional-re keystr))
         validate (assert (or both mandatory optional)
                          (str "invalid special modifier keyword " smodi))
@@ -53,16 +54,21 @@
                       (keyword (subs keystr (count optional))))]
     realkey))
 
-
 (defn special-modi-vector-to-modifiers
   [vec]
   (if (vector? vec)
     (let [result []
-          result (if (contains?? vec \C) (conj result (name :left_command )) result)
-          result (if (contains?? vec \T) (conj result (name :left_control )) result)
-          result (if (contains?? vec \O) (conj result (name :left_option )) result)
-          result (if (contains?? vec \S) (conj result (name :left_shift )) result)
-          result (if (contains?? vec \F) (conj result (name :fn )) result)]
+          result (if (contains?? vec \C) (conj result (name :left_command)) result)
+          result (if (contains?? vec \T) (conj result (name :left_control)) result)
+          result (if (contains?? vec \O) (conj result (name :left_option)) result)
+          result (if (contains?? vec \S) (conj result (name :left_shift)) result)
+          result (if (contains?? vec \F) (conj result (name :fn)) result)
+          result (if (contains?? vec \P) (conj result (name :caps_lock)) result)
+          result (if (contains?? vec \#) [(name :any)] result)
+          result (if (contains?? vec \!) [(name :left_command)
+                                          (name :left_control)
+                                          (name :left_option)
+                                          (name :left_shift)] result)]
       result)
     nil))
 
@@ -75,7 +81,7 @@
                     (re-find special-modi-mandatory-re (first both))
                     (re-find special-modi-mandatory-re keystr))
         optional (if both
-                   (re-find special-modi-optional-re (first both))
+                   (re-find special-modi-optional-both-re (first both))
                    (re-find special-modi-optional-re keystr))
         validate (assert (or both mandatory optional)
                          (str "invalid special modifier keyword " smodi))
@@ -120,7 +126,7 @@
                      (assoc result :modifiers (:mandatory (modi (:modifiers conf-data))))
                      (assoc result :modifiers (modi (:modifiers conf-data)))))
                  result)
-        result (if (and (not (:key_code result)) (nn? key) ) (assoc result :key_code (name (parse-keycode key))) result)
+        result (if (and (not (:key_code result)) (nn? key)) (assoc result :key_code (name (parse-keycode key))) result)
         result (if (nn? ckey) (assoc result :consumer_key_code (name (parse-ckey ckey))) result)
         result (if (nn? pkey) (assoc result :pointing_button (name (parse-pkey pkey))) result)
         result (if (and (nn? any) (any any-key-keywords)) (assoc result :any (name any-key-keywords)) result)

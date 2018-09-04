@@ -3,8 +3,9 @@
             [karabiner-configurator.data :refer :all]
             [clojure.test :as t]))
 
-(def example-mains [{:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
-                    {:des "command a to control 1"                            :rules [[:!Ca :!T1]]} ;; command a to control 1
+(def example-mains [
+                    {:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
+                    {:des "command a to control 1"                            :rules [[:!C#Pa :!T1]]} ;; command a to control 1
                     {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
                     {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
                     {:des "c to example osascript"                            :rules [[:c "osascript -e 'display dialog \"example apple script\"'"]]} ;; key to shell script
@@ -14,7 +15,13 @@
                     {:des "h to 5 when variable vi-mode is not 1"             :rules [[:h :5 :!vi-mode]]} ;; vi-mode is not 1
                     {:des "i to 6 only for device hhkb-bt"                    :rules [[:i :6 :hhkb-bt]]} ;; key to key in layer b (in layer a) specific to hhkb-bt device
                     {:des "j to 7 on hhkb-bt when variable vi-mode is 1"      :rules [[:j :7 [:vi-mode :hhkb-bt]]]} ;; multiple condition
-                    {:des "press h insert 8 then set variable some-mode to 0" :rules [[:h [:8 {:set ["some-mode" 0]}]]]}])
+                    {:des "press h insert 8 then set variable some-mode to 0" :rules [[:h [:8 {:set ["some-mode" 0]}]]]}
+                    {:des "capslock to control as modifier to escape when press alone" :rules [[:##caps_lock :left_control nil {:alone :escape}]]}
+                    {:des "Quit application by pressing command-q twice" :rules [[:!C#Pq :!Cq ["command-q" 1]]
+                                                                                 [:!C#Pq ["command-q" 1] nil {:delayed {:invoked ["command-q" 0] :cancled ["commandq" 0]}}]]}
+                    {:des "Quit application by holding command-q" :rules [[:!C#Pq nil nil {:held {:key :q :modi :left_command :repeat false}}]]}
+                    {:des "Quit Safari by pressing command-q twice" :rules [[:!C#Pq :!Cq [:safari ["command-q" 1]]]
+                                                                            [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :cancled ["command-q" 0]}}]]}])
 
 (def result [{:description "a to 1",
               :manipulators [{:from {:key_code "a"},
@@ -22,7 +29,8 @@
                               :type "basic"}]}
              {:description "command a to control 1",
               :manipulators [{:from {:key_code "a",
-                                     :modifiers {:mandatory ["left_command"]}},
+                                     :modifiers {:mandatory ["left_command"],
+                                                 :optional ["caps_lock"]}}
                               :to [{:key_code "1",
                                     :modifiers ["left_control"]}],
                               :type "basic"}]}
@@ -107,11 +115,64 @@
               :manipulators [{:from {:key_code "h"},
                               :to [{:key_code "8"}
                                    {:set_variable {:name "some-mode", :value 0}}],
+                              :type "basic"}]}
+             {:description "capslock to control as modifier to escape when press alone",
+              :manipulators [{:to_if_alone [{:key_code "escape"}],
+                              :from {:key_code "caps_lock",
+                                     :modifiers {:optional ["any"]}},
+                              :to [{:key_code "left_control"}],
+                              :type "basic"}]}
+             {:description "Quit application by pressing command-q twice",
+              :manipulators [{:from {:key_code "q",
+                                     :modifiers {:mandatory ["left_command"],
+                                                 :optional ["caps_lock"]}},
+                              :to [{:key_code "q",
+                                    :modifiers ["left_command"]}],
+                              :conditions [{:name "command-q",
+                                            :value 1,
+                                            :type "variable_if"}],
+                              :type "basic"}
+                             {:to_delayed_action {:to_if_invoked [{:set_variable {:name "command-q", :value 0}}],
+                                                  :to_if_cancled [{:set_variable {:name "commandq", :value 0}}]},
+                              :from {:key_code "q",
+                                     :modifiers {:mandatory ["left_command"],
+                                                 :optional ["caps_lock"]}},
+                              :to [{:set_variable {:name "command-q", :value 1}}],
+                              :type "basic"}]}
+             {:description "Quit application by holding command-q",
+              :manipulators [{:to_if_held_down [{:modifiers ["left_command"],
+                                                 :key_code "q",
+                                                 :repeat false}],
+                              :from {:key_code "q",
+                                     :modifiers {:mandatory ["left_command"],
+                                                 :optional ["caps_lock"]}},
+                              :type "basic"}]}
+             {:description "Quit Safari by pressing command-q twice",
+              :manipulators [{:from {:key_code "q",
+                                     :modifiers {:mandatory ["left_command"],
+                                                 :optional ["caps_lock"]}},
+                              :to [{:key_code "q",
+                                    :modifiers ["left_command"]}],
+                              :conditions [{:bundle_identifiers ["^com\\.apple\\.Safari$"],
+                                            :type "frontmost_application_if"}
+                                           {:name "command-q",
+                                            :value 1,
+                                            :type "variable_if"}],
+                              :type "basic"}
+                             {:to_delayed_action {:to_if_invoked [{:set_variable {:name "command-q", :value 0}}],
+                                                  :to_if_cancled [{:set_variable {:name "command-q", :value 0}}]},
+                              :from {:key_code "q",
+                                     :modifiers {:mandatory ["left_command"],
+                                                 :optional ["caps_lock"]}},
+                              :to [{:set_variable {:name "command-q", :value 1}}],
+                              :conditions [{:bundle_identifiers ["^com\\.apple\\.Safari$"],
+                                            :type "frontmost_application_if"}],
                               :type "basic"}]}])
 
 (t/deftest generate-mains
   (init-conf-data)
-  (update-conf-data {:applications {:chrome ["^com\\.google\\.Chrome$"]
+  (update-conf-data {:applications {:safari ["^com\\.apple\\.Safari$"]
+                                    :chrome ["^com\\.google\\.Chrome$"]
                                     :chrome-canary ["^com\\.google\\.Chrome\\.canary$"]
                                     :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
                      :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]

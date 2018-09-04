@@ -34,7 +34,9 @@
                                                 :uorder :strict_inverse
                                                 :afterup {:set [(name k) 0]}}}}}
                        result (if (nn? condi)
-                                (assoc-in result [k :conditions] (parse-conditions condi))
+                                (if (is-simple-set-variable? condi)
+                                  (assoc-in result [k :conditions] (parse-conditions [condi]))
+                                  (assoc-in result [k :conditions] (parse-conditions condi)))
                                 result)]
                    result)))))
 
