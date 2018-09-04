@@ -2,7 +2,7 @@
   (:require
    [schema.core :as s]
    [cheshire.core :as json]
-   [karabiner-configurator.modifiers :refer :all]
+   [karabiner-configurator.modifiers :as modifiers]
    [karabiner-configurator.misc :refer :all]
    [karabiner-configurator.data :refer :all]
    [karabiner-configurator.layers :as layers]
@@ -19,8 +19,8 @@
   (if (nn? conf)
     (update-conf-data (assoc conf-data key conf))))
 
-(defn parse
-  "parse configuration"
+(defn generate
+  "generate configuration"
   [conf]
   (let [{:keys [applications devices keyboard-type input-source tos froms modifiers layers simlayers raws main simlayer-threshold]} conf]
     (update-static-conf :applications applications)
@@ -29,12 +29,15 @@
     (update-static-conf :input-source tos)
     (if (number? simlayer-threshold)
       (update-static-conf :simlayer-threshold simlayer-threshold))
-    (parse-modifiers modifiers)
+    (modifiers/parse-modifiers modifiers)
     (layers/parse-layers layers)
     (layers/parse-simlayers simlayers)
     (froms/parse-froms froms)
     (tos/parse-tos tos)
-    (json/encode (rules/parse-mains main))))
+    (rules/parse-mains main)))
+
+(defn parse [conf]
+  (json/encode (generate conf)))
 
 
 ;; (parse config)
