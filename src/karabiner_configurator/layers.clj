@@ -2,14 +2,15 @@
   (:require
    [karabiner-configurator.conditions :refer :all]
    [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.misc :refer :all]))
+   [karabiner-configurator.misc :refer :all]
+   [karabiner-configurator.layers-test]))
 
 (defn parse-layers [layers]
   (if (nn? layers)
     (for [[layer-name layer-info] layers]
       (let [{:keys [from-value]} layer-info]))))
 
-(defn generate
+(defn generate-simlayers
   [simlayers]
   (assoc conf-data
          :simlayers
@@ -42,4 +43,4 @@
 
 (defn parse-simlayers [simlayers]
   (if (nn? simlayers)
-    (update-conf-data (generate simlayers))))
+    (update-conf-data (generate-simlayers simlayers))))

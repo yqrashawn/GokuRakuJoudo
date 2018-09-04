@@ -13,9 +13,7 @@
                   :tos {}
                   :layers {}
                   :simlayers {}
-                  :simlayer-threshold 250
-                  :swaps {}
-                  :raws {}}))
+                  :simlayer-threshold 250}))
 
 ;; (init-conf-data)
 

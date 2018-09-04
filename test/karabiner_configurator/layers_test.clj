@@ -17,7 +17,6 @@
                   :chromes ["^com\\.google\\.Chrome$"
                             "^com\\.google\\.Chrome\\.canary$"]},
    :tos {},
-   :swaps {},
    :input-source {},
    :modifiers {},
    :simlayer-threshold 250,
@@ -27,7 +26,6 @@
                      :product_id 256}]},
    :layers {},
    :froms {},
-   :raws {},
    :simlayers {:vi-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
                          :to [{:set ["vi-mode" 1]}],
                          :from {:sim [:d],
@@ -75,5 +73,5 @@
                                                     :chrom-canary [ "^com\\.google\\.Chrome\\.canary$"]
                                                     :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}))
   (t/testing
-      (t/is (= (sut/generate simlayers-example) result))))
+      (t/is (= (sut/generate-simlayers simlayers-example) result))))
 

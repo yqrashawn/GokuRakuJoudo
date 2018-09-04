@@ -77,7 +77,6 @@
                         :key_code "d"}]
                    :6 [{:modifiers ["left_command" "right_shift"],
                         :key_code "d"}]}
-             :swaps {},
              :input-source {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel",
                                        :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime",
                                        :language "zh-Hans"},
@@ -89,7 +88,6 @@
              :devices {},
              :layers {},
              :froms {},
-             :raws {},
              :simlayers {}})
 
 ;; (sut/generate tos-example)

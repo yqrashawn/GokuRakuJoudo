@@ -26,7 +26,6 @@
 (def result
      {:applications {},
       :tos {},
-      :swaps {},
       :input-source {},
       :modifiers {:1 {:mandatory ["left_command" "right_shift"],
                       :optional ["any"]}},
@@ -68,7 +67,6 @@
               :6 {:modifiers {:mandatory ["left_command" "right_shift"],
                               :optional ["caps_lock"]},
                   :key_code "d"}},
-      :raws {},
       :simlayers {}})
 
 

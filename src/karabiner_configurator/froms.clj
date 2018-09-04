@@ -4,7 +4,8 @@
    [karabiner-configurator.data :refer :all]
    [karabiner-configurator.keys :refer :all]
    [karabiner-configurator.tos :as tos]
-   [karabiner-configurator.modifiers :as kmodifier]))
+   [karabiner-configurator.modifiers :as kmodifier]
+   [karabiner-configurator.froms-test]))
 
 ;; this file parse from event definition
 ;; spec: https://pqrs.org/osx/karabiner/json.html#from-event-definition

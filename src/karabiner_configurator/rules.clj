@@ -6,7 +6,8 @@
    [karabiner-configurator.froms :as froms]
    [karabiner-configurator.tos :as tos]
    [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.misc :refer :all]))
+   [karabiner-configurator.misc :refer :all]
+   [karabiner-configurator.rules-test]))
 
 ;; <from> section
 ;; :a      | normal key or predefined froms
@@ -132,27 +133,35 @@
     {:conditions (conditions/parse-conditions [conditions] (:from prev-result) (:to prev-result))}
     {:conditions (conditions/parse-conditions conditions (:from prev-result) (:to prev-result))}))
 
-(def test-data
-  {:alone :a
-   :held :b
-   :afterup :c
-   :delayed {:invoked :d
-             :cancled :e}})
-
+;; to_if_alone                                    | :alone
+;; to_if_held_down                                | :held
+;; to_after_key_up                                | :afterup
+;; to_delayed_action                              | :delayed
+;;   to_if_canceled                               |   :cancled
+;;   to_if_invoked                                |   :invoked
+;; parameters                                     | :params
+;;   basic.to_if_alone_timeout_milliseconds       |   :alone
+;;   basic.to_if_held_down_threshold_milliseconds |   :held
+;;   to_delayed_action_delay_milliseconds         |   :delay  FIXME should there be a "basic.", there's none on the spec page
 (defn additional-key
+  "parse additional keys"
   [des additional prevresult]
   (let [result prevresult
-        {:keys [alone held afterup delayed]} additional
+        {:keys [alone held afterup delayed params]} additional
         {:keys [cancled invoked]} delayed
         result (if alone (assoc result :to_if_alone (to-key des alone)) result)
         result (if held (assoc result :to_if_held_down (to-key des held)) result)
         result (if afterup (assoc result :to_after_key_up (to-key des afterup)) result)
         result (if invoked (assoc-in result [:to_delayed_action :to_if_invoked] (to-key des invoked)) result)
-        result (if cancled (assoc-in result [:to_delayed_action :to_if_cancled] (to-key des cancled)) result)]
+        result (if cancled (assoc-in result [:to_delayed_action :to_if_cancled] (to-key des cancled)) result)
+        {:keys [alone held delay]} params
+        result (if (number? alone) (assoc-in result [:parameters :basic.to_if_alone_timeout_milliseconds] alone) result)
+        result (if (number? held) (assoc-in result [:parameters :basic.to_if_held_down_threshold_milliseconds] held) result)
+        result (if (number? delay) (assoc-in result [:parameters :basic.to_delayed_action_delay_milliseconds] delay) result)]
     result))
 
 (defn parse-rule
-  "generate one configuration"
+  "generate one manipulator"
   ([des from to]
    (let [result {}
          result (assoc result :from (:from (from-key des from)))
@@ -204,6 +213,7 @@
      result)))
 
 (defn generate
+  "generate one rule"
   [mains]
   (for [{:keys [des rules]} mains]
     {:description des
@@ -218,5 +228,7 @@
                         (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
                         (nn? other-options) (parse-rule des from to condition other-options)))))))}))
 
-(defn parse-mains [mains]
+(defn parse-mains
+  "parse main section to final edn format, ready to convert to json"
+  [mains]
   (into [] (generate mains)))

@@ -188,9 +188,7 @@
                                                   :simo {:dorder :strict,
                                                          :uorder :strict_inverse,
                                                          :afterup {:set ["vi-mode" 0]}}}}}
-                     :simlayer-threshold 250
-                     :swaps {}
-                     :raws {}})
+                     :simlayer-threshold 250})
 
   (t/testing
       (t/is (= (sut/parse-mains example-mains) result))))

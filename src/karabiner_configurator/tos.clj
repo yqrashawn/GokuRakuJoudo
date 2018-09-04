@@ -2,7 +2,8 @@
   (:require [karabiner-configurator.misc :refer :all]
             [karabiner-configurator.data :refer :all]
             [karabiner-configurator.keys :refer :all]
-            [karabiner-configurator.modifiers :as kmodifier]))
+            [karabiner-configurator.modifiers :as kmodifier]
+            [karabiner-configurator.tos-test]))
 
 ;; parse tos defination
 ;; spec https://pqrs.org/osx/karabiner/json.html#to-event-definition
