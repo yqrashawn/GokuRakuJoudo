@@ -103,9 +103,10 @@
         result (parse-simo sim simo dorder :dorder result)
         result (parse-simo sim simo uorder :uorder result)
         result (parse-simo sim simo upwhen :upwhen result)
+        simo (if (map? (:afterup simo)) (assoc simo :afterup [(:afterup simo)]) simo)
         result (if (vector? (:afterup simo))
                  (assoc-in result
-                           [:simultaneous_options :to_after_keyup]
+                           [:simultaneous_options :to_after_key_up]
                            (into [] (tos/parse-to :tempto (:afterup simo))))
                  result)]
     result))

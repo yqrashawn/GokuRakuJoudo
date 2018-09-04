@@ -37,7 +37,10 @@
     (rules/parse-mains main)))
 
 (defn parse [conf]
-  (json/encode (generate conf)))
+  (spit "/Users/rashawnzhang/workspace/HOME/karabiner-configurator/src/karabiner_configurator/rules.json"
+        (json/generate-string (generate conf) {:pretty true})))
+  ;; (json/generate-string (generate conf) {:pretty true}))
+
 
 
 ;; (parse config)

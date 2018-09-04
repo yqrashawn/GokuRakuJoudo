@@ -10,7 +10,6 @@
 
 (def result {:applications {},
              :tos {},
-             :swaps {},
              :input-source {},
              :modifiers {:111 {:mandatory ["left_command" "left_control"]},
                          :222 {:mandatory ["left_command" "left_shift"]},
@@ -20,7 +19,6 @@
              :devices {},
              :layers {},
              :froms {},
-             :raws {},
              :simlayers {}})
 
 (deftest convert-modifiers

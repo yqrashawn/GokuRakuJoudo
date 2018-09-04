@@ -22,15 +22,18 @@
                                 (k? (:key v)))
                                (str "invalid simlayer defination " k))
                        condi (:condi v)
+                       condi (if (or (keyword? condi) (map? condi) ) [condi] condi)
                        validate-condition
                        (assert (or (nil? condi)
                                    (and (nn? condi) (vector? condi)))
-                               (str "invalid condition defination in simlayer " k ", condition must be a vector"))
+                               (str "invalid condition defination in simlayer " k ", condition must be a vector or map or keyword"))
                        key (:key v)
-                       result {k {:parameters {:basic.simultaneous_threshold_milliseconds (:simlayer-threshold conf-data)}
+                       result {k {:type "basic"
+                                  :parameters {:basic.simultaneous_threshold_milliseconds (:simlayer-threshold conf-data)}
                                   :to [{:set [(name k) 1]}]
                                   :from {:sim [key]
-                                         :simo {:dorder :strict
+                                         :simo {:interrupt true
+                                                :dorder :strict
                                                 :uorder :strict_inverse
                                                 :afterup {:set [(name k) 0]}}}}}
                        result (if (nn? condi)

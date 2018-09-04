@@ -41,7 +41,7 @@
                                           :key_down_order "insensitive",
                                           :key_up_order "insensitive",
                                           :key_up_when "any",
-                                          :to_after_keyup [{:set_variable {:name "haha", :value 1}}]}},
+                                          :to_after_key_up [{:set_variable {:name "haha", :value 1}}]}},
               :10 {:modifiers {:mandatory ["left_command"]},
                    :simultaneous [{:key_code "a"}
                                   {:key_code "b"}],

@@ -11,6 +11,7 @@
                                           :condi [:!chromes]}
                         :simple-condi-defination-test {:key :a
                                                        :condi ["foo" 1]}})
+
 (def result
   {:applications {:chrome ["^com\\.google\\.Chrome$"],
                   :chrom-canary ["^com\\.google\\.Chrome\\.canary$"],
@@ -26,13 +27,15 @@
                      :product_id 256}]},
    :layers {},
    :froms {},
-   :simlayers {:vi-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
+   :simlayers {:vi-mode {:type "basic",
+                         :parameters {:basic.simultaneous_threshold_milliseconds 250},
                          :to [{:set ["vi-mode" 1]}],
                          :from {:sim [:d],
                                 :simo {:dorder :strict,
                                        :uorder :strict_inverse,
                                        :afterup {:set ["vi-mode" 0]}}}},
-               :chrome-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
+               :chrome-mode {:type "basic",
+                             :parameters {:basic.simultaneous_threshold_milliseconds 250},
                              :to [{:set ["chrome-mode" 1]}],
                              :from {:sim [:d],
                                     :simo {:dorder :strict,
@@ -41,7 +44,8 @@
                              :conditions [{:bundle_identifiers ["^com\\.google\\.Chrome$"
                                                                 "^com\\.google\\.Chrome\\.canary$"],
                                            :type "frontmost_application_if"}]},
-               :non-chrome-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
+               :non-chrome-mode {:type "basic",
+                                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                                  :to [{:set ["non-chrome-mode" 1]}],
                                  :from {:sim [:a],
                                         :simo {:dorder :strict,
@@ -50,7 +54,8 @@
                                  :conditions [{:bundle_identifiers ["^com\\.google\\.Chrome$"
                                                                     "^com\\.google\\.Chrome\\.canary$"],
                                                :type "frontmost_application_unless"}]},
-               :simple-condi-defination-test {:parameters {:basic.simultaneous_threshold_milliseconds 250},
+               :simple-condi-defination-test {:type "basic",
+                                              :parameters {:basic.simultaneous_threshold_milliseconds 250},
                                               :to [{:set ["simple-condi-defination-test"
                                                           1]}],
                                               :from {:sim [:a],
@@ -64,7 +69,6 @@
 
 
 
-
 (t/deftest convert-simlayers
   (init-conf-data)
   (update-conf-data (assoc conf-data :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
@@ -74,4 +78,5 @@
                                                     :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}))
   (t/testing
       (t/is (= (sut/generate-simlayers simlayers-example) result))))
+
 
