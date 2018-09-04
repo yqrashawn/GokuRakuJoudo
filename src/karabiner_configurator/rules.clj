@@ -6,8 +6,7 @@
    [karabiner-configurator.froms :as froms]
    [karabiner-configurator.tos :as tos]
    [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.misc :refer :all]
-   [karabiner-configurator.rules-test]))
+   [karabiner-configurator.misc :refer :all]))
 
 ;; <from> section
 ;; :a      | normal key or predefined froms

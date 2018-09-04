@@ -1,9 +1,10 @@
 {:froms {:any_key_code {:any :key_code}}
- :layers {:vi-mode {:from :d}
-          :vi-visual-mode {:from :v :alone :vk_none :conditions [:vi-mode]}}
+ :layers {:vi-mode {:from :d}}
+
  :main
  {:des "old-vi-mode"
-  :rules [[:h :left_arrow :vi-mode]
+  :rules [[:v ["vi-visual-mode" 1] :vi-mode :alone :vk_none]
+          [:h :left_arrow :vi-mode]
           [:j :down_arrow :vi-mode]
           [:k :up_arrow :vi-mode]
           [:l :right_arrow :vi-mode]
@@ -68,4 +69,4 @@
           [:x [:d :x :vk_none] :vi-mode]
           [:y [:d :y :vk_none] :vi-mode]
           [:z [:d :z :vk_none] :vi-mode]
-          [:any_key_code :vk_none :vi-visual-mode]]}} ;; multiple condition
+          [:any_key_code :vk_none :vi-visual-mode]]}}

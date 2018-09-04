@@ -1,7 +1,7 @@
 (ns karabiner-configurator.core
   (:require
-   [clojure.data.json :as json]
    [schema.core :as s]
+   [cheshire.core :as json]
    [karabiner-configurator.modifiers :refer :all]
    [karabiner-configurator.misc :refer :all]
    [karabiner-configurator.data :refer :all]
@@ -34,7 +34,7 @@
     (layers/parse-simlayers simlayers)
     (froms/parse-froms froms)
     (tos/parse-tos tos)
-    (rules/parse-mains main)))
+    (json/encode (rules/parse-mains main))))
 
 
 ;; (parse config)

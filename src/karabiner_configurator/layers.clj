@@ -2,8 +2,7 @@
   (:require
    [karabiner-configurator.conditions :refer :all]
    [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.misc :refer :all]
-   [karabiner-configurator.layers-test]))
+   [karabiner-configurator.misc :refer :all]))
 
 (defn parse-layers [layers]
   (if (nn? layers)
