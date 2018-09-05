@@ -17,3 +17,5 @@ cache:
   - $HOME/Library/Caches/Homebrew
   - /usr/local/Cellar/leiningen/
   - /usr/local/Cellar/watchexec/
+after_success:
+  - curl -X POST -H "Content-Type: application/json" -d @./target/coverage/coveralls.json https://coveralls.io/api/v1/jobs
