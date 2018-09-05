@@ -8,5 +8,6 @@ before_install:
   - export PATH=$PATH:$PWD/graalvm-ce-1.0.0-rc6/Contents/Home/bin/
 script:
   - lein test
-  - make test
+  - make
+  - make test-binary
   - ./goku
