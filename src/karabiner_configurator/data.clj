@@ -1,5 +1,6 @@
 (ns karabiner-configurator.data
   (:require
+   [karabiner-configurator.keys-info :refer :all]
    [karabiner-configurator.misc :refer :all]))
 
 (declare conf-data)
@@ -14,10 +15,6 @@
                   :layers {}
                   :simlayers {}
                   :simlayer-threshold 250}))
-
-;; (init-conf-data)
-
-(def keys-info (load-edn "resources/configurations/keycode.edn"))
 
 (defn applications? [k] (nn? (k (:applications conf-data))))
 (defn devices? [k] (nn? (k (:devices conf-data))))

@@ -3,6 +3,7 @@
    [schema.core :as s]
    [cheshire.core :as json]
    [clojure.string :as string]
+   [clojure.java.shell :as shell]
    [karabiner-configurator.modifiers :as modifiers]
    [karabiner-configurator.misc :refer :all]
    [karabiner-configurator.data :refer :all]
@@ -14,8 +15,6 @@
    [me.raynes.fs :as fs]
    [clojure.tools.cli :as cli])
   (:gen-class))
-
-(def config (load-edn "resources/configurations/test/keytokey.edn"))
 
 (defn update-static-conf
   "update conf-data from reading rules"
@@ -72,14 +71,16 @@
 (defn parse-edn [path]
   (update-to-karabiner-json (parse (load-edn path))))
 
-(defn watch [])
+(defn watch []
+  (shell/sh "watchexec" "-w" config-file "goku"))
 
 (def cli-opts
-  [["-w" "--watch" "keep watching config file, update karabiner.json when config change (not implemented)"
+  [["-w" "--watch" "keep watching config file, update karabiner.json when config change WIP"
     :parse-fn str]
-   ["-d" "--deamon" "run watch in background (not implemented)"
+   ["-d" "--deamon" "run watch in background WIP"
     :parse-fn str]
    ["-h" "--help"]])
+
 
 (defn help-message [options-summary]
   (->> ["GokuRakuJoudo -- karabiner configurator"
@@ -106,15 +107,20 @@
   (let [{:keys [options arguments summary errors]} (cli/parse-opts args cli-opts)]
     (cond
       (:help options)
-      {:exit-message (help-message summary) :ok? true}
+      {:action "help"
+       :exit-message (help-message summary) :ok? true}
       errors
-      {:exit-message (error-msg errors)}
-      (and (= (count arguments) (or (= (first arguments) "--watch") (= (first arguments) "-w"))))
-      {:action "watch"}
+      {:action "errors"
+       :exit-message (error-msg errors)}
+      (= "true" (:watch options))
+      {:action "watch"
+       :exit-message "no exit"}
       (= (count arguments) 0)
-      {:action "run"}
+      {:action "run"
+       :exit-message "finished!"}
       :else
-      (:exit-message (help-message summary)))))
+      {:action "default"
+       :exit-message (help-message summary)})))
 
 (defn exit [status msg]
   (println msg))
@@ -124,10 +130,13 @@
   [& args]
   (let [{:keys [action options exit-message ok?]} (validate-args args)]
     (if exit-message
-      (exit (if ok? 0 1) exit-message)
       (case action
-        "run"  (parse-edn config-file)
-        "watch" (watch)))))
+        "run"  (do (parse-edn config-file)
+                   (exit (if ok? 0 1) exit-message))
+        "watch" (watch)
+        "help" (exit (if ok? 0 1) exit-message)
+        "default" (exit (if ok? 0 1) exit-message)))))
 
 ;; (-main)
 ;; (-main "-h")
+;; (-main "-w")
