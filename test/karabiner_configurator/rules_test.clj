@@ -23,6 +23,7 @@
                     {:des "Quit Safari by pressing command-q twice" :rules [[:!C#Pq :!Cq [:safari ["command-q" 1]]]
                                                                             [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :cancled ["command-q" 0]}}]]}])
 
+
 (def result [{:description "a to 1",
               :manipulators [{:from {:key_code "a"},
                               :to [{:key_code "1"}],
@@ -74,10 +75,11 @@
                                    {:key_code "4"}],
                               :from {:simultaneous [{:key_code "d"}
                                                     {:key_code "g"}],
-                                     :simultaneous_options {:detect_key_down_uninterruptedly false,
+                                     :simultaneous_options {:detect_key_down_uninterruptedly true,
                                                             :key_down_order "strict",
                                                             :key_up_order "strict_inverse",
-                                                            :key_up_when "any"}}}]}
+                                                            :key_up_when "any"
+                                                            :to_after_key_up [{:set_variable {:name "vi-mode", :value 0}}]}}}]}
              {:description "h to 5 when variable vi-mode is not 1",
               :manipulators [{:from {:key_code "h"},
                               :to [{:key_code "5"}],
@@ -107,10 +109,11 @@
                                    {:key_code "7"}],
                               :from {:simultaneous [{:key_code "d"}
                                                     {:key_code "j"}],
-                                     :simultaneous_options {:detect_key_down_uninterruptedly false,
+                                     :simultaneous_options {:detect_key_down_uninterruptedly true,
                                                             :key_down_order "strict",
                                                             :key_up_order "strict_inverse",
-                                                            :key_up_when "any"}}}]}
+                                                            :key_up_when "any"
+                                                            :to_after_key_up [{:set_variable {:name "vi-mode", :value 0}}]}}}]}
              {:description "press h insert 8 then set variable some-mode to 0",
               :manipulators [{:from {:key_code "h"},
                               :to [{:key_code "8"}
@@ -185,7 +188,8 @@
                      :simlayers {:vi-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
                                            :to [{:set ["vi-mode" 1]}],
                                            :from {:sim [:d],
-                                                  :simo {:dorder :strict,
+                                                  :simo {:interrupt true,
+                                                         :dorder :strict,
                                                          :uorder :strict_inverse,
                                                          :afterup {:set ["vi-mode" 0]}}}}}
                      :simlayer-threshold 250})
