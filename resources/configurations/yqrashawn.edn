@@ -1,55 +1,30 @@
-{;;;; define things
- ;; define devices
- :devices {:hhkb-bt {:vendor 1278 :product 51966}
-           :hhkb {:vendor 2131 :product 256}}
-
- ;; define application identifiers
- :applications {:chrom "^com\\.google\\.Chrome$"
-                :chrom-canary "^com\\.google\\.Chrome\\.canary$"}
-
- ;; define alias for modifers
- :modifiers {:11 [:left_command :left_control]
-             :111 [:left_command :left_control :left_option]
-             :1111 [:left_command :left_control :left_option :left_shift]
-             :ccos [:left_command :left_control :left_option :left_shift]
-             :11111 [:fn :left_command :left_control :left_option :left_shift]
-             :fn&lcommand&lcontrol&loption&lshift [:fn :left_command :left_control :left_option :left_shift]}
-
- ;; define froms
- ;; use in <from>
- :froms {:my-spacebar {:key :spacebar :mandatory :11 :optional [:left_shift]}
-         :jk {:key [:j :k]}}
-
- ;; define tos
- ;; use in <to>
- :tos {:macos-defin {:key :d :modifiers [:left_command :left_control]}
-       :alf--search-help "osascript -e 'tell application \"Alfred 3\" to run trigger \"helpSearch\" in workflow \"com.tedwise.menubarsearch\" with argument \"\"'"}
-
- ;;;; helper function to generate things little bit `quicker`
- ;; quick define layers or we can call it state feature as it use set_variable
- ;; {:<layer name> {:from <froms>} }
- :layers {:vi-mode {:from :d}} ;; key "d" to set_variable "vi-mode" 1, to_if_alone "d", to_after_key_up set_variable "vi-mode" 0
-
- ;; swap keys, only support single key, like the simple modifications functionality in karabiner gui
- ;; {<single key> <single key>}
- :swaps [{:a :b}] ;; swap a and b
-
-
- ;; fallback to raw defination
- ;; similar to karabiner.json, can use definations in :froms and :tos
- :raws [{:from :caps_lock :to :left_control :alone :escape}
-        {:from [:f :j] :to :alf--search-help :alone :escape}]
-
-
-
- :enabled
- ;; [<from> <to> <conditions>]
- []
- :disabled []
- :cheatsheet {:#a "command a" ;; mandatory left_command, optional any
-              :$a "control a" ;; mandatory left_control, optional any
-              :%a "option a"
-              :&a "shift a"
-              :#$%a "command control option a"
-              :#spacebar "command space"
-              :*a "fn a"}}
+{:applications {:vim-mode-disabled-application ["^com\\.apple\\.Terminal$",
+                                                                     "^com\\.googlecode\\.iterm2$",
+                                                                     "^co\\.zeit\\.hyperterm$",
+                                                                     "^co\\.zeit\\.hyper$",
+                                                                     "^io\\.alacritty$",
+                                                                     "^net\\.kovidgoyal\\.kitty$",
+                                                                     "^org\\.vim\\.",
+                                                                     "^com\\.qvacua\\.VimR$"]}
+ :simlayers {:vi-mode {:key :d}
+             :vi-visual-mode {:key :v :condi :!vim-mode-disabled-application}}
+ :main [{:des "Vi Mode [D as Trigger Key]"
+         :rules [[:##j :down_arrow :vi-mode]
+                 [:##k :up_arrow :vi-mode]
+                 [:##h :left_arrow :vi-mode]
+                 [:##l :right_arrow :vi-mode]
+                 [:##b :!Oleft_arrow :vi-mode]
+                 [:##w :!Oright_arrow :vi-mode]
+                 [:##0 :!Ta :vi-mode]
+                 [:##4 :!Te :vi-mode]]}
+        {:des "Vi Visual Mode"
+         :rules [[:##j :!Sdown_arrow :vi-visual-mode]
+                 [:##k :!Sup_arrow :vi-visual-mode]
+                 [:##h :!Sleft_arrow :vi-visual-mode]
+                 [:##l :!Sright_arrow :vi-visual-mode]
+                 [:##b :!SOleft_arrow :vi-visual-mode]
+                 [:##w :!SOright_arrow :vi-visual-mode]
+                 [:##0 :!SCleft_arrow :vi-visual-mode]
+                 [:##4 :!SCright_arrow :vi-visual-mode]
+                 [:##open_bracket :!SOup_arrow :vi-visual-mode]
+                 [:##close_bracket :!SOdown_arrow :vi-visual-mode]]}]}
