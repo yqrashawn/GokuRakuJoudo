@@ -126,7 +126,7 @@
       {:action "default"
        :exit-message (help-message summary)})))
 
-(defn exit [status msg]
+(defn exit [status & [msg]]
   (if msg (println msg))
   (System/exit status))
 
