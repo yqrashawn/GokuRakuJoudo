@@ -1,8 +1,7 @@
 os: osx
 language: clojure
 before_install:
-  - brew install watchexec
-  - brew install leiningen
+  - sh scripts/travis.sh
   - wget https://github.com/oracle/graal/releases/download/vm-1.0.0-rc6/graalvm-ce-1.0.0-rc6-macos-amd64.tar.gz
   - tar xf graalvm-ce-1.0.0-rc6-macos-amd64.tar.gz
   - export PATH=$PATH:$PWD/graalvm-ce-1.0.0-rc6/Contents/Home/bin/
@@ -11,3 +10,9 @@ script:
   - make
   - make test-binary
   - ./goku
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/Library/Caches/Homebrew
+  - /usr/local/Cellar/leiningen/
+  - /usr/local/Cellar/watchexec/
