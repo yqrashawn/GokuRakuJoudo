@@ -4,7 +4,6 @@ all:
 compile:
 	lein compile && lein uberjar
 bin:
+	export PATH=$PATH:/Users/username/tools/graalvm-ce-1.0.0-rc6/Contents/Home/bin
 	native-image -H:+ReportUnsupportedElementsAtRuntime --no-server -jar $(PWD)/target/karabiner-configurator-0.1.0-SNAPSHOT-standalone.jar
 	mv karabiner-configurator-0.1.0-SNAPSHOT-standalone goku
-local:
-	make -f Makefile.local

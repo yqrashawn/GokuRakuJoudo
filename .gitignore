@@ -11,3 +11,5 @@ pom.xml.asc
 .hg/
 /native-image
 /graavl-compile.sh
+/Makefile.local
+/goku
