@@ -11,5 +11,7 @@
                  [org.clojure/tools.cli "0.3.7"]
                  [me.raynes/conch "0.8.0"]
                  [me.raynes/fs "1.4.6"]
-                 [cheshire "5.8.0"]])
+                 [cheshire "5.8.0"]]
+  :plugins [[lein-cloverage "1.0.13"]])
+
 
