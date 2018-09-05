@@ -46,7 +46,9 @@
   (init-conf-data)
   (generate conf))
 
-(def karabiner-json-path (str (System/getenv "XDG_CONFIG_HOME") "karabiner/karabiner.json"))
+(def karabiner-json-path (if (System/getenv "XDG_CONFIG_HOME")
+                           (str (System/getenv "XDG_CONFIG_HOME") "karabiner/karabiner.json")
+                           (str (System/getenv "HOME") ".config/karabiner/karabiner.json")))
 
 (def config-file
   (if (System/getenv "XDG_CONFIG_HOME")

@@ -14,7 +14,9 @@ bin:
 	mv $(JAR_NAME) goku
 test-binary:
 	mkdir -p ~/.config/
+	mkdir -p ~/.config/karabiner
 	cp ./resources/configurations/yqrashawn.edn ~/.config/karabiner.edn
+	cp ./resources/configurations/empty-karabiner.json ~/.config/karabiner/karabiner.json
 	./goku
 local:
 	make -f Makefile.local
