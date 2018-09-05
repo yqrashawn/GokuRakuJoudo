@@ -69,9 +69,11 @@
      (json/generate-string updated-configs {:pretty true}))))
 
 (defn parse-edn [path]
-  (update-to-karabiner-json (parse (load-edn path))))
+  (update-to-karabiner-json (parse (load-edn path)))
+  (println "Done!"))
 
 (defn watch []
+  (println (str "watching " config-file))
   (shell/sh "watchexec" "-w" config-file "goku"))
 
 (def cli-opts
@@ -123,8 +125,8 @@
        :exit-message (help-message summary)})))
 
 (defn exit [status msg]
-  (println msg))
-;; (System/exit status))
+  (if msg (println msg))
+  (System/exit status))
 
 (defn -main
   [& args]
@@ -132,7 +134,7 @@
     (if exit-message
       (case action
         "run"  (do (parse-edn config-file)
-                   (exit (if ok? 0 1) exit-message))
+                   (exit (if ok? 0 1)))
         "watch" (watch)
         "help" (exit (if ok? 0 1) exit-message)
         "default" (exit (if ok? 0 1) exit-message)))))
