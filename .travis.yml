@@ -10,4 +10,3 @@ script:
   - lein test
   - make test
   - ./goku
-  - ./goku -w
