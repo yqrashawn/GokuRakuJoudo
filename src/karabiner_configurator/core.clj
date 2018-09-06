@@ -119,18 +119,22 @@
     (cond
       (:help options)
       {:action "help"
+       :ok true
        :exit-message (help-message summary) :ok? true}
       errors
       {:action "errors"
        :exit-message (error-msg errors)}
       (= "true" (:watch options))
       {:action "watch"
+       :ok true
        :exit-message "no exit"}
       (= (count arguments) 0)
       {:action "run"
+       :ok? true
        :exit-message "finished!"}
       :else
       {:action "default"
+       :ok? true
        :exit-message (help-message summary)})))
 
 (defn exit [status & [msg]]
