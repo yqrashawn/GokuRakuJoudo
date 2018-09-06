@@ -13,10 +13,10 @@ bin:
 	native-image $(GRAALVM_ARG) -jar $(TARGET_JAR)
 	mv $(JAR_NAME) goku
 test-binary:
-	mkdir -p ~/.config/
-	mkdir -p ~/.config/karabiner
-	cp ./resources/configurations/yqrashawn.edn ~/.config/karabiner.edn
-	cp ./resources/configurations/empty-karabiner.json ~/.config/karabiner/karabiner.json
+	mkdir -p $XDG_CONFIG_HOME
+	mkdir -p $XDG_CONFIG_HOME/karabiner
+	cp ./resources/configurations/yqrashawn.edn $XDG_CONFIG_HOME/karabiner.edn
+	cp ./resources/configurations/empty-karabiner.json $XDG_CONFIG_HOME/karabiner/karabiner.json
 	./goku
 local:
 	make -f Makefile.local
