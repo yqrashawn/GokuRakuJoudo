@@ -3,13 +3,12 @@
             [karabiner-configurator.data :refer :all]
             [clojure.test :as t]))
 
-(def example-mains [
-                    {:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
+(def example-mains [{:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
                     {:des "command a to control 1"                            :rules [[:!C#Pa :!T1]]} ;; command a to control 1
                     {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
                     {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
                     {:des "c to example osascript"                            :rules [[:c "osascript -e 'display dialog \"example apple script\"'"]]} ;; key to shell script
-                    {:des "d to 1 then example osascript"                     :rules [[:d [:1 "osascript -e 'display dialog \"example apple script\"'"]]]} ;; key to key then shell script
+                    {:des "d to 1 then example osascript"                     :rules [[:d [:1 [:example-template "example apple script"]]]]} ;; key to key then shell script
                     {:des "simultaneous e f to 3"                             :rules [[[:e :f] :3]]} ;; simultaneous key to key
                     {:des "g to 4 when variable vi-mode is 1"                 :rules [[:g :4 :vi-mode]]} ;; vi-mode is 1
                     {:des "h to 5 when variable vi-mode is not 1"             :rules [[:h :5 :!vi-mode]]} ;; vi-mode is not 1
@@ -181,6 +180,7 @@
                      :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
                                :hhkb [{:vendor_id 2131 :product_id 256}]}
                      :input-source {}
+                     :templates {:example-template "osascript -e 'display dialog \"%s\"'"}
                      :modifiers {}
                      :froms {:my-spacebar {:key :spacebar}}
                      :tos {}

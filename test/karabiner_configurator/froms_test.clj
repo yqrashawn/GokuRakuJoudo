@@ -76,4 +76,4 @@
   (update-conf-data (assoc conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]
                                                      :optional ["any"]}}))
   (t/testing
-   (t/is (= (sut/generate example-froms) result))))
+   (t/is (= (:froms (sut/generate example-froms) ) (:froms result)))))

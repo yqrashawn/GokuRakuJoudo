@@ -25,11 +25,12 @@
 (defn generate
   "generate configuration"
   [conf]
-  (let [{:keys [applications devices keyboard-type input-source tos froms modifiers layers simlayers raws main simlayer-threshold]} conf]
+  (let [{:keys [applications devices keyboard-type input-source tos froms modifiers layers simlayers raws main simlayer-threshold templates]} conf]
     (update-static-conf :applications applications)
     (update-static-conf :devices devices)
     (update-static-conf :keyboard-type keyboard-type)
     (update-static-conf :input-source tos)
+    (update-static-conf :templates templates)
     (if (number? simlayer-threshold)
       (update-static-conf :simlayer-threshold simlayer-threshold))
     (modifiers/parse-modifiers modifiers)
@@ -78,13 +79,13 @@
   (println (str "watching " config-file))
   (shell/sh "watchexec" "-w" config-file "goku"))
 
+;; cli things
 (def cli-opts
   [["-w" "--watch" "keep watching config file, update karabiner.json when config change WIP"
     :parse-fn str]
    ["-d" "--deamon" "run watch in background WIP"
     :parse-fn str]
    ["-h" "--help"]])
-
 
 (defn help-message [options-summary]
   (->> ["GokuRakuJoudo -- karabiner configurator"

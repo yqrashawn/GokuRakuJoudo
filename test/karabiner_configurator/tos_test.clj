@@ -26,10 +26,12 @@
         {:key :d :modi :1 :lazy true :repeat false :halt true :hold_down_ms 30}
         {:input :us}
         {:ckey :display_brightness_decrement}]
-   :17 {:key :!CT#OFa}})
+   :17 {:key :!CT#OFa}
+   :18 {:shell [:launch "Mail"]}})
 
 (def result {:applications {},
-             :tos {:14 [{:mouse_key {:x -123,
+             :tos {:18 [{:shell_command "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchMail\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}]
+                   :14 [{:mouse_key {:x -123,
                                      :y 123,
                                      :horizontal_wheel 13,
                                      :vertical_wheel 1,
@@ -94,6 +96,7 @@
 
 (t/deftest convert-tos
   (init-conf-data)
+  (update-conf-data (assoc conf-data :templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}))
   (update-conf-data (assoc conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]}}))
   (update-conf-data (assoc conf-data :input-source {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
                                                                :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
@@ -102,6 +105,6 @@
                                                          :input_source_id "com.apple.keylayout.US"
                                                          :language "en"}}))
   (t/testing
-   (t/is (= (sut/generate tos-example) result))))
+   (t/is (= (:tos (sut/generate tos-example)) (:tos result)))))
 
 ;; (sut/generate tos-example)

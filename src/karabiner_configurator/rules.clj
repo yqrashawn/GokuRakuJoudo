@@ -67,30 +67,33 @@
                (assert (or (contains? (:tos conf-data) v)
                            (k? v)
                            (special-modi-k? v)
-                           (and (vector? v) (= 2 (count v)) (string? (first v)) (number? (second v)))
+                           (and (vector? v) (or (contains? (:templates conf-data) (first v)) (conditions/is-simple-set-variable? v)))
                            (string? v)
                            (map? v))
                        (str "invalid to defination in main section's " des))
                (cond (keyword? v)
                      (rule-parse-keyword des v)
-                     (vector? v)
+                     (and (vector? v) (conditions/is-simple-set-variable? v))
                      (parse-simple-set-variable des v)
+                     (and (vector? v) (contains? (:templates conf-data) (first v))) ;;templates
+                     (tos/parse-to des [{:shell v}])
                      (string? v)
                      (tos/parse-to des [{:shell v}])
                      (map? v)
                      (tos/parse-to des [v]))))))))
 
 ;; <to> section
-;; :a                 | normal key or predefined tos
-;; :to-a              | predefined tos
-;; :!Ca               | special modifier key
-;; "ls"               | shell command
-;; [:a :b]            | multiple normal key
-;; ["vi-mode" 1]      | set variable, second element in vector isn't keyword
-;; ["vi-mode" :a]     | shell command then insert a
-;; ["cd" "ls"]        | multeple shell command
-;; [["vi-mode" 1] :a] | set variable then insert a
-;; [{...}]              | fallback to `tos` defination
+;; :a                        | normal key or predefined tos
+;; :to-a                     | predefined tos
+;; :!Ca                      | special modifier key
+;; "ls"                      | shell command
+;; [:a :b]                   | multiple normal key
+;; ["vi-mode" 1]             | set variable, second element in vector isn't keyword
+;; ["vi-mode" :a]            | shell command then insert a
+;; [:launch-template "Mail"] | shell command then insert a
+;; ["cd" "ls"]               | multeple shell command
+;; [["vi-mode" 1] :a]        | set variable then insert a
+;; [{...}]                   | fallback to `tos` defination
 
 ;; conflict
 ;; ["cd" "ls"]
@@ -102,7 +105,10 @@
   "generate to config"
   [des to]
   (let [result nil
-        validate-to (assert (or (and (keyword? to) (or (k? to) (special-modi-k? to) (contains? (:tos conf-data) to)))
+        validate-to (assert (or (and (keyword? to) (or (k? to)
+                                                       (special-modi-k? to)
+                                                       (contains? (:tos conf-data) to)
+                                                       (contains? (:templates conf-data) to)))
                                 (string? to)
                                 (vector? to)
                                 (map? to))

@@ -16,6 +16,7 @@
                       :input_source_id "com.apple.keylayout.US"
                       :language "en"}}
 
+ :templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
  ;; define alias for modifers
  :modifiers {:11 [:left_command :left_control]
              :111 [:left_command :left_control :left_option]

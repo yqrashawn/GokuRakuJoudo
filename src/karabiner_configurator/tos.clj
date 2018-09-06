@@ -63,8 +63,8 @@
   (for [tinfo tinfos]
    (let [{:keys [set input shell lazy repeat halt hold_down_ms]} tinfo
          result (parse-key tname tinfo true)
-         validate-shell (assert (or (string? shell) (nil? shell))
-                                (str "invalid `shell` in to defination " tname " " shell ", should be a string"))
+         validate-shell (assert (or (and (vector? shell) (contains? (:templates conf-data) (first shell))) (string? shell) (nil? shell))
+                                (str "invalid `shell` in to defination " tname " " shell ", should be string or keyword"))
          validate-input (assert (or (nil? input) (and (keyword? input) (contains? (:input-source conf-data) input)))
                                 (str "invalid `input` in to defination " tname " " input ", should be a keyword"))
          validate-set (assert (or (vector? set) (nil? set))
@@ -74,6 +74,9 @@
                   result)
          result (if (string? shell)
                   (assoc result :shell_command shell)
+                  result)
+         result (if (vector? shell)
+                  (assoc result :shell_command (apply format (flatten [((first shell) (:templates conf-data)) (rest shell)])))
                   result)
          result (if (vector? set)
                   (assoc result :set_variable {:name (first set) :value (second set)})
