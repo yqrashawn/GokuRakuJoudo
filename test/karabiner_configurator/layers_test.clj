@@ -4,6 +4,7 @@
             [clojure.test :as t]))
 
 (def simlayers-example {:vi-mode {:key :d}
+                        :test-to-after-key-up-mode {:key :l :afterup {:set ["foo" 0]}}
                         :chrome-mode {:key :d
                                       :condi [:chromes]}
                         :non-chrome-mode {:key :a
@@ -34,6 +35,15 @@
                                        :dorder :strict,
                                        :uorder :strict_inverse,
                                        :afterup {:set ["vi-mode" 0]}}}},
+               :test-to-after-key-up-mode {:type "basic",
+                                           :parameters {:basic.simultaneous_threshold_milliseconds 250},
+                                           :to [{:set ["test-to-after-key-up-mode" 1]}],
+                                           :from {:sim [:l],
+                                                  :simo {:interrupt true,
+                                                         :dorder :strict,
+                                                         :uorder :strict_inverse,
+                                                         :afterup [{:set ["test-to-after-key-up-mode" 0]}
+                                                                   {:set ["foo" 0]}]}}}
                :chrome-mode {:type "basic",
                              :parameters {:basic.simultaneous_threshold_milliseconds 250},
                              :to [{:set ["chrome-mode" 1]}],

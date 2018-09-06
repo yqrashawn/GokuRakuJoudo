@@ -27,6 +27,7 @@
                        (assert (or (nil? condi)
                                    (and (nn? condi) (vector? condi)))
                                (str "invalid condition defination in simlayer " k ", condition must be a vector or map or keyword"))
+                       afterup (:afterup v)
                        key (:key v)
                        result {k {:type "basic"
                                   :parameters {:basic.simultaneous_threshold_milliseconds (:simlayer-threshold conf-data)}
@@ -36,6 +37,9 @@
                                                 :dorder :strict
                                                 :uorder :strict_inverse
                                                 :afterup {:set [(name k) 0]}}}}}
+                       result (if afterup
+                                (assoc-in result [k :from :simo :afterup] (into [] (flatten [(get-in result [k :from :simo :afterup]) afterup])))
+                                result)
                        result (if (nn? condi)
                                 (if (is-simple-set-variable? condi)
                                   (assoc-in result [k :conditions] (parse-conditions [condi]))
