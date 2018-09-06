@@ -11,6 +11,7 @@ script:
   - make
   - make test-binary
   - ./goku
+  - cat ./target/coverage/coveralls.json
 cache:
   directories:
   - $HOME/.m2
