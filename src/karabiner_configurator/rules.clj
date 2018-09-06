@@ -210,8 +210,8 @@
          result (if to (assoc result :to (to-key des to)) result)
          result (if conditions
                   (if (vector? conditions)
-                    (assoc result :conditions (:conditions (conditions-key des conditions)) result)
-                    (assoc result :conditions (:conditions (conditions-key des (into [] (flatten [conditions])) result))))
+                    (assoc result :conditions (:conditions (conditions-key des conditions result)))
+                    (assoc result :conditions (:conditions (conditions-key des (into [] (flatten [conditions] result))))))
                   result)
          result (assoc result :type "basic")
          result (if conditions/used-simlayers-config
