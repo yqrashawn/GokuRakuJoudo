@@ -57,13 +57,13 @@
     (str (System/getenv "XDG_CONFIG_HOME") "karabiner.edn")
     (str (System/getenv "HOME") "/.config/karabiner.edn")))
 
-(println (str "$XDG_CONFIG_HOME: " (System/getenv "XDG_CONFIG_HOME")))
-(println (str "$HOME: " (System/getenv "HOME")))
-(println (str "karabiner json path: " karabiner-json-path))
-(println (str "edn config file path: " config-file))
+;; (println (str "$XDG_CONFIG_HOME: " (System/getenv "XDG_CONFIG_HOME")))
+;; (println (str "$HOME: " (System/getenv "HOME")))
+;; (println (str "karabiner json path: " karabiner-json-path))
+;; (println (str "edn config file path: " config-file))
 
 (defn update-to-karabiner-json [rules]
-  (let [karabiner-config (load-json (str (System/getenv "XDG_CONFIG_HOME") "karabiner/karabiner.json"))
+  (let [karabiner-config (load-json karabiner-json-path)
         profile-indexed-list (map-indexed (fn [idx itm] [idx itm]) (:profiles karabiner-config))
         profile-to-update
         (first
