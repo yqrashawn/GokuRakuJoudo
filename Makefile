@@ -16,10 +16,11 @@ test-binary:
 	mkdir -p $XDG_CONFIG_HOME
 	mkdir -p $XDG_CONFIG_HOME/karabiner
 	ls $XDG_CONFIG_HOME
-	cp ./resources/configurations/yqrashawn.edn $XDG_CONFIG_HOME/karabiner.edn
-	cp ./resources/configurations/empty-karabiner.json $XDG_CONFIG_HOME/karabiner/karabiner.json
+	cp ./resources/configurations/edn/yqrashawn.edn $XDG_CONFIG_HOME/karabiner.edn
+	cp ./resources/configurations/json/empty-karabiner.json $XDG_CONFIG_HOME/karabiner/karabiner.json
 	ls $XDG_CONFIG_HOME
 	ls $XDG_CONFIG_HOME/karabiner
+	echo $XDG_CONFIG_HOME
 	chmod +w $XDG_CONFIG_HOME/karabiner/karabiner.json
 	./goku
 local:

@@ -19,14 +19,20 @@
 
 (defn load-edn
   "Load edn from an io/reader source (filename or io/resource)."
-  [source]
+  [source & args]
   (try
     (with-open [r (io/reader source)]
-      (edn/read (java.io.PushbackReader. r)))
+      (if args
+        (get-in (edn/read (java.io.PushbackReader. r)) args)
+        (edn/read (java.io.PushbackReader. r))))
     (catch java.io.IOException e
       (printf "Couldn't open '%s': %s\n" source (.getMessage e)))
     (catch RuntimeException e
       (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
+
+(defn load-result-edn
+  [source]
+  (load-edn source :result))
 
 (defn load-json
   "Load json from an io/reader source (filename or io/resource)."

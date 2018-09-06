@@ -23,6 +23,11 @@
 (defn froms? [k] (nn? (k (:froms conf-data))))
 (defn layers? [k] (nn? (k (:layers conf-data))))
 (defn simlayers? [k] (nn? (k (:simlayers conf-data))))
+(defn templates? [k-or-vec]
+  (cond (keyword? k-or-vec)
+        (contains? (:templates conf-data) k-or-vec)
+        (vector? k-or-vec)
+        (contains? (:templates conf-data) (first k-or-vec))))
 
 (defn k?
   [k]

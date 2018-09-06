@@ -67,7 +67,7 @@
                (assert (or (contains? (:tos conf-data) v)
                            (k? v)
                            (special-modi-k? v)
-                           (and (vector? v) (or (contains? (:templates conf-data) (first v)) (conditions/is-simple-set-variable? v)))
+                           (vector? v)
                            (string? v)
                            (map? v))
                        (str "invalid to defination in main section's " des))
@@ -75,12 +75,17 @@
                      (rule-parse-keyword des v)
                      (and (vector? v) (conditions/is-simple-set-variable? v))
                      (parse-simple-set-variable des v)
-                     (and (vector? v) (contains? (:templates conf-data) (first v))) ;;templates
-                     (tos/parse-to des [{:shell v}])
                      (string? v)
                      (tos/parse-to des [{:shell v}])
                      (map? v)
                      (tos/parse-to des [v]))))))))
+
+(defn process-to-shell-template-vector [to]
+  (into []
+        (for [x to]
+          (if (and (vector? x) (templates? x))
+            {:shell x}
+            x))))
 
 ;; <to> section
 ;; :a                        | normal key or predefined tos
@@ -107,8 +112,7 @@
   (let [result nil
         validate-to (assert (or (and (keyword? to) (or (k? to)
                                                        (special-modi-k? to)
-                                                       (contains? (:tos conf-data) to)
-                                                       (contains? (:templates conf-data) to)))
+                                                       (contains? (:tos conf-data) to)))
                                 (string? to)
                                 (vector? to)
                                 (map? to))
@@ -121,7 +125,11 @@
                        :else
                        [result])
                  result)
-        result (cond (vector? to)
+        to (if (vector? to) (process-to-shell-template-vector to) to)
+        result (cond (and (vector? to) (templates? to))
+                     ;; (tos/parse-to des [{:shell (apply format (flatten [((first to) (:templates conf-data)) [rest to]]))}])
+                     (tos/parse-to des [{:shell to}])
+                     (vector? to)
                      (to-key-vector des to result)
                      (string? to)
                      (into [] (tos/parse-to des [{:shell to}]))

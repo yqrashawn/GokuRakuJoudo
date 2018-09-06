@@ -3,7 +3,8 @@
             [karabiner-configurator.data :refer :all]
             [clojure.test :as t]))
 
-(def example-mains [{:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
+(def example-mains [
+                    {:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
                     {:des "command a to control 1"                            :rules [[:!C#Pa :!T1]]} ;; command a to control 1
                     {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
                     {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
@@ -191,7 +192,14 @@
                                                   :simo {:interrupt true,
                                                          :dorder :strict,
                                                          :uorder :strict_inverse,
-                                                         :afterup {:set ["vi-mode" 0]}}}}}
+                                                         :afterup {:set ["vi-mode" 0]}}}}
+                                 :launcher-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
+                                                 :to [{:set ["vi-mode" 1]}],
+                                                 :from {:sim [:d],
+                                                        :simo {:interrupt true,
+                                                               :dorder :strict,
+                                                               :uorder :strict_inverse,
+                                                               :afterup {:set ["vi-mode" 0]}}}}}
                      :simlayer-threshold 250})
 
   (t/testing
