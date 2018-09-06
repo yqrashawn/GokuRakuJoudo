@@ -28,7 +28,7 @@
         result (if (and (nil? result) (keyword? from) (or (k? from) (special-modi-k? from)))
                  {:from (froms/parse-from :tmp-from-defination-from-main {:key from})}
                  result)
-        result (if (nil? result)
+        result (if (and (nil? result) (contains? (:froms conf-data) from))
                  {:from (from (:froms conf-data))}
                  result)
         result (if (and (map? from) (nil? result))

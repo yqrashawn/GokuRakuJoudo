@@ -3,8 +3,7 @@
             [karabiner-configurator.data :refer :all]
             [clojure.test :as t]))
 
-(def example-mains [
-                    {:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
+(def example-mains [{:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
                     {:des "command a to control 1"                            :rules [[:!C#Pa :!T1]]} ;; command a to control 1
                     {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
                     {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
@@ -21,7 +20,10 @@
                                                                                  [:!C#Pq ["command-q" 1] nil {:delayed {:invoked ["command-q" 0] :cancled ["commandq" 0]}}]]}
                     {:des "Quit application by holding command-q" :rules [[:!C#Pq nil nil {:held {:key :q :modi :left_command :repeat false}}]]}
                     {:des "Quit Safari by pressing command-q twice" :rules [[:!C#Pq :!Cq [:safari ["command-q" 1]]]
-                                                                            [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :cancled ["command-q" 0]}}]]}])
+                                                                            [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :cancled ["command-q" 0]}}]]}
+                    {:des "Mouse button"
+                     :rules [[{:pkey :button5} :mission_control]
+                             [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]]}])
 
 
 (def result [{:description "a to 1",
@@ -31,7 +33,7 @@
              {:description "command a to control 1",
               :manipulators [{:from {:key_code "a",
                                      :modifiers {:mandatory ["left_command"],
-                                                 :optional ["caps_lock"]}}
+                                                 :optional ["caps_lock"]}},
                               :to [{:key_code "1",
                                     :modifiers ["left_control"]}],
                               :type "basic"}]}
@@ -78,7 +80,7 @@
                                      :simultaneous_options {:detect_key_down_uninterruptedly true,
                                                             :key_down_order "strict",
                                                             :key_up_order "strict_inverse",
-                                                            :key_up_when "any"
+                                                            :key_up_when "any",
                                                             :to_after_key_up [{:set_variable {:name "vi-mode", :value 0}}]}}}]}
              {:description "h to 5 when variable vi-mode is not 1",
               :manipulators [{:from {:key_code "h"},
@@ -112,7 +114,7 @@
                                      :simultaneous_options {:detect_key_down_uninterruptedly true,
                                                             :key_down_order "strict",
                                                             :key_up_order "strict_inverse",
-                                                            :key_up_when "any"
+                                                            :key_up_when "any",
                                                             :to_after_key_up [{:set_variable {:name "vi-mode", :value 0}}]}}}]}
              {:description "press h insert 8 then set variable some-mode to 0",
               :manipulators [{:from {:key_code "h"},
@@ -170,7 +172,21 @@
                               :to [{:set_variable {:name "command-q", :value 1}}],
                               :conditions [{:bundle_identifiers ["^com\\.apple\\.Safari$"],
                                             :type "frontmost_application_if"}],
+                              :type "basic"}]}
+             {:description "Mouse button",
+              :manipulators [{:from {:pointing_button "button5"},
+                              :to [{:consumer_key_code "mission_control"}],
+                              :type "basic"}
+                             {:from {:pointing_button "button4"},
+                              :to [{:pointing_button "button1"}
+                                   {:pointing_button "button1"}
+                                   {:key_code "grave_accent_and_tilde",
+                                    :modifiers ["left_command"
+                                                "left_control"
+                                                "left_option"
+                                                "left_shift"]}],
                               :type "basic"}]}])
+
 
 (t/deftest generate-mains
   (init-conf-data)
@@ -201,6 +217,7 @@
                                                                :uorder :strict_inverse,
                                                                :afterup {:set ["vi-mode" 0]}}}}}
                      :simlayer-threshold 250})
+
 
   (t/testing
       (t/is (= (sut/parse-mains example-mains) result))))
