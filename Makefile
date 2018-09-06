@@ -16,7 +16,9 @@ test-binary:
 	mkdir -p ~/.config/karabiner
 	cp ./resources/configurations/edn/yqrashawn.edn ~/.config/karabiner.edn
 	cp ./resources/configurations/json/empty-karabiner.json ~/.config/karabiner/karabiner.json
-	chmod +w ~/.config/karabiner/karabiner.json
+	chmod +rw ~/.config/karabiner/karabiner.json
+	ls ~/.config/karabiner/
+	ls ~/.config
 	./goku
 local:
 	make -f Makefile.local

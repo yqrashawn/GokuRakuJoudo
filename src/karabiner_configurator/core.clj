@@ -47,6 +47,7 @@
   (init-conf-data)
   (generate conf))
 
+
 (def karabiner-json-path (if (System/getenv "XDG_CONFIG_HOME")
                            (str (System/getenv "XDG_CONFIG_HOME") "karabiner/karabiner.json")
                            (str (System/getenv "HOME") "/.config/karabiner/karabiner.json")))
@@ -55,6 +56,11 @@
   (if (System/getenv "XDG_CONFIG_HOME")
     (str (System/getenv "XDG_CONFIG_HOME") "karabiner.edn")
     (str (System/getenv "HOME") "/.config/karabiner.edn")))
+
+(println (str "$XDG_CONFIG_HOME: " (System/getenv "XDG_CONFIG_HOME")))
+(println (str "$HOME: " (System/getenv "HOME")))
+(println (str "karabiner json path: " karabiner-json-path))
+(println (str "edn config file path: " config-file))
 
 (defn update-to-karabiner-json [rules]
   (let [karabiner-config (load-json (str (System/getenv "XDG_CONFIG_HOME") "karabiner/karabiner.json"))
