@@ -112,7 +112,8 @@
    :f24 {:not-to true}
    :display_brightness_decrement {:not-from true :consumer-key true}
    :display_brightness_increment {:not-from true :consumer-key true}
-   :mission_control {:not-from true :consumer-key true}
+   ;; :mission_control {:not-from true :consumer-key true}
+   :mission_control {:not-from true}
    :launchpad {:not-from true :consumer-key true}
    :dashboard {:not-from true :consumer-key true}
    :illumination_decrement {:not-from true :consumer-key true}
