@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file. This change
 *** Added
 - to key check while parsing key code
 *** Changed
-- :mission_control to normal key
+- ~:mission_control~ to normal key
 *** Fixed
-- karabiner error while using :mission_control
+- karabiner error while using ~:mission_control~
 
 ** 0.1.0 - 2018-09-07
 *** Added
 - First release
 
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/0.1.0...HEAD
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.0...HEAD
 # [0.1.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/0.1.0...0.1.1
