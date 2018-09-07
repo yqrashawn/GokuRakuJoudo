@@ -8,10 +8,8 @@ before_install:
 script:
   - lein test
   - make
-  - lein cloverage --no-html --coveralls
   - make test-binary
   - ./goku
-  - cat ./target/coverage/coveralls.json
 cache:
   directories:
   - $HOME/.m2
@@ -19,4 +17,7 @@ cache:
   - /usr/local/Cellar/leiningen/
   - /usr/local/Cellar/watchexec/
 after_success:
-  - curl -X POST -H "Content-Type: application/json" --data @./target/coverage/coveralls.json https://coveralls.io/api/v1/jobs
+  - lein cloverage --no-html --coveralls
+  - curl -X "POST" "https://coveralls.io/api/v1/jobs" \
+         -H 'Content-Type: multipart/form-data; charset=utf-8;' \
+         -F "json_file=@./target/coverage/coveralls.json"
