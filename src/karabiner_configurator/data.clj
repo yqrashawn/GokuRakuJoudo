@@ -44,6 +44,11 @@
   (k? k)
   (nil? (:not-from (k keys-info))))
 
+(defn to-k?
+  [k]
+  (k? k)
+  (nil? (:not-to (k keys-info))))
+
 (defn consumer-k?
   [k]
   (k? k)

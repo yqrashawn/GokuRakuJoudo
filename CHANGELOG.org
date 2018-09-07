@@ -2,18 +2,12 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
 ** [Unreleased]
+*** Added
+- to key check while parsing key code
 *** Changed
-- placeholder
-
-** [0.1.1] - 2018-08-24
-*** Changed
-- placeholder
-
-*** Removed
-- placeholder
-
+- :mission_control to normal key
 *** Fixed
-- placeholder
+- karabiner error while using :mission_control
 
 ** 0.1.0 - 2018-09-07
 *** Added

@@ -62,7 +62,7 @@
   [tname tinfos]
   (for [tinfo tinfos]
    (let [{:keys [set input shell lazy repeat halt hold_down_ms]} tinfo
-         result (parse-key tname tinfo true)
+         result (parse-key tname tinfo true true)
          validate-shell (assert (or (and (vector? shell) (contains? (:templates conf-data) (first shell))) (string? shell) (nil? shell))
                                 (str "invalid `shell` in to defination " tname " " shell ", should be string or keyword"))
          validate-input (assert (or (nil? input) (and (keyword? input) (contains? (:input-source conf-data) input)))

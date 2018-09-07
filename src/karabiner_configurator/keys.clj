@@ -8,8 +8,10 @@
                        :pointing_button {}
                        :key_code {}})
 
-(defn parse-keycode [keycode]
-  (assert (from-k? keycode) (str "invalid key code " keycode " can't be used in from"))
+(defn parse-keycode [keycode & [from-to]]
+  (if from-to
+    (assert (to-k? keycode) (str "invalid key code " keycode " can't be used in from"))
+    (assert (from-k? keycode) (str "invalid key code " keycode " can't be used in from")))
   keycode)
 
 (defn parse-ckey [ckey]
@@ -105,7 +107,7 @@
 
 (defn parse-key
   "this function is used in froms and tos for parsing key ckey pkey modi any"
-  [kname kinfo & [mandatory-only]]
+  [kname kinfo & [mandatory-only from-to]]
   (let [{:keys [key ckey pkey any modi mkey]} kinfo
         result {}
         special-modi? (and (keyword? key) (or (= \! (first (name key))) (= \# (first (name key)))))
@@ -126,7 +128,7 @@
                      (assoc result :modifiers (:mandatory (modi (:modifiers conf-data))))
                      (assoc result :modifiers (modi (:modifiers conf-data)))))
                  result)
-        result (if (and (not (:key_code result)) (nn? key)) (assoc result :key_code (name (parse-keycode key))) result)
+        result (if (and (not (:key_code result)) (nn? key)) (assoc result :key_code (name (parse-keycode key from-to))) result)
         result (if (nn? ckey) (assoc result :consumer_key_code (name (parse-ckey ckey))) result)
         result (if (nn? pkey) (assoc result :pointing_button (name (parse-pkey pkey))) result)
         result (if (and (nn? any) (any any-key-keywords)) (assoc result :any (name any-key-keywords)) result)

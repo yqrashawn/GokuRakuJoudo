@@ -175,7 +175,7 @@
                               :type "basic"}]}
              {:description "Mouse button",
               :manipulators [{:from {:pointing_button "button5"},
-                              :to [{:consumer_key_code "mission_control"}],
+                              :to [{:key_code "mission_control"}],
                               :type "basic"}
                              {:from {:pointing_button "button4"},
                               :to [{:pointing_button "button1"}
