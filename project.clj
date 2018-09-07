@@ -1,6 +1,6 @@
 (defproject karabiner-configurator "0.1.0"
   :description "karabiner configuration manager"
-  :url "http://example.com/FIXME"
+  :url "http://https://github.com/yqrashawn/GokuRakuJoudo"
   :license {:name "GNU General Public License v3.0"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :main karabiner-configurator.core

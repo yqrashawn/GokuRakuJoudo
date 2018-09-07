@@ -1,8 +1,14 @@
 [[https://travis-ci.com/yqrashawn/GokuRakuJoudo.svg?branch=master]]
 [[https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg]]
 * GokuRakuJoudo
-Tool to manage karabiner's configuration. The project is inspired by
-[[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]].
+Goku is a tool to let you manage your karabiner's configuration with ease.
+
+Karbiner-Elements uses json as it's config file. It lead to thounds lines of
+json (mine is over 5000). It makes it really hard to edit the config file.
+
+Goku use the [[https://github.com/edn-format/edn][edn format]] to the rescue.
+
+The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]].
 
 ** Usage
 Download the executable from [[https://github.com/yqrashawn/GokuRakuJoudo/releases][releases]].
@@ -20,7 +26,7 @@ Program looking for ~karabiner.edn~ and ~karabiner.json~ file under
 You can also run it in watching mode by adding ~-w~ flag. This needs [[https://github.com/watchexec/watchexec][watchexec]]
 to be installed. You can install it by ~brew install watchexec~.
 
-Watching mode will watch for ~karabiner.edn~ file changes and update to ~karabiner.json~.
+Watching mode will watch for ~karabiner.edn~ file changes and update ~karabiner.json~.
 
 The watching mode is still in construction, it won't log any error if there is one.
 
