@@ -15,9 +15,9 @@ All notable changes to this project will be documented in this file. This change
 *** Fixed
 - placeholder
 
-** 0.1.0 - 2018-08-24
+** 0.1.0 - 2018-09-07
 *** Added
-- Files from the new template.
+- First release
 
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/0.1.1...HEAD
-[0.1.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/0.1.0...0.1.1
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/0.1.0...HEAD
+# [0.1.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/0.1.0...0.1.1
