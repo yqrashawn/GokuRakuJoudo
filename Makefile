@@ -19,3 +19,5 @@ test-binary:
 	./goku
 local:
 	make -f Makefile.local
+local-bin:
+	make -f Makefile.local bin
