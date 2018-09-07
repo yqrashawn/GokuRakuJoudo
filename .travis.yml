@@ -7,8 +7,8 @@ before_install:
   - export PATH=$PATH:$PWD/graalvm-ce-1.0.0-rc6/Contents/Home/bin/
 script:
   - lein test
-  - lein cloverage --no-html --coveralls
   - make
+  - lein cloverage --no-html --coveralls
   - make test-binary
   - ./goku
   - cat ./target/coverage/coveralls.json
