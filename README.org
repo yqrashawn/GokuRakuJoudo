@@ -2,10 +2,34 @@
 [[https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg]]
 * GokuRakuJoudo
 Tool to manage karabiner's configuration. The project is inspired by
-[[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]]. 
+[[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]].
 
 ** Usage
-Still in contruction. Not usable right now.
+Download the executable from [[https://github.com/yqrashawn/GokuRakuJoudo/releases][releases]].
+
+Create a profile named "Goku" in karabiner gui tool and run the executable.
+
+It will read ~karabiner.edn~ and write your config into ~karabiner.json~'s Goku
+profile.
+
+Program looking for ~karabiner.edn~ and ~karabiner.json~ file under
+~$XDG_CONFIG_HOME~ and ~$XDG_CONFIG_HOME/karabiner/~ (fall back to
+~$HOME/.config/karabiner.edn~ and ~$HOME/.config/karabiner/karabiner.json~ if
+~$XDG_CONFIG_HOME~ is not defined).
+
+You can also run it in watching mode by adding ~-w~ flag. This needs [[https://github.com/watchexec/watchexec][watchexec]]
+to be installed. You can install it by ~brew install watchexec~.
+
+Watching mode will watch for ~karabiner.edn~ file changes and update to ~karabiner.json~.
+
+The watching mode is still in construction, it won't log any error if there is one.
+
+You can just use ~watchexec~ to run ~goku~ to get both watching feature and
+error log. eg.
+#+begin_src shell
+# this assumes you've put goku into PATH
+watchexec -r -w ~/.config/karabiner.edn goku
+#+end_src
 
 ** Discussion
 - karabiner-generator's [[https://t.me/karabinermac][Telegram group]].

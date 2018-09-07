@@ -1,4 +1,4 @@
-(defproject karabiner-configurator "0.1.0-SNAPSHOT"
+(defproject karabiner-configurator "0.1.0"
   :description "karabiner configuration manager"
   :url "http://example.com/FIXME"
   :license {:name "GNU General Public License v3.0"

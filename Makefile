@@ -1,5 +1,5 @@
 GRAALVM_ARG=-H:+ReportUnsupportedElementsAtRuntime --no-server
-JAR_NAME=karabiner-configurator-0.1.0-SNAPSHOT-standalone
+JAR_NAME=karabiner-configurator-0.1.0-standalone
 TARGET_JAR=target/$(JAR_NAME).jar
 all:
 	$(MAKE) clean
