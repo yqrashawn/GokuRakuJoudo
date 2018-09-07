@@ -1,4 +1,5 @@
 [[https://travis-ci.com/yqrashawn/GokuRakuJoudo.svg?branch=master]]
+[[https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg]]
 * GokuRakuJoudo
 Tool to manage karabiner's configuration. The project is inspired by
 [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]]. 
