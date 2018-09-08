@@ -5,6 +5,7 @@ deploy:
   api_key:
     secure: 3xIPPkDWvHaD7Fnc/g/mmPoYb4pxcS+iZ5PtcH421Sulfuk5b8+dG64uZ+YfKpyUTuGgvnI2Fe70Ne1kku/+AJuljBBCivqb8LED4cO4+5eJYQa95YUyhtIWpxdykdexYCzLa7AFWGx1UsFvk+XU5O7WKLJxNvPKmaJ9bcWrnhm4XH94u5qICQqav4PAoSoWqRF2gK/hBqQSNDW7Voz5VS1YQUEmxoX0OoSHQGaDn0juxJzprFi/W/0aapEOPSd+G7OQ6D34ShRVQ6DBxI8t+1urm3prz0kNqum/5u+KFKXKfBkH17MmWiQIn0cQsNS/UV6T2j61XHjA3+g5HRX4Jwm7mBV3UMDASaeNvMdb3i/3zLosX74jgVDjRrm0P10U7N3UTOORmMrRI3YzOjPWluQFabGU0yplOnQ36Gw3K/++VTPmBXdY3UukATOsZ7ymO6KTAIOleOQlsqVr1sB6IrDViuCzVGpYEXNk5FaM0B13T1svY3ObANxlPITDSKgtv+cmbbzV6WHKYfBetpQV2h3Ske5LADAF4hswaNiRH7njE3ARoEBqz8nZ7pBM9gtAbzxABXyPmTjVYMZn6KekZcvqCyPHHxe0j/PzxLLbkOcFfY3Il6iNLSAAMZj+yszT4Fh/ibM3UQmDoy8zQCcfIWTF5ACXWzCw9cjn6/0Sc+M=
   file: goku
+  skip_cleanup: true
   on:
     tags: true
     repo: yqrashawn/GokuRakuJoudo

@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file. This change
 - ~:mission_control~ to normal key
 *** Fixed
 - karabiner error while using ~:mission_control~
+- multiple devices condition bug
 
 ** 0.1.0 - 2018-09-07
 *** Added

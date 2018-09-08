@@ -138,13 +138,30 @@
                      :else result)]
     result))
 
+(defn merge-multiple-device-conditions
+  [vec]
+  (update-conf-data (assoc conf-data :devices (dissoc (:devices conf-data) :temp-device)))
+  (let [devices-list (for [item vec
+                           :when (and (keyword? item) (devices? item))
+                           :let [this-device-vec (item (:devices conf-data))
+                                 temp-device-vec (if (devices? :temp-device)
+                                                   (into [] (concat (:temp-device (:devices conf-data)) this-device-vec))
+                                                   this-device-vec)
+                                 update-temp-device-into-conf-data (update-conf-data (assoc-in conf-data [:devices :temp-device] temp-device-vec))]]
+                       item)
+        use-temp-device? (> (count devices-list) 0)
+        new-conditions (if use-temp-device? (conj (into [] (reduce #(remove #{%2} %1) vec devices-list)) :temp-device)
+                           vec)]
+    new-conditions))
+
 ;; conditions
 ;; :vi-mode or [:vi-mode]
 (defn conditions-key
   [des conditions prev-result]
-  (if (conditions/is-simple-set-variable? conditions)
-    {:conditions (conditions/parse-conditions [conditions] (:from prev-result) (:to prev-result))}
-    {:conditions (conditions/parse-conditions conditions (:from prev-result) (:to prev-result))}))
+  (let [conditions (merge-multiple-device-conditions conditions)]
+    (if (conditions/is-simple-set-variable? conditions)
+      {:conditions (conditions/parse-conditions [conditions] (:from prev-result) (:to prev-result))}
+      {:conditions (conditions/parse-conditions conditions (:from prev-result) (:to prev-result))})))
 
 ;; to_if_alone                                    | :alone
 ;; to_if_held_down                                | :held

@@ -38,7 +38,7 @@
                                    "device_if")
                       result (if (and (keyword? condi) (nn? (condi (:devices conf-data))))
                                {:identifiers
-                                (condi (:devices conf-data))
+                                (into [] (condi (:devices conf-data)))
                                 :type condi-type}
                                result)
                       condi-type (if condi!?
@@ -58,8 +58,8 @@
                                    (do
                                      (update-used-simlayers-config (condi (:simlayers conf-data)))
                                      (update-used-simlayers-config (assoc-in used-simlayers-config [:from :sim]
-                                                                    (conj (:sim (:from used-simlayers-config))
-                                                                         (keyword (:key_code from)))))))
+                                                                             (conj (:sim (:from used-simlayers-config))
+                                                                                   (keyword (:key_code from)))))))
                                  {:name (name condi)
                                   :value 1
                                   :type condi-type})

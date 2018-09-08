@@ -3,7 +3,8 @@
             [karabiner-configurator.data :refer :all]
             [clojure.test :as t]))
 
-(def example-mains [{:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
+(def example-mains [
+                    {:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
                     {:des "command a to control 1"                            :rules [[:!C#Pa :!T1]]} ;; command a to control 1
                     {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
                     {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
@@ -12,7 +13,7 @@
                     {:des "simultaneous e f to 3"                             :rules [[[:e :f] :3]]} ;; simultaneous key to key
                     {:des "g to 4 when variable vi-mode is 1"                 :rules [[:g :4 :vi-mode]]} ;; vi-mode is 1
                     {:des "h to 5 when variable vi-mode is not 1"             :rules [[:h :5 :!vi-mode]]} ;; vi-mode is not 1
-                    {:des "i to 6 only for device hhkb-bt"                    :rules [[:i :6 :hhkb-bt]]} ;; key to key in layer b (in layer a) specific to hhkb-bt device
+                    {:des "i to 6 only for device hhkb-bt"                    :rules [[:i :6 [:hhkb-bt :hhkb]]]} ;; key to key in layer b (in layer a) specific to hhkb-bt device
                     {:des "j to 7 on hhkb-bt when variable vi-mode is 1"      :rules [[:j :7 [:vi-mode :hhkb-bt]]]} ;; multiple condition
                     {:des "press h insert 8 then set variable some-mode to 0" :rules [[:h [:8 {:set ["some-mode" 0]}]]]}
                     {:des "capslock to control as modifier to escape when press alone" :rules [[:##caps_lock :left_control nil {:alone :escape}]]}
@@ -92,8 +93,8 @@
              {:description "i to 6 only for device hhkb-bt",
               :manipulators [{:from {:key_code "i"},
                               :to [{:key_code "6"}],
-                              :conditions [{:identifiers [{:vendor_id 1278,
-                                                           :product_id 51966}],
+                              :conditions [{:identifiers [{:vendor_id 1278 :product_id 51966}
+                                                          {:vendor_id 2131 :product_id 256}],
                                             :type "device_if"}],
                               :type "basic"}]}
              {:description "j to 7 on hhkb-bt when variable vi-mode is 1",
