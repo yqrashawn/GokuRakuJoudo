@@ -87,7 +87,7 @@ the only condition that GokuRakuJoudo dose not support yet is [[https://pqrs.org
 ;; here's the defination
 
 ;; !  | means mandatory
-;; #  | means mandatory
+;; #  | means optional
 ;; C  | left_command
 ;; T  | left_control
 ;; O  | left_option
