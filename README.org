@@ -14,6 +14,11 @@ There're links below.
 
 The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]].
 
+So how does it looks like.
+karabiner.json vs karabiner.edn
+[[./resources/images/karabiner.json.png]]
+[[./resources/images/karabiner.edn.png]]
+
 ** Usage
 Download the executable from [[https://github.com/yqrashawn/GokuRakuJoudo/releases][releases]].
 
