@@ -53,6 +53,12 @@
 ;;             |     }
 ;;             | }
 
+;; simultaneous_options   possible candidates
+;; :interrupt             true false
+;; :dorder                :insensitive :strict :strict_inverse
+;; :upwhen                :insensitive :strict :strict_inverse
+;; :afterup               to event defination
+
 (def simo-keywords
   "keyword while parsing froms, fisrt in vactor is the default value"
   {:interrupt {:values [false true]

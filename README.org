@@ -8,6 +8,10 @@ json (mine is over 5000). It makes it really hard to edit the config file.
 
 Goku use the [[https://github.com/edn-format/edn][edn format]] to the rescue.
 
+[[./Tutorial.org][Tutorial about how to write the configuration.]] If there's any question or
+advice, just open an issue or ask me in telegram group or keybase group.
+There're links below.
+
 The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]].
 
 ** Usage

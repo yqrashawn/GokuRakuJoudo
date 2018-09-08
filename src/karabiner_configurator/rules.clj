@@ -154,8 +154,12 @@
                            vec)]
     new-conditions))
 
-;; conditions
-;; :vi-mode or [:vi-mode]
+;; <conditions>
+;; :chrome
+;; [:vi-mode :hhkb :!chrome]
+;; ["vi-mode" 1]
+;; ["vi-mode" 0]
+;; [:vi-mode ["w mode" 1] :!chrome]
 (defn conditions-key
   [des conditions prev-result]
   (let [conditions (merge-multiple-device-conditions conditions)]
@@ -163,6 +167,7 @@
       {:conditions (conditions/parse-conditions [conditions] (:from prev-result) (:to prev-result))}
       {:conditions (conditions/parse-conditions conditions (:from prev-result) (:to prev-result))})))
 
+;; <other options> section
 ;; to_if_alone                                    | :alone
 ;; to_if_held_down                                | :held
 ;; to_after_key_up                                | :afterup
