@@ -1,4 +1,4 @@
-* Cheatsheet
+* Tutorial
 This is a the tutorial. I'll do my best to make it clear and short enough. If
 you have any question or advice, just open an issue or ask me in the telegram
 group or keybase group.
@@ -174,7 +174,7 @@ templates implementation. eg.
 #+end_src
 
 *** Note
-Don't define conditions with the name of keycode. If you defined a application
+Don't define conditions with the name of keycode. If you define a application
 condition like ~{:a ["^com\\.google\\.Chrome$"]}~. It might work in rules but it
 may broke other things.
 
@@ -252,7 +252,7 @@ in the [[https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_co
 
 **** tos defination
 Tos is used more often than froms. It's the same idea as froms defination. You
-can find the detailed documentation in the [[https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/tos.clj#L7][implementation file]]. There's shot
+can find the detailed [[https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/tos.clj#L7][tos documentation]] in the implementation file. There's shot
 cuts for tos in rules' <to>, like string to shell commands and multiple to
 definations in vector.
 
@@ -349,5 +349,5 @@ to do in that layer.
 ;; The first 4 is same as tos defination, and we also have shotcusts for ~parameters~.
 #+end_src
 
-We can check the documentation for <other options> [[https://github.com/yqrashawn/GokuRakuJoudo/blob/117aedb94a50c4d928a92c3f36cb590e3fa048c4/src/karabiner_configurator/rules.clj#L166][here]].
-And there're also [[https://github.com/yqrashawn/GokuRakuJoudo/blob/117aedb94a50c4d928a92c3f36cb590e3fa048c4/src/karabiner_configurator/rules.clj#L90][<to> documentation]], [[https://github.com/yqrashawn/GokuRakuJoudo/blob/117aedb94a50c4d928a92c3f36cb590e3fa048c4/src/karabiner_configurator/rules.clj#L11][<from> documentation]].
+We can checkout [[https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L170][the documentation for <other options>]].
+And there're also [[https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L90][<to> documentation]], [[https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L11][<from> documentation]], [[https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L157][<conditions> documentation]].
