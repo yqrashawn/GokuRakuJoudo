@@ -8,16 +8,13 @@ json (mine is over 5000). It makes it really hard to edit the config file.
 
 Goku use the [[https://github.com/edn-format/edn][edn format]] to the rescue.
 
-[[./Tutorial.org][Tutorial about how to write the configuration.]] If there's any question or
+[[./Tutorial.org][Tutorial about how to write the configuration]] If there's any question or
 advice, just open an issue or ask me in telegram group or keybase group.
 There're links below.
 
-The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]].
+The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generato]].
 
-So how does it looks like.
-karabiner.json vs karabiner.edn
-[[./resources/images/karabiner.json.png]]
-[[./resources/images/karabiner.edn.png]]
+So how does it looks like. [[./resources/images/karabiner.json.png][karabiner.json]] vs  [[./resources/images/karabiner.edn.png][karabiner.edn]]
 
 ** Usage
 Download the executable from [[https://github.com/yqrashawn/GokuRakuJoudo/releases][releases]].
