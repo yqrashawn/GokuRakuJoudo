@@ -51,7 +51,7 @@ watchexec -r -w ~/.config/karabiner.edn goku
   keybase team request-access karabiner
   #+end_src
 ** Note
-- only normal key support special modifier i.e. :!Ca
+- consumer_key printing_key and mouse_key don't support special modifier i.e. :!Ca
 - mouse key has no abbreviation keyword in main rules
 
 ** The name
