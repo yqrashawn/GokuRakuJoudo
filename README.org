@@ -12,9 +12,10 @@ Goku use the [[https://github.com/edn-format/edn][edn format]] to the rescue.
 advice, just open an issue or ask me in telegram group or keybase group.
 There're links below.
 
-The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generato]].
+The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]].
 
-So how does it looks like. [[./resources/images/karabiner.json.png][karabiner.json]] vs  [[./resources/images/karabiner.edn.png][karabiner.edn]]
+So how does it looks like. [[https://github.com/yqrashawn/yqdotfiles/blob/master/.config/karabiner.edn][This]] is my config, it used to be more than 5000
+lines. And  [[./resources/images/karabiner.json.png][karabiner.json]] vs  [[./resources/images/karabiner.edn.png][karabiner.edn]]
 
 ** Usage
 Download the executable from [[https://github.com/yqrashawn/GokuRakuJoudo/releases][releases]].
