@@ -53,23 +53,8 @@
  ;; quick define "layers" or "state" feature(use set_variable)
  ;; can use as conditions in rule list
  ;; {:<layer name> {:from <froms>}}
- :layers {:chunkwm {:from :tab}} ;; key "d" to set_variable "vi-mode" 1, to_if_alone "d", to_after_key_up set_variable "vi-mode" 0
  :simlayers {:vi-mode {:key :d}}
  :simlayer-threshold 250
-
- ;; swap keys, only support single key, like the simple modifications functionality in karabiner gui
- ;; {<single key> <single key>}
- :swaps [{:a :b}] ;; swap a and b
-
-
- ;; fallback to raw defination
- ;; similar to karabiner.json, can use definations in :froms and :tos
- ;; :raws [{:from :caps_lock :to :left_control :alone :escape}
- ;;        {:from :right_shift
- ;;         :to [:set {"right_shift pressed" 1} :right_shift]
- ;;         :to_delayed_action {:invoked {:set ["right_shift pressed" 0]}
- ;;                             :cancled {:set ["right_shift pressed" 0]}}}
- ;;        {:from [:f :j], :to :alf--search-help, :alone :escape}] ;; comma considered whitespace
 
  ;; main list
  :main
