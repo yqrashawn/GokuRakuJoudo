@@ -172,7 +172,7 @@
 ;; to_if_held_down                                | :held
 ;; to_after_key_up                                | :afterup
 ;; to_delayed_action                              | :delayed
-;;   to_if_canceled                               |   :cancled
+;;   to_if_canceled                               |   :canceled
 ;;   to_if_invoked                                |   :invoked
 ;; parameters                                     | :params
 ;;   basic.to_if_alone_timeout_milliseconds       |   :alone
@@ -183,12 +183,12 @@
   [des additional prevresult]
   (let [result prevresult
         {:keys [alone held afterup delayed params]} additional
-        {:keys [cancled invoked]} delayed
+        {:keys [canceled invoked]} delayed
         result (if alone (assoc result :to_if_alone (to-key des alone)) result)
         result (if held (assoc result :to_if_held_down (to-key des held)) result)
         result (if afterup (assoc result :to_after_key_up (to-key des afterup)) result)
         result (if invoked (assoc-in result [:to_delayed_action :to_if_invoked] (to-key des invoked)) result)
-        result (if cancled (assoc-in result [:to_delayed_action :to_if_cancled] (to-key des cancled)) result)
+        result (if canceled (assoc-in result [:to_delayed_action :to_if_canceled] (to-key des canceled)) result)
         {:keys [alone held delay]} params
         result (if (number? alone) (assoc-in result [:parameters :basic.to_if_alone_timeout_milliseconds] alone) result)
         result (if (number? held) (assoc-in result [:parameters :basic.to_if_held_down_threshold_milliseconds] held) result)

@@ -18,10 +18,10 @@
                     {:des "press h insert 8 then set variable some-mode to 0" :rules [[:h [:8 {:set ["some-mode" 0]}]]]}
                     {:des "capslock to control as modifier to escape when press alone" :rules [[:##caps_lock :left_control nil {:alone :escape}]]}
                     {:des "Quit application by pressing command-q twice" :rules [[:!C#Pq :!Cq ["command-q" 1]]
-                                                                                 [:!C#Pq ["command-q" 1] nil {:delayed {:invoked ["command-q" 0] :cancled ["commandq" 0]}}]]}
+                                                                                 [:!C#Pq ["command-q" 1] nil {:delayed {:invoked ["command-q" 0] :canceled ["commandq" 0]}}]]}
                     {:des "Quit application by holding command-q" :rules [[:!C#Pq nil nil {:held {:key :q :modi :left_command :repeat false}}]]}
                     {:des "Quit Safari by pressing command-q twice" :rules [[:!C#Pq :!Cq [:safari ["command-q" 1]]]
-                                                                            [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :cancled ["command-q" 0]}}]]}
+                                                                            [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :canceled ["command-q" 0]}}]]}
                     {:des "Mouse button"
                      :rules [[{:pkey :button5} :mission_control]
                              [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]]}])
@@ -139,7 +139,7 @@
                                             :type "variable_if"}],
                               :type "basic"}
                              {:to_delayed_action {:to_if_invoked [{:set_variable {:name "command-q", :value 0}}],
-                                                  :to_if_cancled [{:set_variable {:name "commandq", :value 0}}]},
+                                                  :to_if_canceled [{:set_variable {:name "commandq", :value 0}}]},
                               :from {:key_code "q",
                                      :modifiers {:mandatory ["left_command"],
                                                  :optional ["caps_lock"]}},
@@ -166,7 +166,7 @@
                                             :type "variable_if"}],
                               :type "basic"}
                              {:to_delayed_action {:to_if_invoked [{:set_variable {:name "command-q", :value 0}}],
-                                                  :to_if_cancled [{:set_variable {:name "command-q", :value 0}}]},
+                                                  :to_if_canceled [{:set_variable {:name "command-q", :value 0}}]},
                               :from {:key_code "q",
                                      :modifiers {:mandatory ["left_command"],
                                                  :optional ["caps_lock"]}},

@@ -1,7 +1,17 @@
 * Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
-** [Unreleased]
+** Unreleased
+
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.2...HEAD
+
+** 0.1.2 - 2018-09-10
+*** Fixed
+- typo in rules, seems I spell all "cancel" wrong.
+
+[0.1.2]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.1...v0.1.2
+
+** 0.1.1 - 2018-09-07
 *** Added
 - to key check while parsing key code
 *** Changed
@@ -10,9 +20,8 @@ All notable changes to this project will be documented in this file. This change
 - karabiner error while using ~:mission_control~
 - multiple devices condition bug
 
+[0.1.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.0...v0.1.1
+
 ** 0.1.0 - 2018-09-07
 *** Added
 - First release
-
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.0...HEAD
-# [0.1.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/0.1.0...0.1.1
