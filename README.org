@@ -1,9 +1,6 @@
 [[https://travis-ci.com/yqrashawn/GokuRakuJoudo.svg?branch=master]]
 [[https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg]]
 * GokuRakuJoudo
-NOTE: the goku executable doesn't work right now. Seems the graalvm compile make
-it "too static", will be fixed today.
-
 Goku is a tool to let you manage your karabiner's configuration with ease.
 
 Karbiner-Elements uses json as it's config file. It lead to thounds lines of

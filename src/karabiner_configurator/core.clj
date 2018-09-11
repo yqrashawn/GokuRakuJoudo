@@ -47,23 +47,23 @@
   (init-conf-data)
   (generate conf))
 
+(defn karabiner-json-path []
+  (if (System/getenv "XDG_CONFIG_HOME")
+    (str (System/getenv "XDG_CONFIG_HOME") "karabiner/karabiner.json")
+    (str (System/getenv "HOME") "/.config/karabiner/karabiner.json")))
 
-(def karabiner-json-path (if (System/getenv "XDG_CONFIG_HOME")
-                           (str (System/getenv "XDG_CONFIG_HOME") "karabiner/karabiner.json")
-                           (str (System/getenv "HOME") "/.config/karabiner/karabiner.json")))
-
-(def config-file
+(defn config-file []
   (if (System/getenv "XDG_CONFIG_HOME")
     (str (System/getenv "XDG_CONFIG_HOME") "karabiner.edn")
     (str (System/getenv "HOME") "/.config/karabiner.edn")))
 
 ;; (println (str "$XDG_CONFIG_HOME: " (System/getenv "XDG_CONFIG_HOME")))
 ;; (println (str "$HOME: " (System/getenv "HOME")))
-;; (println (str "karabiner json path: " karabiner-json-path))
-;; (println (str "edn config file path: " config-file))
+;; (println (str "karabiner json path: " (karabiner-json-path )))
+;; (println (str "edn config file path: " (config-file )))
 
 (defn update-to-karabiner-json [rules]
-  (let [karabiner-config (load-json karabiner-json-path)
+  (let [karabiner-config (load-json (karabiner-json-path))
         profile-indexed-list (map-indexed (fn [idx itm] [idx itm]) (:profiles karabiner-config))
         profile-to-update
         (first
@@ -74,7 +74,7 @@
         updated-profile (:profile (assoc-in profile-to-update [:profile :complex_modifications :rules] updated-rules))
         updated-profiles (assoc (:profiles karabiner-config ) (:index profile-to-update) updated-profile)
         updated-configs (assoc karabiner-config :profiles updated-profiles)]
-    (spit karabiner-json-path
+    (spit (karabiner-json-path)
      (json/generate-string updated-configs {:pretty true}))))
 
 (defn parse-edn [path]
@@ -82,8 +82,8 @@
   (println "Done!"))
 
 (defn watch []
-  (println (str "watching " config-file))
-  (shell/sh "watchexec" "-w" config-file "goku"))
+  (println (str "watching " (config-file)))
+  (shell/sh "watchexec" "-w" (config-file) "goku"))
 
 ;; cli things
 (def cli-opts
@@ -97,8 +97,8 @@
   (->> ["GokuRakuJoudo -- karabiner configurator"
         ""
         "goku will read config file and update `Goku` profile in karabiner.json"
-        (str "- goku config file location: " config-file)
-        (str "- karabiner config file:  " karabiner-json-path)
+        (str "- goku config file location: " (config-file))
+        (str "- karabiner config file:  " (karabiner-json-path))
         ""
         "run without arg to update once, run with `-w` to update on .edn file change"
         ""
@@ -146,7 +146,7 @@
   (let [{:keys [action options exit-message ok?]} (validate-args args)]
     (if exit-message
       (case action
-        "run"  (do (parse-edn config-file)
+        "run"  (do (parse-edn (config-file))
                    (exit (if ok? 0 1)))
         "watch" (watch)
         "help" (exit (if ok? 0 1) exit-message)

@@ -3,7 +3,14 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.3...HEAD
+
+** 0.1.3 - 2018-09-11
+*** Fixed
+- seems the previous release version is not usable, the $HOME variable is always
+  /Users/.travis, fixed that.
+
+[0.1.2]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.2...v0.1.3
 
 ** 0.1.2 - 2018-09-10
 *** Fixed
