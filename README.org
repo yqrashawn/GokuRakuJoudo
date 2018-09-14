@@ -14,8 +14,17 @@ There're links below.
 
 The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]].
 
-So how does it looks like. [[https://github.com/yqrashawn/yqdotfiles/blob/master/.config/karabiner.edn][This]] is my config, it used to be more than 5000
-lines. And  [[./resources/images/karabiner.json.png][karabiner.json]] vs  [[./resources/images/karabiner.edn.png][karabiner.edn]]
+So how does it look like, karabiner.json vs karabiner.edn.
+
+#+BEGIN_HTML 
+<p align="center"><img src="resources/images/karabiner.json.png" /></p>
+<p align="center">karabiner.json</span>
+#+END_HTML
+
+#+BEGIN_HTML 
+<p align="center"><img src="resources/images/karabiner.edn.png" /></p>
+<p align="center">karabiner.edn</span>
+#+END_HTML
 
 ** Usage
 Download the executable from [[https://github.com/yqrashawn/GokuRakuJoudo/releases][releases]].

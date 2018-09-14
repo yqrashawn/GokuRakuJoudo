@@ -8,7 +8,7 @@ all:
 clean:
 	lein clean
 compile:
-	lein compile && export LEIN_SNAPSHOTS_IN_RELEASE=override & lein uberjar
+	lein compile && export LEIN_SNAPSHOTS_IN_RELEASE=override && lein uberjar
 bin:
 	native-image $(GRAALVM_ARG) -jar $(TARGET_JAR)
 	mv $(JAR_NAME) goku

@@ -20,7 +20,11 @@
 (defn load-edn
   "Load edn from an io/reader source (filename or io/resource)."
   [source & args]
-  (try
+  (with-open [r (io/reader source)]
+    (if args
+      (get-in (edn/read (java.io.PushbackReader. r)) args)
+      (edn/read (java.io.PushbackReader. r))))
+  #_(try
     (with-open [r (io/reader source)]
       (if args
         (get-in (edn/read (java.io.PushbackReader. r)) args)
@@ -37,7 +41,9 @@
 (defn load-json
   "Load json from an io/reader source (filename or io/resource)."
   [source]
-  (try
+  (with-open [r (io/reader source)]
+    (json/parse-stream (java.io.PushbackReader. r) true))
+  #_(try
     (with-open [r (io/reader source)]
       (json/parse-stream (java.io.PushbackReader. r) true))
     (catch java.io.IOException e
