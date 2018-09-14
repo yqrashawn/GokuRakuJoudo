@@ -16,41 +16,44 @@ The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generat
 
 So how does it look like, karabiner.json vs karabiner.edn.
 
-#+BEGIN_HTML 
+#+BEGIN_HTML
 <p align="center"><img src="resources/images/karabiner.json.png" /></p>
 <p align="center">karabiner.json</span>
 #+END_HTML
 
-#+BEGIN_HTML 
+#+BEGIN_HTML
 <p align="center"><img src="resources/images/karabiner.edn.png" /></p>
 <p align="center">karabiner.edn</span>
 #+END_HTML
 
-** Usage
-Download the executable from [[https://github.com/yqrashawn/GokuRakuJoudo/releases][releases]].
+** Installation
+#+begin_src shell
+brew install yqrashawn/goku/goku
+#+end_src
 
+** Usage
 Create a profile named "Goku" in karabiner gui tool and run the executable.
 
-It will read ~karabiner.edn~ and write your config into ~karabiner.json~'s Goku
-profile.
+The program will read ~karabiner.edn~ and write your config into
+~karabiner.json~'s Goku profile.
 
-Program looking for ~karabiner.edn~ and ~karabiner.json~ file under
+Run command ~goku~ to update karabiner.json once.
+Run command ~gokuw~ to keep watching ~karabiner.edn~.
+Run command ~brew services start~ to use it as a service.
+
+
+The program will look for ~karabiner.edn~ and ~karabiner.json~ file under
 ~$XDG_CONFIG_HOME~ and ~$XDG_CONFIG_HOME/karabiner/~ (fall back to
 ~$HOME/.config/karabiner.edn~ and ~$HOME/.config/karabiner/karabiner.json~ if
 ~$XDG_CONFIG_HOME~ is not defined).
 
-You can also run it in watching mode by adding ~-w~ flag. This needs [[https://github.com/watchexec/watchexec][watchexec]]
-to be installed. You can install it by ~brew install watchexec~.
+Note: The program can't find the right ~$HOME~ directory if you run service with
+sudo permission. If you want to run this service as user, you need to give the
+right permission to the log directory of the service. You can do this by simply
+create the directory before first time starting the service.
 
-Watching mode will watch for ~karabiner.edn~ file changes and update ~karabiner.json~.
-
-The watching mode is still in construction, it won't log any error if there is one.
-
-You can just use ~watchexec~ to run ~goku~ to get both watching feature and
-error log. eg.
 #+begin_src shell
-# this assumes you've put goku into PATH
-watchexec -r -w ~/.config/karabiner.edn goku
+mkdir ~/Library/Logs/goku
 #+end_src
 
 ** Discussion
@@ -59,6 +62,7 @@ watchexec -r -w ~/.config/karabiner.edn goku
   #+begin_src shell
   keybase team request-access karabiner
   #+end_src
+
 ** Note
 - consumer_key printing_key and mouse_key don't support special modifier i.e. :!Ca
 - mouse key has no abbreviation keyword in main rules
