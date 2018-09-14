@@ -19,7 +19,8 @@ script:
 - make
 - make test-binary
 - touch gokuw
-- echo '#!/bin/sh\nwatchexec -r -w ~/.config/karabiner.edn /usr/local/opt/goku/bin/goku' >> gokuw
+- echo '#!/bin/sh' >> gokuw
+- echo 'watchexec -r -w ~/.config/karabiner.edn /usr/local/opt/goku/bin/goku' >> gokuw
 - "./goku"
 - chmod +x gokuw
 - tar czf goku.tar.gz goku gokuw
