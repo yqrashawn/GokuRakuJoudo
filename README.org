@@ -41,20 +41,10 @@ Run command ~goku~ to update karabiner.json once.
 Run command ~gokuw~ to keep watching ~karabiner.edn~.
 Run command ~brew services start~ to use it as a service.
 
-
 The program will look for ~karabiner.edn~ and ~karabiner.json~ file under
 ~$XDG_CONFIG_HOME~ and ~$XDG_CONFIG_HOME/karabiner/~ (fall back to
 ~$HOME/.config/karabiner.edn~ and ~$HOME/.config/karabiner/karabiner.json~ if
 ~$XDG_CONFIG_HOME~ is not defined).
-
-Note: The program can't find the right ~$HOME~ directory if you run service with
-sudo permission. If you want to run this service as user, you need to give the
-right permission to the log directory of the service. You can do this by simply
-create the directory before first time starting the service.
-
-#+begin_src shell
-mkdir ~/Library/Logs/goku
-#+end_src
 
 ** Discussion
 - karabiner-generator's [[https://t.me/karabinermac][Telegram group]].
