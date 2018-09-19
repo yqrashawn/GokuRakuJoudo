@@ -26,7 +26,7 @@
 (def result
      {:applications {},
       :tos {},
-      :input-source {},
+      :input-sources {},
       :modifiers {:1 {:mandatory ["left_command" "right_shift"],
                       :optional ["any"]}},
       :simlayer-threshold 250,

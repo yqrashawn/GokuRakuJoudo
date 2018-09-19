@@ -18,7 +18,7 @@
                   :chromes ["^com\\.google\\.Chrome$"
                             "^com\\.google\\.Chrome\\.canary$"]},
    :tos {},
-   :input-source {},
+   :input-sources {},
    :modifiers {},
    :simlayer-threshold 250,
    :devices {:hhkb-bt [{:vendor_id 1278,

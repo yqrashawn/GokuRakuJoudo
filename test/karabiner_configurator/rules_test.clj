@@ -24,7 +24,10 @@
                                                                             [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :canceled ["command-q" 0]}}]]}
                     {:des "Mouse button"
                      :rules [[{:pkey :button5} :mission_control]
-                             [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]]}])
+                             [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]]}
+                    {:des "Change input source"
+                     :rules [[:i :us :q-mode]
+                             [:o :squirrel :q-mode]]}])
 
 
 (def result [{:description "a to 1",
@@ -186,7 +189,42 @@
                                                 "left_control"
                                                 "left_option"
                                                 "left_shift"]}],
-                              :type "basic"}]}])
+                              :type "basic"}]}
+             {:description "Change input source",
+              :manipulators [{:from {:key_code "i"},
+                              :to [{:select_input_source {:input_mode_id "",
+                                                          :input_source_id "com.apple.keylayout.US",
+                                                          :language "en"}}],
+                              :conditions [{:name "q-mode",
+                                            :value 1,
+                                            :type "variable_if"}],
+                              :type "basic"}
+                             {:key :q,
+                              :from {:simultaneous [{:key_code "i"}],
+                                     :simultaneous_options {:detect_key_down_uninterruptedly false,
+                                                            :key_down_order "insensitive",
+                                                            :key_up_order "insensitive",
+                                                            :key_up_when "any"}},
+                              :to [{:select_input_source {:input_mode_id "",
+                                                          :input_source_id "com.apple.keylayout.US",
+                                                          :language "en"}}]}
+                             {:from {:key_code "o"},
+                              :to [{:select_input_source {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel",
+                                                          :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime",
+                                                          :language "zh-Hans"}}],
+                              :conditions [{:name "q-mode",
+                                            :value 1,
+                                            :type "variable_if"}],
+                              :type "basic"}
+                             {:key :q,
+                              :from {:simultaneous [{:key_code "o"}],
+                                     :simultaneous_options {:detect_key_down_uninterruptedly false,
+                                                            :key_down_order "insensitive",
+                                                            :key_up_order "insensitive",
+                                                            :key_up_when "any"}},
+                              :to [{:select_input_source {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel",
+                                                          :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime",
+                                                          :language "zh-Hans"}}]}]}])
 
 
 (t/deftest generate-mains
@@ -197,13 +235,18 @@
                                     :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
                      :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
                                :hhkb [{:vendor_id 2131 :product_id 256}]}
-                     :input-source {}
+                     :input-sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
+                                                :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
+                                                :language "zh-Hans"}
+                                     :us {:input_mode_id ""
+                                          :input_source_id "com.apple.keylayout.US"
+                                          :language "en"}}
                      :templates {:example-template "osascript -e 'display dialog \"%s\"'"}
                      :modifiers {}
                      :froms {:my-spacebar {:key :spacebar}}
                      :tos {}
-                     :layers {}
-                     :simlayers {:vi-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
+                     :simlayers {:q-mode {:key :q}
+                                 :vi-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
                                            :to [{:set ["vi-mode" 1]}],
                                            :from {:sim [:d],
                                                   :simo {:interrupt true,
@@ -222,3 +265,4 @@
 
   (t/testing
       (t/is (= (sut/parse-mains example-mains) result))))
+

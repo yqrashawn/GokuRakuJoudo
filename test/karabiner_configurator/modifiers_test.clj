@@ -10,7 +10,7 @@
 
 (def result {:applications {},
              :tos {},
-             :input-source {},
+             :input-sources {},
              :modifiers {:111 {:mandatory ["left_command" "left_control"]},
                          :222 {:mandatory ["left_command" "left_shift"]},
                          :3 {:mandatory ["left_command"]},

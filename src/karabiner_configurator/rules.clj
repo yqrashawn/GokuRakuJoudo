@@ -19,7 +19,7 @@
   [des from]
   (let [result nil
         validate-from (assert (or (and (vector? from) (= 2 (count from)) (k? (first from)) (k? (second from)))
-                                  (and (keyword? from) (or (k? from) (special-modi-k? from) (nn? (from (:froms conf-data)))))
+                                  (and (keyword? from) (or (k? from) (special-modi-k? from) (contains? (:froms conf-data) from)))
                                   (map? from))
                               (str "invalid <from> in main section's " des))
         result (if (vector? from)
@@ -112,13 +112,18 @@
   (let [result nil
         validate-to (assert (or (and (keyword? to) (or (k? to)
                                                        (special-modi-k? to)
+                                                       (contains? (:input-sources conf-data) to)
                                                        (contains? (:tos conf-data) to)))
                                 (string? to)
                                 (vector? to)
                                 (map? to))
                             (str "invalid <to> in main section's " des))
-        result (if (keyword? to)
-                 (rule-parse-keyword des to))
+        result (if (contains? (:input-sources conf-data) to)
+                 (into [] (tos/parse-to des [{:input to}]))
+                 result)
+        result (if (and (keyword? to) (not (contains? (:input-sources conf-data) to)))
+                 (rule-parse-keyword des to)
+                 result)
         result (if (nn? result)
                  (cond (vector? result)
                        result

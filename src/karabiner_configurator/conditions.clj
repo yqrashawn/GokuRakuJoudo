@@ -58,8 +58,8 @@
                                    (do
                                      (update-used-simlayers-config (condi (:simlayers conf-data)))
                                      (update-used-simlayers-config (assoc-in used-simlayers-config [:from :sim]
-                                                                             (conj (:sim (:from used-simlayers-config))
-                                                                                   (keyword (:key_code from)))))))
+                                                                             (into [] (conj (:sim (:from used-simlayers-config))
+                                                                                            (keyword (:key_code from))) )))))
                                  {:name (name condi)
                                   :value 1
                                   :type condi-type})

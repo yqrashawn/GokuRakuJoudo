@@ -62,3 +62,5 @@ parse error.
 
 ** The name
 It's the name of the song I'm lisening while writing this.
+** Changelog
+Check [[./CHANGELOG.org][CHANGELOG]] file.

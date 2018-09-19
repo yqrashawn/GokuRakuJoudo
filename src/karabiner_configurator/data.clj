@@ -8,7 +8,7 @@
   []
   (def conf-data {:applications {}
                   :devices {}
-                  :input-source {}
+                  :input-sources {}
                   :modifiers {}
                   :froms {}
                   :tos {}
@@ -87,9 +87,9 @@
         (contains? (:devices conf-data))
         {:name :devices
          :value (kw (:devices conf-data))}
-        (contains? (:input-source conf-data))
-        {:name :input-source
-         :value (kw (:input-source conf-data))}
+        (contains? (:input-sources conf-data))
+        {:name :input-sources
+         :value (kw (:input-sources conf-data))}
         (contains? (:simlayers conf-data))
         {:name :simlayers
          :value (kw (:simlayers conf-data))}))
