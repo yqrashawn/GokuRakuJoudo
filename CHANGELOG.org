@@ -3,7 +3,14 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.7...HEAD
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.8...HEAD
+
+** 0.1.8 - 2018-09-24
+*** Added
+- old ~:layers~ predefination
+- group rules by conditions
+
+[0.1.7]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.7...v0.1.8
 
 ** 0.1.7 - 2018-09-19
 *** Fixed
