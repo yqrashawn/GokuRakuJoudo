@@ -255,20 +255,26 @@
 (defn generate
   "generate one rule"
   [mains]
-  (for [{:keys [des rules]} mains]
-    {:description des
-     :manipulators
-     (into []
-           (flatten
-            (for [rule rules]
-              (let [[from to condition other-options] rule]
-                (do
-                  (assert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to> is nil"))
-                  (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to)
-                        (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
-                        (nn? other-options) (parse-rule des from to condition other-options)))))))}))
+  (let [user-result (for [{:keys [des rules]} mains]
+                      {:description des
+                       :manipulators
+                       (into []
+                             (flatten
+                              (for [rule rules]
+                                (let [[from to condition other-options] rule]
+                                  (do
+                                    (assert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to> is nil"))
+                                    (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to)
+                                          (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
+                                          (nn? other-options) (parse-rule des from to condition other-options)))))))})
+        layer-result {:description "auto generated layer trigger key"
+                      :manipulators (into [] (for [[layer-name layer-defination] (:layers conf-data)]
+                                               layer-defination))}
+        add-layer-result (if (> (count (:manipulators layer-result)) 0) (conj user-result layer-result) user-result)]
+    (into [] add-layer-result)))
 
 (defn parse-mains
   "parse main section to final edn format, ready to convert to json"
   [mains]
-  (into [] (generate mains)))
+  ;; (into [] (generate mains))
+  (generate mains))

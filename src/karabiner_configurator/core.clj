@@ -36,6 +36,7 @@
     (modifiers/parse-modifiers modifiers)
     (layers/parse-layers layers)
     (layers/parse-simlayers simlayers)
+    (layers/parse-layers layers)
     (froms/parse-froms froms)
     (tos/parse-tos tos)
     (rules/parse-mains main)))

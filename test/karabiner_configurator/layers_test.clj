@@ -3,6 +3,57 @@
             [karabiner-configurator.data :refer :all]
             [clojure.test :as t]))
 
+(def layers-example {:tab-mode {:key :tab :afterup [{:set ["chunkwm-move-mode" 0]}
+                                                    {:set ["chunkwm-scale-mode" 0]}]}
+                     :chunkwm-move-mode {:key :f :condi :tab-mode}
+                     :chunkwm-scale-mode {:key :c :condi :tab-mode}})
+
+(def layer-result
+  {:applications {:chrome ["^com\\.google\\.Chrome$"],
+                  :chrom-canary ["^com\\.google\\.Chrome\\.canary$"],
+                  :chromes ["^com\\.google\\.Chrome$"
+                            "^com\\.google\\.Chrome\\.canary$"]},
+   :tos {},
+   :modifiers {},
+   :simlayer-threshold 250,
+   :input-sources {},
+   :devices {:hhkb-bt [{:vendor_id 1278,
+                        :product_id 51966}],
+             :hhkb [{:vendor_id 2131,
+                     :product_id 256}]},
+   :layers
+   {:tab-mode {:type "basic",
+               :to [{:set_variable {:name "tab-mode", :value 1}}],
+               :from {:key_code "tab"},
+               :to_after_key_up [{:set_variable {:name "tab-mode", :value 0}}
+                                 {:set_variable {:name "chunkwm-move-mode",
+                                                 :value 0}}
+                                 {:set_variable {:name "chunkwm-scale-mode",
+                                                 :value 0}}],
+               :to_if_alone [{:key_code "tab"}]},
+    :chunkwm-move-mode {:type "basic",
+                        :to [{:set_variable {:name "chunkwm-move-mode",
+                                             :value 1}}],
+                        :from {:key_code "f"},
+                        :to_after_key_up [{:set_variable {:name "chunkwm-move-mode",
+                                                          :value 0}}],
+                        :to_if_alone [{:key_code "f"}],
+                        :conditions [{:name "tab-mode",
+                                      :value 1,
+                                      :type "variable_if"}]},
+    :chunkwm-scale-mode {:type "basic",
+                         :to [{:set_variable {:name "chunkwm-scale-mode",
+                                              :value 1}}],
+                         :from {:key_code "c"},
+                         :to_after_key_up [{:set_variable {:name "chunkwm-scale-mode",
+                                                           :value 0}}],
+                         :to_if_alone [{:key_code "c"}],
+                         :conditions [{:name "tab-mode",
+                                       :value 1,
+                                       :type "variable_if"}]}}
+   :froms {},
+   :simlayers {}})
+
 (def simlayers-example {:vi-mode {:key :d}
                         :test-to-after-key-up-mode {:key :l :afterup {:set ["foo" 0]}}
                         :chrome-mode {:key :d
@@ -12,7 +63,7 @@
                         :simple-condi-defination-test {:key :a
                                                        :condi ["foo" 1]}})
 
-(def result
+(def simlayer-result
   {:applications {:chrome ["^com\\.google\\.Chrome$"],
                   :chrom-canary ["^com\\.google\\.Chrome\\.canary$"],
                   :chromes ["^com\\.google\\.Chrome$"
@@ -87,6 +138,22 @@
   (update-conf-data (assoc conf-data :applications {:chrome ["^com\\.google\\.Chrome$"]
                                                     :chrom-canary ["^com\\.google\\.Chrome\\.canary$"]
                                                     :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}))
+  ;; (t/testing
+  ;;   (t/is (= (sut/generate-layers layers-example) layer-result))
+  ;;   (t/is (= (sut/generate-simlayers simlayers-example) simlayer-result)))
   (t/testing
-   (t/is (= (sut/generate-simlayers simlayers-example) result))))
+   "testing simlayers"
+    (sut/generate-simlayers simlayers-example)
+    (t/is (= conf-data simlayer-result))))
 
+(t/deftest convert-layers
+  (init-conf-data)
+  (update-conf-data (assoc conf-data :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
+                                               :hhkb [{:vendor_id 2131 :product_id 256}]}))
+  (update-conf-data (assoc conf-data :applications {:chrome ["^com\\.google\\.Chrome$"]
+                                                    :chrom-canary ["^com\\.google\\.Chrome\\.canary$"]
+                                                    :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}))
+  (t/testing
+   "testing layers"
+    (sut/generate-layers layers-example)
+    (t/is (= conf-data layer-result))))

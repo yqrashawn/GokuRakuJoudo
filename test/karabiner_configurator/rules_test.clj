@@ -27,10 +27,44 @@
                              [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]]}
                     {:des "Change input source"
                      :rules [[:i :us :q-mode]
-                             [:o :squirrel :q-mode]]}])
+                             [:o :squirrel :q-mode]]}
+                    {:des "tab-mode"
+                     :rules [[:h "/usr/local/bin/chunkc tiling::window --warp west" :chunkwm-move-mode]
+                             [:h "/usr/local/bin/chunkc tiling::window --use-temporary-ratio 0.03 --adjust-window-edge west" :chunkwm-scale-mode]
+                             [:h "/usr/local/bin/chunkc tiling::window --focus west" :tab-mode]]}])
 
 
-(def result [{:description "a to 1",
+(def result [{:description "auto generated layer trigger key",
+              :manipulators [{:type "basic",
+                              :to [{:set_variable {:name "tab-mode", :value 1}}],
+                              :from {:key_code "tab"},
+                              :to_after_key_up [{:set_variable {:name "tab-mode", :value 0}}
+                                                {:set_variable {:name "chunkwm-move-mode",
+                                                                :value 0}}
+                                                {:set_variable {:name "chunkwm-scale-mode",
+                                                                :value 0}}],
+                              :to_if_alone [{:key_code "tab"}]}
+                             {:type "basic",
+                              :to [{:set_variable {:name "chunkwm-move-mode",
+                                                   :value 1}}],
+                              :from {:key_code "f"},
+                              :to_after_key_up [{:set_variable {:name "chunkwm-move-mode",
+                                                                :value 0}}],
+                              :to_if_alone [{:key_code "f"}],
+                              :conditions [{:name "tab-mode",
+                                            :value 1,
+                                            :type "variable_if"}]}
+                             {:type "basic",
+                              :to [{:set_variable {:name "chunkwm-scale-mode",
+                                                   :value 1}}],
+                              :from {:key_code "c"},
+                              :to_after_key_up [{:set_variable {:name "chunkwm-scale-mode",
+                                                                :value 0}}],
+                              :to_if_alone [{:key_code "c"}],
+                              :conditions [{:name "tab-mode",
+                                            :value 1,
+                                            :type "variable_if"}]}]}
+             {:description "a to 1",
               :manipulators [{:from {:key_code "a"},
                               :to [{:key_code "1"}],
                               :type "basic"}]}
@@ -224,7 +258,26 @@
                                                             :key_up_when "any"}},
                               :to [{:select_input_source {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel",
                                                           :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime",
-                                                          :language "zh-Hans"}}]}]}])
+                                                          :language "zh-Hans"}}]}]}
+             {:description "tab-mode",
+              :manipulators [{:from {:key_code "h"},
+                              :to [{:shell_command "/usr/local/bin/chunkc tiling::window --warp west"}],
+                              :conditions [{:name "chunkwm-move-mode",
+                                            :value 1,
+                                            :type "variable_if"}],
+                              :type "basic"}
+                             {:from {:key_code "h"},
+                              :to [{:shell_command "/usr/local/bin/chunkc tiling::window --use-temporary-ratio 0.03 --adjust-window-edge west"}],
+                              :conditions [{:name "chunkwm-scale-mode",
+                                            :value 1,
+                                            :type "variable_if"}],
+                              :type "basic"}
+                             {:from {:key_code "h"},
+                              :to [{:shell_command "/usr/local/bin/chunkc tiling::window --focus west"}],
+                              :conditions [{:name "tab-mode",
+                                            :value 1,
+                                            :type "variable_if"}],
+                              :type "basic"}]}])
 
 
 (t/deftest generate-mains
@@ -245,6 +298,36 @@
                      :modifiers {}
                      :froms {:my-spacebar {:key :spacebar}}
                      :tos {}
+                     :layers
+                     {:tab-mode {:type "basic",
+                                 :to [{:set_variable {:name "tab-mode", :value 1}}],
+                                 :from {:key_code "tab"},
+                                 :to_after_key_up [{:set_variable {:name "tab-mode", :value 0}}
+                                                   {:set_variable {:name "chunkwm-move-mode",
+                                                                   :value 0}}
+                                                   {:set_variable {:name "chunkwm-scale-mode",
+                                                                   :value 0}}],
+                                 :to_if_alone [{:key_code "tab"}]},
+                      :chunkwm-move-mode {:type "basic",
+                                          :to [{:set_variable {:name "chunkwm-move-mode",
+                                                               :value 1}}],
+                                          :from {:key_code "f"},
+                                          :to_after_key_up [{:set_variable {:name "chunkwm-move-mode",
+                                                                            :value 0}}],
+                                          :to_if_alone [{:key_code "f"}],
+                                          :conditions [{:name "tab-mode",
+                                                        :value 1,
+                                                        :type "variable_if"}]},
+                      :chunkwm-scale-mode {:type "basic",
+                                           :to [{:set_variable {:name "chunkwm-scale-mode",
+                                                                :value 1}}],
+                                           :from {:key_code "c"},
+                                           :to_after_key_up [{:set_variable {:name "chunkwm-scale-mode",
+                                                                             :value 0}}],
+                                           :to_if_alone [{:key_code "c"}],
+                                           :conditions [{:name "tab-mode",
+                                                         :value 1,
+                                                         :type "variable_if"}]}}
                      :simlayers {:q-mode {:key :q}
                                  :vi-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
                                            :to [{:set ["vi-mode" 1]}],
@@ -265,4 +348,3 @@
 
   (t/testing
       (t/is (= (sut/parse-mains example-mains) result))))
-
