@@ -8,9 +8,53 @@ All notable changes to this project will be documented in this file. This change
 ** 0.1.8 - 2018-09-24
 *** Added
 - old ~:layers~ predefination
+
+#+begin_src clojure
+;; before this feature
+;; can only define "old" layers like this
+{:main [{:des "w layer"
+         :rules [[:w ["wlayer" 1] nil {:alone :w :afterup ["wlayer" 0]}]
+                 [:e "open -a Emacs.app" :wlayer]
+                 [:s "open -a Safari.app" :wlayer]]}]}
+
+;; now we can do it with predefined layer
+{:layers {:wlayer {:key :w}}
+  :main [{:des "w layer"
+          :rules [[:e "open -a Emacs.app" :wlayer]
+                  [:s "open -a Safari.app" :wlayer]]}]}
+#+end_src
+
 - group rules by conditions
 
-[0.1.7]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.7...v0.1.8
+#+begin_src clojure
+;; before this feature
+;; we have to declare conditions in each rule, like this
+{:layers {:wlayer {:key :w}
+          :xlayer {:key :x}}
+ :main [{:des "example layer"
+         :rules [[:e "open -a Emacs.app" :wlayer]
+                 [:s "open -a Safari.app" :wlayer]
+                 [:i "open -a iTunes.app" :xlayer]]}]}
+
+;; now we can group rules with conditions
+{:applications {:chromes ["^com\\.google\\.Chrome$"
+                          "^org\\.chromium\\.Chromium$"
+                          "^com\\.google\\.Chrome\\.canary$"]}
+ :layers {:wlayer {:key :w}
+          :xlayer {:key :x}}
+ :main [{:des "example layer"
+         :rules [:wlayer
+                 [:e "open -a Emacs.app"]
+                 [:s "open -a Safari.app"]
+                 :xlayer
+                 [:i "open -a iTunes.app"]
+                 ;; support multiple conditions
+                 ;; use vector start with :condi for multiple conditions
+                 [:condi :xlayer :chromes]
+                 [:i "open -a iTunes.app"]]}]}
+#+end_src
+
+[0.1.8]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.7...v0.1.8
 
 ** 0.1.7 - 2018-09-19
 *** Fixed
