@@ -48,10 +48,17 @@ All notable changes to this project will be documented in this file. This change
                  [:s "open -a Safari.app"]
                  :xlayer
                  [:i "open -a iTunes.app"]
+
                  ;; support multiple conditions
                  ;; use vector start with :condi for multiple conditions
                  [:condi :xlayer :chromes]
-                 [:i "open -a iTunes.app"]]}]}
+                 [:i "open -a iTunes.app"]
+
+                 ;; you can still spercify conditions as the third element of the rule vector
+                 ;; it will be combined with the group condition
+                 ;; below rule is same as above one
+                 :xlayer
+                 [:i "open -a iTunes.app" :chromes]]}]}
 #+end_src
 
 [0.1.8]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.7...v0.1.8
