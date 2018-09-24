@@ -29,10 +29,14 @@
                      :rules [[:i :us :q-mode]
                              [:o :squirrel :q-mode]]}
                     {:des "tab-mode"
-                     :rules [[:h "/usr/local/bin/chunkc tiling::window --warp west" :chunkwm-move-mode]
-                             [:h "/usr/local/bin/chunkc tiling::window --use-temporary-ratio 0.03 --adjust-window-edge west" :chunkwm-scale-mode]
-                             [:h "/usr/local/bin/chunkc tiling::window --focus west" :tab-mode]]}])
-
+                     :rules [:chunkwm-move-mode
+                             [:h "/usr/local/bin/chunkc tiling::window --warp west"]
+                             :chunkwm-scale-mode
+                             [:h "/usr/local/bin/chunkc tiling::window --use-temporary-ratio 0.03 --adjust-window-edge west"]
+                             :tab-mode
+                             [:h "/usr/local/bin/chunkc tiling::window --focus west"]
+                             [:condi :chunkwm-move-mode :chunkwm-scale-mode]
+                             [:l "/usr/local/bin/chunkc tiling::window --focus east"]]}])
 
 (def result [{:description "auto generated layer trigger key",
               :manipulators [{:type "basic",
@@ -277,8 +281,15 @@
                               :conditions [{:name "tab-mode",
                                             :value 1,
                                             :type "variable_if"}],
+                              :type "basic"}
+                             {:from {:key_code "l"},
+                              :to
+                              [{:shell_command
+                                "/usr/local/bin/chunkc tiling::window --focus east"}],
+                              :conditions
+                              [{:name "chunkwm-scale-mode", :value 1, :type "variable_if"}
+                               {:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
                               :type "basic"}]}])
-
 
 (t/deftest generate-mains
   (init-conf-data)

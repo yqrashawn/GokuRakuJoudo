@@ -5,6 +5,7 @@
    [karabiner-configurator.keys :as keys]
    [karabiner-configurator.froms :as froms]
    [karabiner-configurator.tos :as tos]
+   [karabiner-configurator.conditions :as condis]
    [karabiner-configurator.data :refer :all]
    [karabiner-configurator.misc :refer :all]))
 
@@ -251,6 +252,13 @@
                     [result insert-simlayer])
                   result)]
      result)))
+(def current-in-rules-conditions nil)
+(defn dcirc [condis]
+  (if (nil? condis)
+    (def current-in-rules-conditions nil)
+    (if (not (vector? condis))
+      (def current-in-rules-conditions [condis])
+      (def current-in-rules-conditions (pop (into [] (reverse condis)))))))
 
 (defn generate
   "generate one rule"
@@ -260,13 +268,38 @@
                        :manipulators
                        (into []
                              (flatten
-                              (for [rule rules]
-                                (let [[from to condition other-options] rule]
-                                  (do
-                                    (assert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to> is nil"))
-                                    (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to)
-                                          (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
-                                          (nn? other-options) (parse-rule des from to condition other-options)))))))})
+                              (let [processed-rules
+                                    (into [] (for [rule rules]
+                                               (if (or (keyword? rule) (and (vector? rule) (= (first rule) :condi)))
+                                                 (do (dcirc rule) nil)
+                                                 (if (nn? current-in-rules-conditions)
+                                                   (let [[from to conditions other-options] rule
+                                                         vector-conditions? (vector? conditions)
+                                                         simple-set-variable? (and vector-conditions? (condis/is-simple-set-variable? conditions))
+                                                         keyword-conditions? (keyword? conditions)
+                                                         conditions
+                                                         (cond (or simple-set-variable? keyword-conditions?)
+                                                               (conj current-in-rules-conditions conditions)
+                                                               vector-conditions?
+                                                               (into [] (concat current-in-rules-conditions conditions))
+                                                               :else
+                                                               current-in-rules-conditions)]
+                                                     (cond (nn? other-options)
+                                                           [from to conditions other-options]
+                                                           (nn? conditions)
+                                                           [from to conditions]
+                                                           :else
+                                                           [from to]))
+                                                   rule))))
+                                    cleanup-circ (dcirc nil)]
+                                (for [rule processed-rules
+                                      :when (nn? rule)]
+                                  (let [[from to condition other-options] rule]
+                                    (do
+                                      (assert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to> is nil"))
+                                      (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to)
+                                            (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
+                                            (nn? other-options) (parse-rule des from to condition other-options))))))))})
         layer-result {:description "auto generated layer trigger key"
                       :manipulators (into [] (for [[layer-name layer-defination] (:layers conf-data)]
                                                layer-defination))}
@@ -276,5 +309,4 @@
 (defn parse-mains
   "parse main section to final edn format, ready to convert to json"
   [mains]
-  ;; (into [] (generate mains))
   (generate mains))

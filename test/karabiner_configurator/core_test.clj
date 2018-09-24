@@ -15,6 +15,6 @@
   (t/testing "generate vi-mode config"
     (t/is (= (sut/generate vi-mode-example) vi-mode-result)))
   (init-conf-data)
-  (t/testing "generate vi-mode config"
+  (t/testing "generate launch-mode config"
     (t/is (= (sut/generate launch-mode-example) launch-mode-result))))
 ;; (sut/parse launch-mode-example)
