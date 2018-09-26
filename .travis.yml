@@ -32,5 +32,4 @@ cache:
   - "/usr/local/Cellar/watchexec/"
 after_success:
 - lein cloverage --no-html --coveralls
-- curl -X "POST" "https://coveralls.io/api/v1/jobs" -H 'Content-Type: multipart/form-data;
-    charset=utf-8;' -F "json_file=@./target/coverage/coveralls.json"
+- curl -F json_file=@./target/coverage/coveralls.json https://coveralls.io/api/v1/jobs
