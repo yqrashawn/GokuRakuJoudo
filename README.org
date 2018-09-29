@@ -46,8 +46,7 @@ The program will look for ~karabiner.edn~ and ~karabiner.json~ file under
 ~$HOME/.config/karabiner.edn~ and ~$HOME/.config/karabiner/karabiner.json~ if
 ~$XDG_CONFIG_HOME~ is not defined).
 
-When running as a service, use `open ~/Library/Logs/goku/error.log` to check
-parse error.
+When running as a service, use `open ~/Library/Logs/goku.log` to check log.
 
 ** Discussion
 - karabiner-generator's [[https://t.me/karabinermac][Telegram group]].
