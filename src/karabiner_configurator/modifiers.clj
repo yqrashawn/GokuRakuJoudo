@@ -48,8 +48,8 @@
   [modifier-info & modifier-name]
   (let [modifier-name (first modifier-name)
         mname (if (nn? modifier-name)
-               modifier-name
-               :anonymous-modifier)]
+                modifier-name
+                :anonymous-modifier)]
     (cond (vector? modifier-info)
           (parse-vector-modifiers mname modifier-info)
           (map? modifier-info)

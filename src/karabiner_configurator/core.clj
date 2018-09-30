@@ -76,7 +76,7 @@
         updated-profiles (assoc (:profiles karabiner-config ) (:index profile-to-update) updated-profile)
         updated-configs (assoc karabiner-config :profiles updated-profiles)]
     (spit (karabiner-json-path)
-     (json/generate-string updated-configs {:pretty true}))))
+          (json/generate-string updated-configs {:pretty true}))))
 
 (defn parse-edn [path]
   (update-to-karabiner-json (parse (load-edn path)))
@@ -107,8 +107,8 @@
         ""
         "Options:"
         options-summary]
-        ;; ""
-        ;; "Please refer to the manual page for more information."]
+       ;; ""
+       ;; "Please refer to the manual page for more information."]
        (string/join \newline)))
 
 (defn error-msg [errors]

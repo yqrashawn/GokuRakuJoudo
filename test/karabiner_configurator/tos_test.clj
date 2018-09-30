@@ -80,11 +80,11 @@
                    :6 [{:modifiers ["left_command" "right_shift"],
                         :key_code "d"}]}
              :input-sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel",
-                                       :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime",
-                                       :language "zh-Hans"},
-                            :us {:input_mode_id "",
-                                 :input_source_id "com.apple.keylayout.US",
-                                 :language "en"}},
+                                        :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime",
+                                        :language "zh-Hans"},
+                             :us {:input_mode_id "",
+                                  :input_source_id "com.apple.keylayout.US",
+                                  :language "en"}},
              :modifiers {:1 {:mandatory ["left_command" "right_shift"]}},
              :simlayer-threshold 250,
              :devices {},
@@ -99,12 +99,12 @@
   (update-conf-data (assoc conf-data :templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}))
   (update-conf-data (assoc conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]}}))
   (update-conf-data (assoc conf-data :input-sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
-                                                               :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
-                                                               :language "zh-Hans"}
-                                                    :us {:input_mode_id ""
-                                                         :input_source_id "com.apple.keylayout.US"
-                                                         :language "en"}}))
+                                                                :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
+                                                                :language "zh-Hans"}
+                                                     :us {:input_mode_id ""
+                                                          :input_source_id "com.apple.keylayout.US"
+                                                          :language "en"}}))
   (t/testing
-   (t/is (= (:tos (sut/generate tos-example)) (:tos result)))))
+      (t/is (= (:tos (sut/generate tos-example)) (:tos result)))))
 
 ;; (sut/generate tos-example)

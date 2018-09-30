@@ -25,14 +25,14 @@
       (get-in (edn/read (java.io.PushbackReader. r)) args)
       (edn/read (java.io.PushbackReader. r))))
   #_(try
-    (with-open [r (io/reader source)]
-      (if args
-        (get-in (edn/read (java.io.PushbackReader. r)) args)
-        (edn/read (java.io.PushbackReader. r))))
-    (catch java.io.IOException e
-      (printf "Couldn't open '%s': %s\n" source (.getMessage e)))
-    (catch RuntimeException e
-      (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
+      (with-open [r (io/reader source)]
+        (if args
+          (get-in (edn/read (java.io.PushbackReader. r)) args)
+          (edn/read (java.io.PushbackReader. r))))
+      (catch java.io.IOException e
+        (printf "Couldn't open '%s': %s\n" source (.getMessage e)))
+      (catch RuntimeException e
+        (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
 
 (defn load-result-edn
   [source]
@@ -44,12 +44,12 @@
   (with-open [r (io/reader source)]
     (json/parse-stream (java.io.PushbackReader. r) true))
   #_(try
-    (with-open [r (io/reader source)]
-      (json/parse-stream (java.io.PushbackReader. r) true))
-    (catch java.io.IOException e
-      (printf "Couldn't open '%s': %s\n" source (.getMessage e)))
-    (catch RuntimeException e
-      (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
+      (with-open [r (io/reader source)]
+        (json/parse-stream (java.io.PushbackReader. r) true))
+      (catch java.io.IOException e
+        (printf "Couldn't open '%s': %s\n" source (.getMessage e)))
+      (catch RuntimeException e
+        (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
 
 (defmacro when-let*
   ([bindings & body]
