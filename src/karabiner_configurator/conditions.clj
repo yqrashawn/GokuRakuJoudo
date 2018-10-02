@@ -44,9 +44,9 @@
                       condi-type (if condi!?
                                    "input_source_unless"
                                    "input_source_if")
-                      result (if (and (keyword? condi) (nn? (condi (:input_sources conf-data))))
+                      result (if (and (keyword? condi) (nn? (condi (:input-sources conf-data))))
                                {:input_sources
-                                [(condi (:applications conf-data))]
+                                [(condi (:input-sources conf-data))]
                                 :type condi-type}
                                result)
                       condi-type (if condi!?

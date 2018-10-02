@@ -36,7 +36,9 @@
                              :tab-mode
                              [:h "/usr/local/bin/chunkc tiling::window --focus west"]
                              [:condi :chunkwm-move-mode :chunkwm-scale-mode]
-                             [:l "/usr/local/bin/chunkc tiling::window --focus east"]]}])
+                             [:l "/usr/local/bin/chunkc tiling::window --focus east"]]}
+                    {:des "input source as condition"
+                     :rules [[:a :a :us]]}])
 
 (def result [{:description "auto generated layer trigger key",
               :manipulators [{:type "basic",
@@ -289,7 +291,18 @@
                               :conditions
                               [{:name "chunkwm-scale-mode", :value 1, :type "variable_if"}
                                {:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
-                              :type "basic"}]}])
+                              :type "basic"}]}
+             {:description "input source as condition",
+              :manipulators
+              [{:from {:key_code "a"},
+                :to [{:key_code "a"}],
+                :conditions
+                [{:input_sources
+                  [{:input_mode_id "",
+                    :input_source_id "com.apple.keylayout.US",
+                    :language "en"}],
+                  :type "input_source_if"}],
+                :type "basic"}]}])
 
 (t/deftest generate-mains
   (init-conf-data)

@@ -59,7 +59,7 @@ Karabiner-EventViewer.app
 
  :applications {:chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
 
- :input_sources {:us {:input_mode_id ""
+ :input-sources {:us {:input_mode_id ""
                       :input_source_id "com.apple.keylayout.US"
                       :language "en"}}
 
