@@ -1,7 +1,8 @@
 * Tutorial
-This is a the tutorial. I'll do my best to make it clear and short enough. If
-you have any question or advice, just open an issue or ask me in the telegram
-group or keybase group.
+Goku supports all the features that Karabiner Elements provides via its [JSON spec](https://pqrs.org/osx/karabiner/json.html).
+
+If you have any question or advice on how to improve the tool, just open an issue or ask questions in the [Telegram
+group](https://t.me/karabinermac) or Keybase group.
 
 ** Basic
 *** click a insert to 1, click b to insert 2

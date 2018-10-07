@@ -1,20 +1,16 @@
 [[https://travis-ci.com/yqrashawn/GokuRakuJoudo.svg?branch=master]]
 [[https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg]]
 * GokuRakuJoudo
-Goku is a tool to let you manage your karabiner's configuration with ease.
+Goku is a tool to let you manage your [Karabiner](https://github.com/tekezo/Karabiner-Elements) configuration with ease.
 
-Karbiner-Elements uses json as it's config file. It lead to thounds lines of
-json (mine is over 5000). It makes it really hard to edit the config file.
+Karbiner Elements uses JSON as it's config file. This leads to thousands lines of
+JSON (sometimes over 20,000 lines). Which makes it really hard to edit the config file and iterate on your keymap.
 
 Goku use the [[https://github.com/edn-format/edn][edn format]] to the rescue.
 
-[[./Tutorial.org][Tutorial about how to write the configuration]]. If there's any question or
-advice, just open an issue or ask me in telegram group or keybase group.
-There're links below.
+## Why use Goku?
 
-The project is inspired by [[https://github.com/nikitavoloboev/karabiner-generator][karabiner-generator]].
-
-So how does it look like, karabiner.json vs karabiner.edn.
+Below are two Karabiner configuration snippets that map caps lock to an escape key.
 
 #+BEGIN_HTML
 <p align="center"><img src="resources/images/karabiner.json.png" /></p>
@@ -26,40 +22,37 @@ So how does it look like, karabiner.json vs karabiner.edn.
 <p align="center">karabiner.edn</span>
 #+END_HTML
 
-** Installation
+In practice this means that you can see multiple Karabiner rules on you screen as you edit your config with Goku. Which speeds up the iteration speed significantly as you can create new rules as little as few characters.
+
+** Install
 #+begin_src shell
 brew install yqrashawn/goku/goku
 #+end_src
 
 ** Usage
-Create a profile named "Goku" in karabiner gui tool and run the executable.
 
-The program will read ~karabiner.edn~ and write your config into
-~karabiner.json~'s Goku profile.
+Create a profile named "Goku" in Karabiner GUI tool.
 
-Run command ~goku~ to update karabiner.json once.
-Run command ~gokuw~ to keep watching ~karabiner.edn~.
-Run command ~brew services start~ to use it as a service.
+![](https://i.imgur.com/yeWtb87.png)
 
-The program will look for ~karabiner.edn~ and ~karabiner.json~ file under
-~$XDG_CONFIG_HOME~ and ~$XDG_CONFIG_HOME/karabiner/~ (fall back to
-~$HOME/.config/karabiner.edn~ and ~$HOME/.config/karabiner/karabiner.json~ if
-~$XDG_CONFIG_HOME~ is not defined).
+Goku reads ~karabiner.edn~ file which holds your Karabiner config. This file should be placed inside `~/.config/` directory on your mac. If you use a dots dir to hold your config files, you can symlink `karabiner.edn` and Goku will pick up the changes too.
 
-When running as a service, use `open ~/Library/Logs/goku.log` to check log.
+Goku provides two commands:
 
-** Discussion
-- karabiner-generator's [[https://t.me/karabinermac][Telegram group]].
-- karabiner keybase team
-  #+begin_src shell
-  keybase team request-access karabiner
-  #+end_src
+~goku~: Will update karabiner.json once.
+~gokuw~: Will keep watching your ~karabiner.edn~ and on saving, will update your configuration.
+
+Run command ~brew services start~ to use it as a service (runs `gokuw` in background). When Goku is ran as service, the logs are kept inside `~/Library/Logs/goku.log`.
+
+## Tutorial
+
+Read through the [[./Tutorial.org][Tutorial about how you can write the configuration in Goku]].
+
+If there's any question or advice, just [open an issue](../../issues/new) or join [Karabiner Telegram group](https://t.me/karabinermac) and ask your questions there.
 
 ** Note
 - consumer_key printing_key and mouse_key don't support special modifier i.e. :!Ca
 - mouse key has no abbreviation keyword in main rules
 
-** The name
-It's the name of the song I'm lisening while writing this.
 ** Changelog
 Check [[./CHANGELOG.org][CHANGELOG]] file.
