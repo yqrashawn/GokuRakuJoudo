@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file. This change
 
 ** 0.1.9 - 2018-10-02
 *** Fixed
-- different input source defination
+- different input source definition
 now predefined input sources is ~:input-sources~ instead of ~:input_sources~
 - fix homebrew service log file premission
 now the brew service log file located at ~~/Library/Logs/goku.log~, contains
@@ -17,7 +17,7 @@ both stderr and stdout.
 
 ** 0.1.8 - 2018-09-24
 *** Added
-- old ~:layers~ predefination
+- old ~:layers~ predefinition
 
 #+begin_src clojure
 ;; before this feature

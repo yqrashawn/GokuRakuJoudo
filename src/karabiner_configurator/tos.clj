@@ -4,7 +4,7 @@
             [karabiner-configurator.keys :refer :all]
             [karabiner-configurator.modifiers :as kmodifier]))
 
-;; parse tos defination
+;; parse tos definition
 ;; spec https://pqrs.org/osx/karabiner/json.html#to-event-definition
 
 ;;                {
@@ -64,11 +64,11 @@
     (let [{:keys [set input shell lazy repeat halt hold_down_ms]} tinfo
           result (parse-key tname tinfo true true)
           validate-shell (assert (or (and (vector? shell) (contains? (:templates conf-data) (first shell))) (string? shell) (nil? shell))
-                                 (str "invalid `shell` in to defination " tname " " shell ", should be string or keyword"))
+                                 (str "invalid `shell` in to definition " tname " " shell ", should be string or keyword"))
           validate-input (assert (or (nil? input) (and (keyword? input) (contains? (:input-sources conf-data) input)))
-                                 (str "invalid `input` in to defination " tname " " input ", should be a keyword"))
+                                 (str "invalid `input` in to definition " tname " " input ", should be a keyword"))
           validate-set (assert (or (vector? set) (nil? set))
-                               (str "invalid `set` in to defination " tname " " set ", should be a vector"))
+                               (str "invalid `set` in to definition " tname " " set ", should be a vector"))
           result (if (keyword? input)
                    (assoc result :select_input_source (input (:input-sources conf-data)))
                    result)
@@ -103,7 +103,7 @@
             {tname
              (do
                (assert (or (vector? tinfo) (map? tinfo))
-                       (str "invalid to defination in " tname ", must be map or vector"))
+                       (str "invalid to definition in " tname ", must be map or vector"))
                (if (not (vector? tinfo))
                  (into [] (parse-to tname [tinfo]))
                  (into [] (parse-to tname tinfo))))}))))

@@ -57,7 +57,7 @@
 ;; :interrupt             true false
 ;; :dorder                :insensitive :strict :strict_inverse
 ;; :upwhen                :insensitive :strict :strict_inverse
-;; :afterup               to event defination
+;; :afterup               to event definition
 
 (def simo-keywords
   "keyword while parsing froms, fisrt in vactor is the default value"
@@ -131,7 +131,7 @@
           (for [[fname finfo] froms]
             {fname
              (do
-               (assert (map? finfo) (str "invalid from defination in " fname ", must be a map"))
+               (assert (map? finfo) (str "invalid from definition in " fname ", must be a map"))
                (parse-from fname finfo))}))))
 
 (defn parse-froms [froms]

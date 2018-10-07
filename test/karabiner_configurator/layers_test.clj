@@ -60,7 +60,7 @@
                                       :condi [:chromes]}
                         :non-chrome-mode {:key :a
                                           :condi [:!chromes]}
-                        :simple-condi-defination-test {:key :a
+                        :simple-condi-definition-test {:key :a
                                                        :condi ["foo" 1]}})
 
 (def simlayer-result
@@ -117,15 +117,15 @@
                                  :conditions [{:bundle_identifiers ["^com\\.google\\.Chrome$"
                                                                     "^com\\.google\\.Chrome\\.canary$"],
                                                :type "frontmost_application_unless"}]},
-               :simple-condi-defination-test {:type "basic",
+               :simple-condi-definition-test {:type "basic",
                                               :parameters {:basic.simultaneous_threshold_milliseconds 250},
-                                              :to [{:set ["simple-condi-defination-test"
+                                              :to [{:set ["simple-condi-definition-test"
                                                           1]}],
                                               :from {:sim [:a],
                                                      :simo {:interrupt true,
                                                             :dorder :strict,
                                                             :uorder :strict_inverse,
-                                                            :afterup {:set ["simple-condi-defination-test"
+                                                            :afterup {:set ["simple-condi-definition-test"
                                                                             0]}}},
                                               :conditions [{:name "foo",
                                                             :value 1,

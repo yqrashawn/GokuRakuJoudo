@@ -2,7 +2,7 @@
   (:require [karabiner-configurator.misc :refer :all]
             [karabiner-configurator.data :refer :all]))
 
-;; this file parse modifier defination
+;; this file parse modifier definition
 ;; spec https://pqrs.org/osx/karabiner/json.html#from-event-definition-modifiers
 
 ;; user can define modifier combination in advance and use it in `froms`, `tos` or `rules`
@@ -42,8 +42,8 @@
   (assert (modifier-k? modifier-info) (str "invalid modifier " modifier-info " in " modifier-name))
   {:mandatory [(name modifier-info)]})
 
-(defn parse-single-modifier-defination
-  "parse a modifer defination into a map with mandatory and optional
+(defn parse-single-modifier-definition
+  "parse a modifer definition into a map with mandatory and optional
   used both in here and parsing froms, tos as well"
   [modifier-info & modifier-name]
   (let [modifier-name (first modifier-name)
@@ -64,7 +64,7 @@
           {}
           (for [[modifier-name modifier-info] modifiers]
             {modifier-name
-             (parse-single-modifier-defination modifier-info modifier-name)}))))
+             (parse-single-modifier-definition modifier-info modifier-name)}))))
 
 (defn parse-modifiers
   "parse modifires to string"
