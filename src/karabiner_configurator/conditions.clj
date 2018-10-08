@@ -21,7 +21,7 @@
           (for [condi condis
                 :let [validate-condi
                       (assert (or (and (vector? condi) (is-simple-set-variable? condi)) (keyword? condi))
-                              (str "invalid condition " condi ", must be a keyword or simple condition defination"))
+                              (str "invalid condition " condi ", must be a keyword or simple condition definition"))
                       condi!? (if (keyword? condi) (= \! (first (into [] (name condi)))))
                       condi (if condi!? (keyword (subs (name condi) 1))
                                 condi)

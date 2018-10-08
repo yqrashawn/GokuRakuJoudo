@@ -14,7 +14,7 @@
 ;; :from-a | predefined froms
 ;; :!Ca    | special modifier key
 ;; [:a :b] | simultaneous key
-;; {...}   | fallback to `froms` defination
+;; {...}   | fallback to `froms` definition
 (defn from-key
   "generate normal from key config"
   [des from]
@@ -24,16 +24,16 @@
                                   (map? from))
                               (str "invalid <from> in main section's " des))
         result (if (vector? from)
-                 {:from (froms/parse-from :tmp-from-defination-from-main {:sim from})}
+                 {:from (froms/parse-from :tmp-from-definition-from-main {:sim from})}
                  result)
         result (if (and (nil? result) (keyword? from) (or (k? from) (special-modi-k? from)))
-                 {:from (froms/parse-from :tmp-from-defination-from-main {:key from})}
+                 {:from (froms/parse-from :tmp-from-definition-from-main {:key from})}
                  result)
         result (if (and (nil? result) (contains? (:froms conf-data) from))
                  {:from (from (:froms conf-data))}
                  result)
         result (if (and (map? from) (nil? result))
-                 {:from (froms/parse-from :tmp-from-defination-from-main from)}
+                 {:from (froms/parse-from :tmp-from-definition-from-main from)}
                  result)]
     (assert (nn? result) (str "something wrong while parsing main rule " des))
     result))
@@ -71,7 +71,7 @@
                            (vector? v)
                            (string? v)
                            (map? v))
-                       (str "invalid to defination in main section's " des))
+                       (str "invalid to definition in main section's " des))
                (cond (keyword? v)
                      (rule-parse-keyword des v)
                      (and (vector? v) (conditions/is-simple-set-variable? v))
@@ -99,14 +99,14 @@
 ;; [:launch-template "Mail"] | shell command then insert a
 ;; ["cd" "ls"]               | multeple shell command
 ;; [["vi-mode" 1] :a]        | set variable then insert a
-;; [{...}]                   | fallback to `tos` defination
+;; [{...}]                   | fallback to `tos` definition
 
 ;; conflict
 ;; ["cd" "ls"]
 ;; set_variable to string or two shell_command
 ;; two shell_command cd & ls, cd && ls
 ;; ["cd" "ls"] | multeple shell command
-;; [{:set ["variable name" "variable value"]}] | set variable's value to string (fallback to `tos` defination)
+;; [{:set ["variable name" "variable value"]}] | set variable's value to string (fallback to `tos` definition)
 (defn to-key
   "generate to config"
   [des to]
@@ -301,8 +301,8 @@
                                             (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
                                             (nn? other-options) (parse-rule des from to condition other-options))))))))})
         layer-result {:description "auto generated layer trigger key"
-                      :manipulators (into [] (for [[layer-name layer-defination] (:layers conf-data)]
-                                               layer-defination))}
+                      :manipulators (into [] (for [[layer-name layer-definition] (:layers conf-data)]
+                                               layer-definition))}
         add-layer-result (if (> (count (:manipulators layer-result)) 0) (conj user-result layer-result) user-result)]
     (into [] add-layer-result)))
 

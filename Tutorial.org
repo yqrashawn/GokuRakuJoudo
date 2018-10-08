@@ -1,7 +1,8 @@
 * Tutorial
-This is a the tutorial. I'll do my best to make it clear and short enough. If
-you have any question or advice, just open an issue or ask me in the telegram
-group or keybase group.
+Goku supports all the features that Karabiner Elements provides via its [JSON spec](https://pqrs.org/osx/karabiner/json.html).
+
+If you have any question or advice on how to improve the tool, just open an issue or ask questions in the [Telegram
+group](https://t.me/karabinermac) or Keybase group.
 
 ** Basic
 *** click a insert to 1, click b to insert 2
@@ -26,7 +27,7 @@ group or keybase group.
 ;; these keycode is just original karabiner keycode prefix with colon
 #+end_src
 
-you can find all keycode defination in [[https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj][this file]] or use the
+you can find all keycode definition in [[https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj][this file]] or use the
 Karabiner-EventViewer.app
 
 *** click a insert to 1 only in Google Chrome
@@ -84,7 +85,7 @@ the only condition that GokuRakuJoudo dose not support yet is [[https://pqrs.org
 ;; means from command a to control 1
 ;; :!Ca is keycode :a and prefix a with !C
 
-;; here's the defination
+;; here's the definition
 
 ;; !  | means mandatory
 ;; #  | means optional
@@ -102,17 +103,17 @@ the only condition that GokuRakuJoudo dose not support yet is [[https://pqrs.org
 ;;                 | which is command control +
 ;; !O#Sright_arrow | mandatory option optional any right_arrow
 
-;; karabiner defination of mandatory and optional
+;; karabiner definition of mandatory and optional
 ;; https://pqrs.org/osx/karabiner/json.html#from-event-definition-modifiers
 
 ;; rule [<from> <to>]
-;; if simplified modifier is used in <to>, optional(#) defination will be
+;; if simplified modifier is used in <to>, optional(#) definition will be
 ;; ignored.
 #+end_src
 
 *** from simultaneous key
 Karabiner also has this functionality that can map simultaneous key presses to
-other events We can use that in GokuRakuJoudo as well. 
+other events We can use that in GokuRakuJoudo as well.
 
 #+begin_src clojure
 {:main [{:des "simultaneous j l press to F19" :rules [[[:j :l] :f19]]}]}
@@ -120,7 +121,7 @@ other events We can use that in GokuRakuJoudo as well.
 ;;       <from>  <to>
 
 ;; so when from is a vector (or array), GokuRakuJoudo will parse it as
-;; simultaneous key press 
+;; simultaneous key press
 #+end_src
 
 *** to shell command
@@ -208,13 +209,13 @@ and we can't set variable back in both rules. The old way in karabiner to define
 layer is using the ~to_if_alone~ option. We will talk about it soon.
 
 *** froms and tos
-So in the karabiner.json spec, there're [[https://pqrs.org/osx/karabiner/json.html#from-event-definition][from event defination]] and [[https://pqrs.org/osx/karabiner/json.html#to-event-definition][to event
-defination]]. We can predefine this in GokuRakuJoudo as well.
+So in the karabiner.json spec, there're [[https://pqrs.org/osx/karabiner/json.html#from-event-definition][from event definition]] and [[https://pqrs.org/osx/karabiner/json.html#to-event-definition][to event
+definition]]. We can predefine this in GokuRakuJoudo as well.
 
-**** froms defination
+**** froms definition
 Since karabiner can send multiple to event triggerd by a single from event, we
-won't froms defination too much. There're two kinds of situation that we might
-want to use this. 
+won't froms definition too much. There're two kinds of situation that we might
+want to use this.
 
 #+begin_src clojure
 ;; from any key_code, consumer_key_code or pointing_button
@@ -232,7 +233,7 @@ want to use this.
 ;; configs above disable all kinds of keys.
 ;; rule [<from> <to> <conditions>]
 ;; we can put predefined from keyword into <from> section
-;; or we can just put the from defination map into <from> section, since we
+;; or we can just put the from definition map into <from> section, since we
 ;; usually only use each froms one time.
 
 ;; WARNING
@@ -250,13 +251,13 @@ want to use this.
 The simultaneous_options won't be used frequently. You can find the the detail
 in the [[https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/froms.clj#L9][froms documentation]], which is above its implementation.
 
-**** tos defination
-Tos is used more often than froms. It's the same idea as froms defination. You
+**** tos definition
+Tos is used more often than froms. It's the same idea as froms definition. You
 can find the detailed [[https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/tos.clj#L7][tos documentation]] in the implementation file. There's shot
 cuts for tos in rules' <to>, like string to shell commands and multiple to
-definations in vector.
+definitions in vector.
 
-You only need to use to defination if you want to use or set ~select_input_source~,
+You only need to use to definition if you want to use or set ~select_input_source~,
 ~mouse_key~, ~lazy~, ~repeat~, ~halt~, ~hold_down_milliseconds~.
 
 *** simlayers
@@ -272,14 +273,14 @@ Basically, if you type fast, use simlayer, otherwise, use the old layer.
 If you don't care about this, you can just jump to the next header, which is
 how to set this in GokuRakuJoudo.
 
-The old layer has the same defination as "layers" in thoes keyboard firmware
+The old layer has the same definition as "layers" in thoes keyboard firmware
 keymap editors. eg.
 
 #+begin_example
 press w key down --> in w layer ("w layer" set to 1)
-click 1 key      --> trigger key 1's defination under w layer ("w layer" is 0)
-click 2 key      --> trigger key 2's defination under w layer ("w layer" is 0)
-release w key up --> out w layer ("w layer" is 0) 
+click 1 key      --> trigger key 1's definition under w layer ("w layer" is 0)
+click 2 key      --> trigger key 2's definition under w layer ("w layer" is 0)
+release w key up --> out w layer ("w layer" is 0)
 #+end_example
 
 There're two problems in old layer. When we type "w1" really fast, we trigger
@@ -291,10 +292,10 @@ this. The ~-->~ is the symbol of time.
 
 #+begin_example
 press w key down --> if in threshold milliseconds
-                    --> press 1 key ("w layer" set to 1) 
-                    --> in w layer and trigger the 1 defination
+                    --> press 1 key ("w layer" set to 1)
+                    --> in w layer and trigger the 1 definition
                         --> press 2 key even after the threshold ("w layer" is still 1)
-                        --> in w layer and trigger the 2 defination
+                        --> in w layer and trigger the 2 definition
                             --- we hold the w key for 1 year ---> ("w layer" is still 1)
                             release w to set "w layer" to 0
                  --> if after threshold milliseconds
@@ -346,7 +347,7 @@ to do in that layer.
 ;; So <other options> includs ~to_if_alone~, ~to_if_held_down~,
 ;; ~to_after_key_up~, ~to_delayed_action~ and ~parameters~.
 
-;; The first 4 is same as tos defination, and we also have shotcusts for ~parameters~.
+;; The first 4 is same as tos definition, and we also have shotcusts for ~parameters~.
 #+end_src
 
 We can checkout [[https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L170][the documentation for <other options>]].
