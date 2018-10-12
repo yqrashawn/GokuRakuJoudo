@@ -58,11 +58,12 @@
                       (and (nn? condi) (vector? condi)))
                   (str "invalid condition definition in layer " k ", condition must be a vector or map or keyword"))
           afterup (:afterup v)
+          alone (:alone v)
           key (:key v)
           result (:layers conf-data)
           result (assoc result k {:type "basic"
                                   :to [{:set [(name k) 1]}]
-                                  :alone [{:key key}]
+                                  :alone [{:key (if alone alone key)}]
                                   :from {:key key}
                                   :afterup [{:set [(name k) 0]}]})
           result (if afterup

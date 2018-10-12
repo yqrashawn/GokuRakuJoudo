@@ -6,7 +6,8 @@
 (def layers-example {:tab-mode {:key :tab :afterup [{:set ["chunkwm-move-mode" 0]}
                                                     {:set ["chunkwm-scale-mode" 0]}]}
                      :chunkwm-move-mode {:key :f :condi :tab-mode}
-                     :chunkwm-scale-mode {:key :c :condi :tab-mode}})
+                     :chunkwm-scale-mode {:key :c :condi :tab-mode}
+                     :hyper-mode {:key :caps_lock :alone :escape}})
 
 (def layer-result
   {:applications {:chrome ["^com\\.google\\.Chrome$"],
@@ -50,7 +51,13 @@
                          :to_if_alone [{:key_code "c"}],
                          :conditions [{:name "tab-mode",
                                        :value 1,
-                                       :type "variable_if"}]}}
+                                       :type "variable_if"}]}
+    :hyper-mode {:type "basic",
+                 :to [{:set_variable {:name "hyper-mode", :value 1}}],
+                 :from {:key_code "caps_lock"},
+                 :to_after_key_up [{:set_variable {:name "hyper-mode",
+                                                   :value 0}}],
+                 :to_if_alone [{:key_code "escape"}]}}
    :froms {},
    :simlayers {}})
 
