@@ -58,6 +58,7 @@
                       (and (nn? condi) (vector? condi)))
                   (str "invalid condition defination in layer " k ", condition must be a vector or map or keyword"))
           afterup (:afterup v)
+          alone (:alone v)
           key (:key v)
           result (:layers conf-data)
           result (assoc result k {:type "basic"
@@ -68,6 +69,12 @@
           result (if afterup
                    (assoc-in result [k :afterup] (into [] (flatten [(get-in result [k :afterup]) afterup])))
                    result)
+          result (cond (vector? alone)
+                       (assoc-in result [k :alone] alone)
+                       alone
+                       (assoc-in result [k :alone] [alone])
+                       :else
+                       result)
           result (assoc-in result [k :to_after_key_up] (into [] (tos/parse-to (str "auto insert defination of layer" (name k)) (:afterup (k result)))))
           result (assoc-in result [k :to_if_alone] (into [] (tos/parse-to (str "auto insert defination of layer" (name k)) (:alone (k result)))))
           result (assoc-in result [k :to] (into [] (tos/parse-to (str "auto insert defination of layer" (name k)) (:to (k result)))))
