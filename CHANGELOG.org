@@ -3,7 +3,15 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.9...HEAD
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.10...HEAD
+
+** -.1.10 - 2018-10-14
+*** Fixed
+- documentation typo, make readme more clear
+*** Added
+- now user can override ~to_if_alone~ when defining ~:layers~
+
+[0.1.10]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.9...v0.1.10
 
 ** 0.1.9 - 2018-10-02
 *** Fixed
