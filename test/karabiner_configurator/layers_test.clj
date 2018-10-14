@@ -7,7 +7,7 @@
                                                     {:set ["chunkwm-scale-mode" 0]}]}
                      :chunkwm-move-mode {:key :f :condi :tab-mode}
                      :chunkwm-scale-mode {:key :c :condi :tab-mode}
-                     :hyper-mode {:key :caps_lock :alone :escape}})
+                     :hyper-mode {:key :caps_lock :alone {:key :escape}}})
 
 (def layer-result
   {:applications {:chrome ["^com\\.google\\.Chrome$"],
@@ -148,8 +148,7 @@
   ;; (t/testing
   ;;   (t/is (= (sut/generate-layers layers-example) layer-result))
   ;;   (t/is (= (sut/generate-simlayers simlayers-example) simlayer-result)))
-  (t/testing
-   "testing simlayers"
+  (t/testing "testing simlayers"
     (sut/generate-simlayers simlayers-example)
     (t/is (= conf-data simlayer-result))))
 
@@ -160,7 +159,6 @@
   (update-conf-data (assoc conf-data :applications {:chrome ["^com\\.google\\.Chrome$"]
                                                     :chrom-canary ["^com\\.google\\.Chrome\\.canary$"]
                                                     :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}))
-  (t/testing
-   "testing layers"
+  (t/testing "testing layers"
     (sut/generate-layers layers-example)
     (t/is (= conf-data layer-result))))

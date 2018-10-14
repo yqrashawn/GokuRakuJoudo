@@ -63,12 +63,18 @@
           result (:layers conf-data)
           result (assoc result k {:type "basic"
                                   :to [{:set [(name k) 1]}]
-                                  :alone [{:key (if alone alone key)}]
+                                  :alone [{:key key}]
                                   :from {:key key}
                                   :afterup [{:set [(name k) 0]}]})
           result (if afterup
                    (assoc-in result [k :afterup] (into [] (flatten [(get-in result [k :afterup]) afterup])))
                    result)
+          result (cond (vector? alone)
+                       (assoc-in result [k :alone] alone)
+                       alone
+                       (assoc-in result [k :alone] [alone])
+                       :else
+                       result)
           result (assoc-in result [k :to_after_key_up] (into [] (tos/parse-to (str "auto insert definition of layer" (name k)) (:afterup (k result)))))
           result (assoc-in result [k :to_if_alone] (into [] (tos/parse-to (str "auto insert definition of layer" (name k)) (:alone (k result)))))
           result (assoc-in result [k :to] (into [] (tos/parse-to (str "auto insert definition of layer" (name k)) (:to (k result)))))
