@@ -38,7 +38,11 @@
                              [:condi :chunkwm-move-mode :chunkwm-scale-mode]
                              [:l "/usr/local/bin/chunkc tiling::window --focus east"]]}
                     {:des "input source as condition"
-                     :rules [[:a :a :us]]}])
+                     :rules [[:a :a :us]]}
+                    {:des "any keycode"
+                     :rules [[{:any :key_code} :a]
+                             [{:any :consumer_key_code} :a]
+                             [{:any :pointing_button} :a]]}])
 
 (def result [{:description "auto generated layer trigger key",
               :manipulators [{:type "basic",
@@ -302,7 +306,17 @@
                     :input_source_id "com.apple.keylayout.US",
                     :language "en"}],
                   :type "input_source_if"}],
-                :type "basic"}]}])
+                :type "basic"}]}
+             {:description "any keycode",
+              :manipulators [{:from {:any "key_code"},
+                              :to [{:key_code "a"}],
+                              :type "basic"}
+                             {:from {:any "consumer_key_code"},
+                              :to [{:key_code "a"}],
+                              :type "basic"}
+                             {:from {:any "pointing_button"},
+                              :to [{:key_code "a"}],
+                              :type "basic"}]}])
 
 (t/deftest generate-mains
   (init-conf-data)

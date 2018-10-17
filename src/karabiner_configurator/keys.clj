@@ -131,6 +131,6 @@
         result (if (and (not (:key_code result)) (nn? key)) (assoc result :key_code (name (parse-keycode key from-to))) result)
         result (if (nn? ckey) (assoc result :consumer_key_code (name (parse-ckey ckey))) result)
         result (if (nn? pkey) (assoc result :pointing_button (name (parse-pkey pkey))) result)
-        result (if (and (nn? any) (any any-key-keywords)) (assoc result :any (name any-key-keywords)) result)
+        result (if (and (nn? any) (any any-key-keywords)) (assoc result :any (name any)) result)
         result (if (nn? mkey) (assoc result :mouse_key (parse-mkey mkey)) result)]
     result))
