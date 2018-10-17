@@ -71,7 +71,7 @@
 
 (defn mouse-key-name
   [k]
-  (assert (mouse-keyword? k) (str "invalid mouse key keyword " k))
+  (massert (mouse-keyword? k) (str "invalid mouse key keyword " k))
   (:name (k mkey-keyword)))
 
 (defn special-modi-k?

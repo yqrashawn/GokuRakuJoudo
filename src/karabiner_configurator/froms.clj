@@ -76,19 +76,19 @@
 
 (defn parse-keycode-vec
   [vec]
-  (assert (vector? vec) (str "invalid vector " vec))
+  (massert (vector? vec) (str "invalid vector " vec))
   (into []
         (for [v vec]
-          (do (assert (from-k? v) (str "keycode " v " can't be used as from keycode"))
+          (do (massert (from-k? v) (str "keycode " v " can't be used as from keycode"))
               {:key_code (name v)}))))
 
 (defn parse-simo
   [sim simo simo-op-value simo-op-keyword result]
   (if (and (nn? sim) (nn? simo-op-value))
-    (do (assert (or (contains?? [true false] simo-op-value)
-                    (and (keyword? simo-op-value)
-                         (contains?? (:values (simo-op-keyword simo-keywords)) simo-op-value)))
-                (str "invalid detect_key_down_uninterruptedly keyword " simo-op-value))
+    (do (massert (or (contains?? [true false] simo-op-value)
+                     (and (keyword? simo-op-value)
+                          (contains?? (:values (simo-op-keyword simo-keywords)) simo-op-value)))
+                 (str "invalid detect_key_down_uninterruptedly keyword " simo-op-value))
         (if (keyword? simo-op-value) ;; there're true false
           (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] (name simo-op-value))
           (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] simo-op-value)))
@@ -131,7 +131,7 @@
           (for [[fname finfo] froms]
             {fname
              (do
-               (assert (map? finfo) (str "invalid from definition in " fname ", must be a map"))
+               (massert (map? finfo) (str "invalid from definition in " fname ", must be a map"))
                (parse-from fname finfo))}))))
 
 (defn parse-froms [froms]

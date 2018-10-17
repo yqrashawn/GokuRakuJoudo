@@ -20,8 +20,8 @@
     (into []
           (for [condi condis
                 :let [validate-condi
-                      (assert (or (and (vector? condi) (is-simple-set-variable? condi)) (keyword? condi))
-                              (str "invalid condition " condi ", must be a keyword or simple condition definition"))
+                      (massert (or (and (vector? condi) (is-simple-set-variable? condi)) (keyword? condi))
+                               (str "invalid condition " condi ", must be a keyword or simple condition definition"))
                       condi!? (if (keyword? condi) (= \! (first (into [] (name condi)))))
                       condi (if condi!? (keyword (subs (name condi) 1))
                                 condi)
@@ -74,6 +74,6 @@
                                 :value (second condi)
                                 :type "variable_if"}
                                result)
-                      validate-result (assert (nn? result)
-                                              (str "invalid condition keyword " condi ", can't find in any predefined conditions"))]]
+                      validate-result (massert (nn? result)
+                                               (str "invalid condition keyword " condi ", can't find in any predefined conditions"))]]
             result))))

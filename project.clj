@@ -10,7 +10,11 @@
                  [org.clojure/tools.logging "0.4.1"]
                  [org.clojure/tools.cli "0.3.7"]
                  [me.raynes/fs "1.4.6"]
-                 [cheshire "5.8.0"]]
-  :plugins [[lein-cloverage "1.0.13"]])
+                 [cheshire "5.8.0"]
+                 [environ "1.1.0"]]
+  :plugins [[lein-cloverage "1.0.13"]
+            [lein-environ "1.1.0"]]
+  :profiles {:dev {:env {:is-dev true}}
+             :test {:env {:is-dev true}}})
 
 

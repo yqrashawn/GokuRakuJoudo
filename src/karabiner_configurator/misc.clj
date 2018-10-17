@@ -1,7 +1,20 @@
 (ns karabiner-configurator.misc
   (:require [clojure.java.io :as io]
             [cheshire.core :as json]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [environ.core :refer [env]]))
+
+(defn massert [exp error-str]
+  (let [error-str (str "ERROR: " error-str)]
+    (if (env :is-dev)
+      (assert exp error-str)
+      (try
+        (assert exp error-str)
+        (catch AssertionError e
+          (binding [*out* *err*]
+            (println error-str)
+            (println "Failed!"))
+          (System/exit 1))))))
 
 (def nn? "not nil" (complement nil?))
 

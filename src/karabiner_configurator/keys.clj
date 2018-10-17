@@ -10,16 +10,16 @@
 
 (defn parse-keycode [keycode & [from-to]]
   (if from-to
-    (assert (to-k? keycode) (str "invalid key code " keycode " can't be used in from"))
-    (assert (from-k? keycode) (str "invalid key code " keycode " can't be used in from")))
+    (massert (to-k? keycode) (str "invalid key code " keycode " can't be used in from"))
+    (massert (from-k? keycode) (str "invalid key code " keycode " can't be used in from")))
   keycode)
 
 (defn parse-ckey [ckey]
-  (assert (consumer-k? ckey) (str "invalid consumer key code " ckey))
+  (massert (consumer-k? ckey) (str "invalid consumer key code " ckey))
   ckey)
 
 (defn parse-pkey [pkey]
-  (assert (pointing-k? pkey) (str "invalid pointing key code " pkey))
+  (massert (pointing-k? pkey) (str "invalid pointing key code " pkey))
   pkey)
 
 (defn update-mouse-map
@@ -44,7 +44,7 @@
         optional (if both
                    (re-find special-modi-optional-both-re (first both))
                    (re-find special-modi-optional-re keystr))
-        validate (assert (or both mandatory optional)
+        validate (massert (or both mandatory optional)
                          (str "invalid special modifier keyword " smodi))
         mandatory (if mandatory (first mandatory) nil)
         optional (if optional (first optional) nil)
@@ -85,7 +85,7 @@
         optional (if both
                    (re-find special-modi-optional-both-re (first both))
                    (re-find special-modi-optional-re keystr))
-        validate (assert (or both mandatory optional)
+        validate (massert (or both mandatory optional)
                          (str "invalid special modifier keyword " smodi))
         mandatory (if mandatory (first mandatory) nil)
         optional (if optional (first optional) nil)
@@ -95,7 +95,7 @@
                       (keyword (subs keystr (count mandatory)))
                       (and optional (not both))
                       (keyword (subs keystr (count optional))))
-        validate-realkey (assert (k? realkey)
+        validate-realkey (massert (k? realkey)
                                  (str "invalid special key keyword " smodi ", no key " realkey))
         result (assoc result :key_code (name realkey))
         mandatory (if mandatory (into [] (subs mandatory 1)) nil)
@@ -111,12 +111,13 @@
   (let [{:keys [key ckey pkey any modi mkey]} kinfo
         result {}
         special-modi? (and (keyword? key) (or (= \! (first (name key))) (= \# (first (name key)))))
-        both-special-modi-and-modi? (assert (not (and special-modi? (nn? modi))) "can use special modi and modi togeher")
+        both-special-modi-and-modi? (massert (not (and special-modi? (nn? modi))) (str "can't use special modi and modi togeher, check " kname))
         predefined-modi? (and (keyword? modi) (contains?? (:modifiers conf-data) modi))
-        valid-modifier-definition? (assert (or (nil? modi) (map? modi)
-                                               (vector? modi) (modifier-k? modi)
-                                               predefined-modi?)
-                                           (str "invalid modifier definition " modi))
+        valid-modifier-definition? (massert (or (nil? modi) (map? modi)
+                                                (vector? modi) (modifier-k? modi)
+                                                predefined-modi?)
+                                            (str "invalid modifier definition " modi " in " kname))
+        valid-any-keyword? (if any (massert (any any-key-keywords) (str "invalid :any keyword " (name any) " in " kname)))
         mandatory-only? (true? mandatory-only)
         result (if special-modi? (parse-special-modi key result mandatory-only) result)
         result (if (and (not special-modi?) (nn? modi))

@@ -10,17 +10,17 @@
   [simlayers]
   (doseq [[k v] simlayers]
     (let [validate-simlayer
-          (assert (and
-                   (nn? v)
-                   (nn? (:key v))
-                   (k? (:key v)))
-                  (str "invalid simlayer definition " k))
+          (massert (and
+                    (nn? v)
+                    (nn? (:key v))
+                    (k? (:key v)))
+                   (str "invalid simlayer definition " k))
           condi (:condi v)
           condi (if (or (keyword? condi) (map? condi)) [condi] condi)
           validate-condition
-          (assert (or (nil? condi)
-                      (and (nn? condi) (vector? condi)))
-                  (str "invalid condition definition in simlayer " k ", condition must be a vector or map or keyword"))
+          (massert (or (nil? condi)
+                       (and (nn? condi) (vector? condi)))
+                   (str "invalid condition definition in simlayer " k ", condition must be a vector or map or keyword"))
           afterup (:afterup v)
           key (:key v)
           result (:simlayers conf-data)
@@ -46,17 +46,17 @@
   [layers]
   (doseq [[k v] layers]
     (let [validate-layer
-          (assert (and
-                   (nn? v)
-                   (nn? (:key v))
-                   (k? (:key v)))
-                  (str "invalid layer definition " k))
+          (massert (and
+                    (nn? v)
+                    (nn? (:key v))
+                    (k? (:key v)))
+                   (str "invalid layer definition " k))
           condi (:condi v)
           condi (if (or (keyword? condi) (map? condi)) [condi] condi)
           validate-condition
-          (assert (or (nil? condi)
-                      (and (nn? condi) (vector? condi)))
-                  (str "invalid condition definition in layer " k ", condition must be a vector or map or keyword"))
+          (massert (or (nil? condi)
+                       (and (nn? condi) (vector? condi)))
+                   (str "invalid condition definition in layer " k ", condition must be a vector or map or keyword"))
           afterup (:afterup v)
           alone (:alone v)
           key (:key v)

@@ -19,23 +19,23 @@
   "generate normal from key config"
   [des from]
   (let [result nil
-        validate-from (assert (or (and (vector? from) (= 2 (count from)) (k? (first from)) (k? (second from)))
-                                  (and (keyword? from) (or (k? from) (special-modi-k? from) (contains? (:froms conf-data) from)))
-                                  (map? from))
-                              (str "invalid <from> in main section's " des))
+        validate-from (massert (or (and (vector? from) (= 2 (count from)) (k? (first from)) (k? (second from)))
+                                   (and (keyword? from) (or (k? from) (special-modi-k? from) (contains? (:froms conf-data) from)))
+                                   (map? from))
+                               (str "invalid <from> in main section's " des))
         result (if (vector? from)
-                 {:from (froms/parse-from :tmp-from-definition-from-main {:sim from})}
+                 {:from (froms/parse-from des {:sim from})}
                  result)
         result (if (and (nil? result) (keyword? from) (or (k? from) (special-modi-k? from)))
-                 {:from (froms/parse-from :tmp-from-definition-from-main {:key from})}
+                 {:from (froms/parse-from des {:key from})}
                  result)
         result (if (and (nil? result) (contains? (:froms conf-data) from))
                  {:from (from (:froms conf-data))}
                  result)
         result (if (and (map? from) (nil? result))
-                 {:from (froms/parse-from :tmp-from-definition-from-main from)}
+                 {:from (froms/parse-from des from)}
                  result)]
-    (assert (nn? result) (str "something wrong while parsing main rule " des))
+    (massert (nn? result) (str "something wrong while parsing main rule " des))
     result))
 
 (defn parse-simple-set-variable
@@ -52,10 +52,10 @@
         (contains? (:tos conf-data) to)
         (to (:tos conf-data))
         :else
-        (assert false (str
-                       "code shouldn't be here, something wrong while parsing <to> in main section's "
-                       des
-                       ". Please check your data and contact the author, so that the author can improve the error message."))))
+        (massert false (str
+                        "code shouldn't be here, something wrong while parsing <to> in main section's "
+                        des
+                        ". Please check your data and contact the author, so that the author can improve the error message."))))
 
 (defn to-key-vector
   [des to prevresult]
@@ -65,13 +65,13 @@
           (flatten
            (for [v to] ;; this for only return flatten vector
              (do
-               (assert (or (contains? (:tos conf-data) v)
-                           (k? v)
-                           (special-modi-k? v)
-                           (vector? v)
-                           (string? v)
-                           (map? v))
-                       (str "invalid to definition in main section's " des))
+               (massert (or (contains? (:tos conf-data) v)
+                            (k? v)
+                            (special-modi-k? v)
+                            (vector? v)
+                            (string? v)
+                            (map? v))
+                        (str "invalid to definition in main section's " des))
                (cond (keyword? v)
                      (rule-parse-keyword des v)
                      (and (vector? v) (conditions/is-simple-set-variable? v))
@@ -111,14 +111,14 @@
   "generate to config"
   [des to]
   (let [result nil
-        validate-to (assert (or (and (keyword? to) (or (k? to)
-                                                       (special-modi-k? to)
-                                                       (contains? (:input-sources conf-data) to)
-                                                       (contains? (:tos conf-data) to)))
-                                (string? to)
-                                (vector? to)
-                                (map? to))
-                            (str "invalid <to> in main section's " des))
+        validate-to (massert (or (and (keyword? to) (or (k? to)
+                                                        (special-modi-k? to)
+                                                        (contains? (:input-sources conf-data) to)
+                                                        (contains? (:tos conf-data) to)))
+                                 (string? to)
+                                 (vector? to)
+                                 (map? to))
+                             (str "invalid <to> in main section's " des))
         result (if (contains? (:input-sources conf-data) to)
                  (into [] (tos/parse-to des [{:input to}]))
                  result)
@@ -296,7 +296,7 @@
                                       :when (nn? rule)]
                                   (let [[from to condition other-options] rule]
                                     (do
-                                      (assert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to> is nil"))
+                                      (massert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to> is nil"))
                                       (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to)
                                             (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
                                             (nn? other-options) (parse-rule des from to condition other-options))))))))})

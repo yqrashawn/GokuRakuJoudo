@@ -12,12 +12,12 @@
 (defn parse-modifier-arr-or-keyword
   [modi modifier-name]
   (cond (keyword? modi)
-        (do (assert (modifier-k? modi) (str "invalid modifier " modi " in " modifier-name))
+        (do (massert (modifier-k? modi) (str "invalid modifier " modi " in " modifier-name))
             [(name modi)])
         (vector? modi)
         (into []
               (for [v modi]
-                (do (assert (modifier-k? v) (str "invalid modifier " v " in " modifier-name))
+                (do (massert (modifier-k? v) (str "invalid modifier " v " in " modifier-name))
                     (name v))))))
 
 (defn parse-vector-modifiers
@@ -25,7 +25,7 @@
   {:mandatory
    (into []
          (for [modifier-key modifier-info]
-           (do (assert (modifier-k? modifier-key)
+           (do (massert (modifier-k? modifier-key)
                        (str "invliad modifer key: " modifier-key " in " modifier-name))
                (name modifier-key))))})
 
@@ -39,7 +39,7 @@
 
 (defn parse-keyword-modifiers
   [modifier-name modifier-info]
-  (assert (modifier-k? modifier-info) (str "invalid modifier " modifier-info " in " modifier-name))
+  (massert (modifier-k? modifier-info) (str "invalid modifier " modifier-info " in " modifier-name))
   {:mandatory [(name modifier-info)]})
 
 (defn parse-single-modifier-definition
