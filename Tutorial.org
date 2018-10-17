@@ -6,7 +6,7 @@ If you have any question or advice on how to improve the tool, just open an
 issue or ask questions in the [[https://t.me/karabinermac][Telegram group]]. 
 
 ** Basic
-*** click a insert to 1, click b to insert 2
+*** tap a to insert 1, tap b to insert 2
 
 #+begin_src clojure
 ;; main contains multiple manipulators
@@ -31,7 +31,7 @@ issue or ask questions in the [[https://t.me/karabinermac][Telegram group]].
 you can find all keycode definition in [[https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj][this file]] or use the
 Karabiner-EventViewer.app
 
-*** click a insert to 1 only in Google Chrome
+*** tap a to insert 1 only in Google Chrome
 
 #+begin_src clojure
 {;; define application identifiers
@@ -187,16 +187,16 @@ layers. We can use this functionality to use most keys as modifier keys.
 GokuRakuJoudo makes it really easy to use variable conditions.
 
 #+begin_src clojure
-{:main [{:des "click w to set w-layer to 1"
+{:main [{:des "tap w to set w-layer to 1"
          :rules [[:w ["w-layer" 1]]]}]}
 
-;; this means click w to set variable "w layer" to 1
+;; this means tap w to set variable "w layer" to 1
 ;; rule [:w     ["w layer" 1]]
 ;;      |____| |____________|
 ;;       <from>     <to>
 
 ;; we can also set multiple <to>, and use the defined variable in <conditions>
-{:main [{:des "click w to insert w then set w-layer to 1"
+{:main [{:des "tap w to insert w then set w-layer to 1"
          :rules [[:w [:w ["w-layer" 1]]]
                  [:1 [:1 :w] :w-layer]]}]}
 
@@ -279,8 +279,8 @@ keymap editors. eg.
 
 #+begin_example
 press w key down --> in w layer ("w layer" set to 1)
-click 1 key      --> trigger key 1's definition under w layer ("w layer" is 0)
-click 2 key      --> trigger key 2's definition under w layer ("w layer" is 0)
+tap 1 key      --> trigger key 1's definition under w layer ("w layer" is 0)
+tap 2 key      --> trigger key 2's definition under w layer ("w layer" is 0)
 release w key up --> out w layer ("w layer" is 0)
 #+end_example
 
