@@ -88,11 +88,7 @@
 
 ;; cli things
 (def cli-opts
-  [["-w" "--watch" "keep watching config file, update karabiner.json when config change WIP"
-    :parse-fn str]
-   ["-d" "--deamon" "run watch in background WIP"
-    :parse-fn str]
-   ["-h" "--help"]])
+  [["-h" "--help"]])
 
 (defn help-message [options-summary]
   (->> ["GokuRakuJoudo -- karabiner configurator"
@@ -103,12 +99,7 @@
         ""
         "run without arg to update once, run with `-w` to update on .edn file change"
         ""
-        "Usage: goku [options]"
-        ""
-        "Options:"
-        options-summary]
-       ;; ""
-       ;; "Please refer to the manual page for more information."]
+        "Usage: just run goku"]
        (string/join \newline)))
 
 (defn error-msg [errors]
