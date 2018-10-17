@@ -72,6 +72,7 @@
                :when (= name "Goku")]
            {:index index :profile x}))
         updated-rules rules
+        validate-right-profile (massert (nn? profile-to-update) "Can't find profile named \"Goku\" in karabiner.json, please create a profile named \"Goku\" using the Karabiner-Elements.app.")
         updated-profile (:profile (assoc-in profile-to-update [:profile :complex_modifications :rules] updated-rules))
         updated-profiles (assoc (:profiles karabiner-config ) (:index profile-to-update) updated-profile)
         updated-configs (assoc karabiner-config :profiles updated-profiles)]

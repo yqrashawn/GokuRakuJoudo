@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
 ** Unreleased
+*** Added
+- error message when goku can't find the "Goku" profile
 
 [Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.11...HEAD
 
