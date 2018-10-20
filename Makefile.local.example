@@ -1,5 +1,8 @@
+# -*- mode: makefile -*-
+
 MAKE=make -f Makefile.local
-GRAALVM=/path/to/graalvm-ce-1.0.0-rc6/Contents/Home/bin/native-image
+# change below path to graalvm native-image binary file
+GRAALVM=/path/to/graalvm-ce-xxxxx-xxx/Contents/Home/bin/native-image
 GRAALVM_ARG=-H:+ReportUnsupportedElementsAtRuntime --no-server
 JAR_NAME=karabiner-configurator-0.1.0-standalone
 TARGET_JAR=target/$(JAR_NAME).jar
@@ -10,11 +13,13 @@ all:
 clean:
 	lein clean
 compile:
-	lein compile && lein uberjar
+	lein test
+	lein compile
+	export LEIN_SNAPSHOTS_IN_RELEASE=override && lein uberjar
 bin:
 	$(GRAALVM) $(GRAALVM_ARG) -jar $(TARGET_JAR)
 	mv $(JAR_NAME) goku
 test-binary:
-	mkdir -p ~/.config/
-	cp ./resources/configurations/yqrashawn.edn ~/.config/karabiner.edn
+	# mkdir -p ~/.config/
+	# cp ./resources/configurations/yqrashawn.edn ~/.config/karabiner.edn
 	./goku

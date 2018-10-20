@@ -8,6 +8,7 @@
     4.  [Tutorial](#tutorial)
     5.  [Note](#note)
     6.  [Changelog](#changelog)
+    7.  [Contributing](#contributing)
 
 ![img](https://travis-ci.com/yqrashawn/GokuRakuJoudo.svg?branch=master)
 ![img](https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg)
@@ -96,3 +97,10 @@ If there's any question or advice, just [open an issue](../../issues/new) or joi
 
 Check [CHANGELOG](./CHANGELOG.md) file.
 
+<a id="contributing"></a>
+
+## Contibuting
+
+Use `lein repl` for developing.
+
+Change [Makefile.local.example](./Makefile.local.example)'s name to `Makefile.local`, change `GRAALVM` variable to right path, run `make local` to test then generate `goku` binary file. 
