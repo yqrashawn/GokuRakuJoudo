@@ -1,6 +1,9 @@
 
 # GokuRakuJoudo
 
+![img](https://travis-ci.com/yqrashawn/GokuRakuJoudo.svg?branch=master)
+![img](https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg)
+
 1.  [Intro](#intro)
     1.  [Why use Goku?](#why)
     2.  [Install](#install)
@@ -10,8 +13,6 @@
     6.  [Changelog](#changelog)
     7.  [Contributing](#contributing)
 
-![img](https://travis-ci.com/yqrashawn/GokuRakuJoudo.svg?branch=master)
-![img](https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg)
 
 
 <a id="GokuRakuJoudo"></a>
