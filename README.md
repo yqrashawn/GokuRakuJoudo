@@ -104,4 +104,4 @@ Check [CHANGELOG](./CHANGELOG.md) file.
 
 Use `lein repl` for developing.
 
-Change [Makefile.local.example](./Makefile.local.example)'s name to `Makefile.local`, change `GRAALVM` variable to right path, run `make local` to test then generate `goku` binary file. 
+Change [Makefile.local.example](./Makefile.local.example)'s name to `Makefile.local`, change `GRAALVM` variable in the makefile to right path, run `make local` to test then generate `goku` binary file. 
