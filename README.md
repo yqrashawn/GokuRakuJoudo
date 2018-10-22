@@ -96,7 +96,7 @@ If there's any question or advice, just [open an issue](../../issues/new) or joi
 
 ## Changelog
 
-Check [CHANGELOG](./CHANGELOG.md) file.
+Check [CHANGELOG](./CHANGELOG.org) file.
 
 <a id="contributing"></a>
 
