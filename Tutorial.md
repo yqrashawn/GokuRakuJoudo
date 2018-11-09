@@ -108,7 +108,7 @@ the only condition that GokuRakuJoudo dose not support yet is [keyboard type](ht
 
     {:main [{:des "command a to control 1" [:!Ca :!T1]}]}
     
-    ;; this is a little bit wired, but it's convenient
+    ;; this is a little bit weird, but it's convenient
     ;; the rule [:!Ca :!T1]
     ;; means from command a to control 1
     ;; :!Ca is keycode :a and prefix a with !C
