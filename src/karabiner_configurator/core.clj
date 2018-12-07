@@ -58,6 +58,9 @@
     (str (System/getenv "XDG_CONFIG_HOME") "karabiner.edn")
     (str (System/getenv "HOME") "/.config/karabiner.edn")))
 
+(defn log-file []
+  (str (System/getenv "HOME") "/Library/Logs/goku.log"))
+
 ;; (println (str "$XDG_CONFIG_HOME: " (System/getenv "XDG_CONFIG_HOME")))
 ;; (println (str "$HOME: " (System/getenv "HOME")))
 ;; (println (str "karabiner json path: " (karabiner-json-path )))
@@ -79,17 +82,25 @@
     (spit (karabiner-json-path)
           (json/generate-string updated-configs {:pretty true}))))
 
-(defn parse-edn [path]
-  (update-to-karabiner-json (parse (load-edn path)))
-  (println "Done!"))
+(defn check-edn-syntax [path]
+  (shell/sh "joker" path))
 
-(defn watch []
-  (println (str "watching " (config-file)))
-  (shell/sh "watchexec" "-w" (config-file) "goku"))
+(defn parse-edn [path]
+  (let [edn-syntax-err (:err (check-edn-syntax path))]
+    (if (> (count edn-syntax-err) 0)
+      (do (println "Syntax error in config:")
+          (println edn-syntax-err)
+          (System/exit 1))))
+  (update-to-karabiner-json (parse (load-edn path))))
+
+(defn open-log-file []
+  (println "open")
+  (shell/sh "open" (log-file)))
 
 ;; cli things
 (def cli-opts
-  [["-h" "--help"]])
+  [["-h" "--help"]
+   ["-l" "--log"]])
 
 (defn help-message [options-summary]
   (->> ["GokuRakuJoudo -- karabiner configurator"
@@ -100,31 +111,35 @@
         ""
         "run without arg to update once, run with `-w` to update on .edn file change"
         ""
-        "Usage: just run goku"]
+        "Usage: run goku without arg to process config once"
+        ""
+        "-l, --log, log  to open the log file"
+        "-h, --help, help  to show this message"]
        (string/join \newline)))
 
 (defn error-msg [errors]
-  (str "The following errors occurred while parsing your command:\n\n"
+  (str "The following errors occurred while parsing your command:\n"
        (string/join \newline errors)))
 
 (defn validate-args [args]
   (let [{:keys [options arguments summary errors]} (cli/parse-opts args cli-opts)]
     (cond
-      (:help options)
+      (or (:help options) (= "help" (first arguments)))
       {:action "help"
        :ok true
        :exit-message (help-message summary) :ok? true}
       errors
       {:action "errors"
+       :ok? false
        :exit-message (error-msg errors)}
-      (= "true" (:watch options))
-      {:action "watch"
-       :ok true
-       :exit-message "no exit"}
+      (or (:log options) (= "log" (first arguments)))
+      {:action "log"
+       :ok? true
+       :exit-message "open log file"}
       (= (count arguments) 0)
       {:action "run"
        :ok? true
-       :exit-message "finished!"}
+       :exit-message "Done!"}
       :else
       {:action "default"
        :ok? true
@@ -140,11 +155,17 @@
     (if exit-message
       (case action
         "run"  (do (parse-edn (config-file))
-                   (exit (if ok? 0 1)))
-        "watch" (watch)
+                   (exit (if ok? 0 1) exit-message))
+        "log" (do (open-log-file)
+                  (exit 0))
         "help" (exit (if ok? 0 1) exit-message)
+        "errors" (exit (if ok? 0 1) exit-message)
         "default" (exit (if ok? 0 1) exit-message)))))
 
 ;; (-main)
 ;; (-main "-h")
-;; (-main "-w")
+;; (-main "--help")
+;; (-main "help")
+;; (-main "-l")
+;; (-main "--log")
+;; (-main "log")

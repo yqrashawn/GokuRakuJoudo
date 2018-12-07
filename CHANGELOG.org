@@ -3,7 +3,13 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.12...HEAD
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.13...HEAD
+
+** 1.13 - 2018-12-07
+- add command to open log file
+- use [[https://github.com/candid82/joker][joker]] to check edn file syntax, (add joker as dependency via homebrew)
+
+[0.1.13]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.12...v0.1.13
 
 ** 1.12 - 2018-12-07
 *** Added
@@ -15,7 +21,7 @@ All notable changes to this project will be documented in this file. This change
 ** 1.11 - 2018-10-17
 *** Fixed
 - error while parsing ~{:any :key_code}~ as <from> section in rule
-- more friendly error message, simply removed the stacktrace of the AssertionError 
+- more friendly error message, simply removed the stacktrace of the AssertionError
 
 [0.1.11]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.10...v0.1.11
 
