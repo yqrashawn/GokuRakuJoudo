@@ -1,4 +1,3 @@
-
 # Table of Contents
 
 1.  [Intro](#intro)
@@ -35,6 +34,7 @@ If you have any question or advice on how to improve the tool, just open an issu
 
 ### tap a to insert 1, tap b to insert 2
 
+```clojure
     ;; main contains multiple manipulators
     ;; each manipulator has a description and multiple rules
     
@@ -52,6 +52,7 @@ If you have any question or advice on how to improve the tool, just open an issu
     ;; in rules [:a :1] -- [<from> <to>]
     ;; it means from key a to key 1
     ;; these keycode is just original karabiner keycode prefix with colon
+```
 
 you can find all keycode definition in [this file](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj) or use the Karabiner-EventViewer.app
 
@@ -60,6 +61,7 @@ you can find all keycode definition in [this file](https://github.com/yqrashawn/
 
 ### tap a to insert 1 only in Google Chrome
 
+```clojure
     {;; define application identifiers
      :applications {:chrome ["^com\\.google\\.Chrome$"]}
      :main [{:des "a to 1 only in chrome" :rules [[:a :1 :chrome]]}]}
@@ -78,12 +80,13 @@ you can find all keycode definition in [this file](https://github.com/yqrashawn/
     {:applications {:chrome ["^com\\.google\\.Chrome$"]
                     :safari ["^com\\.apple\\.Safari$"]}
      :main [{:des "a to 1 only outside chrome, safari" :rules [[:a :1 [:!chrome :!safari]]]}]}
-
+```
 
 <a id="basic3"></a>
 
 ### other conditions
 
+```clojure
     {:devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]}
     
      :applications {:chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
@@ -98,6 +101,7 @@ you can find all keycode definition in [this file](https://github.com/yqrashawn/
     ;; so this means press a to insert 1 in Google Chrome and Google Chrome Canary
     ;; while we are using the US input method, and the device that press a is
     ;; HHKB-BT keyboard.
+```
 
 the only condition that GokuRakuJoudo dose not support yet is [keyboard type](https://pqrs.org/osx/karabiner/json.html#condition-definition-keyboard-type).
 
@@ -106,6 +110,7 @@ the only condition that GokuRakuJoudo dose not support yet is [keyboard type](ht
 
 ### Command a to Control 1
 
+```clojure
     {:main [{:des "command a to control 1" [:!Ca :!T1]}]}
     
     ;; this is a little bit weird, but it's convenient
@@ -137,7 +142,7 @@ the only condition that GokuRakuJoudo dose not support yet is [keyboard type](ht
     ;; rule [<from> <to>]
     ;; if simplified modifier is used in <to>, optional(#) definition will be
     ;; ignored.
-
+```
 
 <a id="basic5"></a>
 
@@ -145,12 +150,14 @@ the only condition that GokuRakuJoudo dose not support yet is [keyboard type](ht
 
 Karabiner also has this functionality that can map simultaneous key presses to other events. We can use that in GokuRakuJoudo as well.
 
+```clojure
     {:main [{:des "simultaneous j l press to F19" :rules [[[:j :l] :f19]]}]}
     ;; rule [[:j :l] :f19]
     ;;       <from>  <to>
     
     ;; so when from is a vector (or array), GokuRakuJoudo will parse it as
     ;; simultaneous key press
+```
 
 
 <a id="basic6"></a>
@@ -159,6 +166,7 @@ Karabiner also has this functionality that can map simultaneous key presses to o
 
 We can set <to> to string to invoke shell command.
 
+```clojure
     {:main [{:des "hyper 1 to cleanup personal folder"
              :rules [[:!!1 "rm -r ~/personal && mkdir ~/personal"]]}]}
     
@@ -166,6 +174,7 @@ We can set <to> to string to invoke shell command.
     
     {:main [{:des "hyper 1 to cleanup personal folder"
              :rules [[:!!1 ["rm -r ~/personal" "mkdir ~/personal"]]]}]}
+```
 
 
 <a id="basic7"></a>
@@ -176,6 +185,7 @@ When we use karabiner to run shell commands or applescripts, we write them as st
 
 It's same with those string templates in some programming languages. In fact, it use the clojure's string templates, which is actually java's string templates implementation. eg.
 
+```clojure
     {:templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
      :main [{:des "launcher mode"
              :rules [[:j [:launch "Alacritty"] :launch-mode]
@@ -201,6 +211,7 @@ It's same with those string templates in some programming languages. In fact, it
     ;; The "%s" is for string. If you need other formats, check out here.
     ;; java.util.Formatter doc:
     ;; https://docs.oracle.com/javase/7/docs/api/java/util/Formatter.html
+```
 
 
 <a id="basic8"></a>
@@ -221,6 +232,7 @@ Don't define conditions with the name of keycode. If you define a application co
 
 Karabiner's variable condition functionality make it posible to define keyboard layers. We can use this functionality to use most keys as modifier keys. GokuRakuJoudo makes it really easy to use variable conditions.
 
+```clojure
     {:main [{:des "tap w to set w-layer to 1"
              :rules [[:w ["w-layer" 1]]]}]}
     
@@ -237,6 +249,7 @@ Karabiner's variable condition functionality make it posible to define keyboard 
     ;; rule [:w    [:w ["w layer" 1]]]
     ;;      |____| |_______________|
     ;;      <from>       <to>
+```
 
 The rules above are not really useful. Cause we lose `w` key in the first rule and we can't set variable back in both rules. The old way in karabiner to define layer is using the `to_if_alone` option. We will talk about it soon.
 
@@ -251,6 +264,7 @@ So in the karabiner.json spec, there're [from event definition](https://pqrs.org
 
     Since karabiner can send multiple to event triggerd by a single from event, we won't froms definition too much. There're two kinds of situation that we might want to use this.
     
+```clojure
         ;; from any key_code, consumer_key_code or pointing_button
         {:froms {:from-any-consumer-key {:any "consumer_key_code"}}
          :main [{:des "disable all consumer key"
@@ -279,6 +293,7 @@ So in the karabiner.json spec, there're [from event definition](https://pqrs.org
                 :dorder :strict
                 :uorder :strict_inverse
                 :afterup {:set ["fj layer" 1]}}}
+```
     
     The simultaneous<sub>options</sub> won't be used frequently. You can find the the detail in the [froms documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/froms.clj#L9), which is above its implementation.
 
@@ -303,15 +318,18 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
     
     The old layer has the same definition as "layers" in thoes keyboard firmware keymap editors. eg.
     
+```
         press w key down --> in w layer ("w layer" set to 1)
         tap 1 key      --> trigger key 1's definition under w layer ("w layer" is 0)
         tap 2 key      --> trigger key 2's definition under w layer ("w layer" is 0)
         release w key up --> out w layer ("w layer" is 0)
+```
     
     There're two problems in old layer. When we type "w1" really fast, we trigger the "1" in w layer rather than insert "w1". When we keep press w key down, the w key won't repeat. There won't be a "wwwwwwwwwwwwwwwwwwww".
     
     The karabiner's simlayer is based on its [simultaneous](https://pqrs.org/osx/karabiner/json.html#simultaneous) functionality. It's like this. The `-->` is the symbol of time.
     
+```
         press w key down --> if in threshold milliseconds
                             --> press 1 key ("w layer" set to 1)
                             --> in w layer and trigger the 1 definition
@@ -321,11 +339,13 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
                                     release w to set "w layer" to 0
                          --> if after threshold milliseconds
                          --> w key begin to repeat, we get "wwwwwwwwwwwww"
+```
     
     This solves those two problems. But we need to trigger the second key fast, or the first key starts to repeat. We need must trigger a action the same time we enter a layer. We can't enter the layer in advance and think what we really want to do in that layer.
 
 2.  layer and simlayer in GokuRakuJoudo
 
+```clojure
         ;; simlayer
         {:simlayers {:period-mode {:key :period}}
          :main [{:des "period mode"
@@ -365,6 +385,7 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
         ;; ~to_after_key_up~, ~to_delayed_action~ and ~parameters~.
         
         ;; The first 4 is same as tos definition, and we also have shotcusts for ~parameters~.
+```
     
     We can checkout [the documentation for <other options>](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L170).
     And there're also [<to> documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L90), [<from> documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L11), [<conditions> documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L157).
