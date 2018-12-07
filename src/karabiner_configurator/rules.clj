@@ -248,6 +248,19 @@
                                                (froms/parse-from des (:from insert-simlayer)))
                         insert-simlayer (assoc insert-simlayer :to
                                                (into [] (concat (tos/parse-to des (:to insert-simlayer)) (:to result))))
+                        insert-simlayer (if (:to_if_held_down result)
+                                          (assoc insert-simlayer :to_if_held_down (:to_if_held_down result))
+                                          insert-simlayer)
+                        insert-simlayer (if (:to_if_invoked (:to_delayed_action result))
+                                          (assoc-in insert-simlayer
+                                                    [:to_delayed_action :to_if_invoked]
+                                                    (:to_if_invoked (:to_delayed_action result)))
+                                          insert-simlayer)
+                        insert-simlayer (if (:to_if_canceled (:to_delayed_action result))
+                                          (assoc-in insert-simlayer
+                                                    [:to_delayed_action :to_if_canceled]
+                                                    (:to_if_canceled (:to_delayed_action result)))
+                                          insert-simlayer)
                         cleanup-used-simlayers-config (conditions/cleanup-used-simlayers-config)]
                     [result insert-simlayer])
                   result)]

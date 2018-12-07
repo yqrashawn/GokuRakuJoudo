@@ -42,7 +42,13 @@
                     {:des "any keycode"
                      :rules [[{:any :key_code} :a]
                              [{:any :consumer_key_code} :a]
-                             [{:any :pointing_button} :a]]}])
+                             [{:any :pointing_button} :a]]}
+                    {:des "double press and held key in simlayer (to_delayed_action, to_if_held_down)"
+                     :rules [[:j "say 'j double press'" [["q-mode" 1] ["q-mode-j-dbpress-mode" 1]]]
+                             :q-mode
+                             [:j ["say 'j press down'" ["q-mode-j-dbpress-mode" 1]] nil {:delayed {:canceled ["q-mode-j-dbpress-mode" 0]
+                                                                                                      :invoked ["q-mode-j-dbpress-mode" 0]}
+                                                                                            :held "say 'j held down'"}]]}])
 
 (def result [{:description "auto generated layer trigger key",
               :manipulators [{:type "basic",
@@ -316,7 +322,45 @@
                               :type "basic"}
                              {:from {:any "pointing_button"},
                               :to [{:key_code "a"}],
-                              :type "basic"}]}])
+                              :type "basic"}]}
+             {:description
+              "double press and held key in simlayer (to_delayed_action, to_if_held_down)",
+              :manipulators
+              [{:from {:key_code "j"},
+                :to [{:shell_command "say 'j double press'"}],
+                :conditions
+                [{:name "q-mode", :value 1, :type "variable_if"}
+                 {:name "q-mode-j-dbpress-mode", :value 1, :type "variable_if"}],
+                :type "basic"}
+               {:to_if_held_down [{:shell_command "say 'j held down'"}],
+                :to_delayed_action
+                {:to_if_invoked
+                 [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}],
+                 :to_if_canceled
+                 [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}]},
+                :from {:key_code "j"},
+                :to
+                [{:shell_command "say 'j press down'"}
+                 {:set_variable {:name "q-mode-j-dbpress-mode", :value 1}}],
+                :conditions [{:name "q-mode", :value 1, :type "variable_if"}],
+                :type "basic"}
+               {:key :q,
+                :from
+                {:simultaneous [{:key_code "j"}],
+                 :simultaneous_options
+                 {:detect_key_down_uninterruptedly false,
+                  :key_down_order "insensitive",
+                  :key_up_order "insensitive",
+                  :key_up_when "any"}},
+                :to
+                [{:shell_command "say 'j press down'"}
+                 {:set_variable {:name "q-mode-j-dbpress-mode", :value 1}}],
+                :to_if_held_down [{:shell_command "say 'j held down'"}],
+                :to_delayed_action
+                {:to_if_invoked
+                 [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}],
+                 :to_if_canceled
+                 [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}]}}]}])
 
 (t/deftest generate-mains
   (init-conf-data)
