@@ -4,6 +4,11 @@
 ![img](https://travis-ci.com/yqrashawn/GokuRakuJoudo.svg?branch=master)
 ![img](https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg)
 
+[Examples](./Examples.org) &mdash;
+[Tutorial](./Tutorial.md) &mdash;
+[Telegram](https://t.me/karabinermac) &mdash;
+[Goku in the wild](./In-The-Wild.md)
+
 1.  [Intro](#intro)
     1.  [Why use Goku?](#why)
     2.  [Install](#install)
@@ -11,7 +16,8 @@
     4.  [Tutorial](#tutorial)
     5.  [Note](#note)
     6.  [Changelog](#changelog)
-    7.  [Contributing](#contributing)
+    7.  [Dependencies](#dependencies)
+    8.  [Contributing](#contributing)
 
 
 
@@ -97,6 +103,13 @@ If there's any question or advice, just [open an issue](../../issues/new) or joi
 ## Changelog
 
 Check [CHANGELOG](./CHANGELOG.org) file.
+
+<a id="dependencies"></a>
+
+## Dependencies
+
+[watchexec](https://github.com/watchexec/watchexec) for watching edn config file.   
+[joker](https://github.com/candid82/joker) for linting edn config file.   
 
 <a id="contributing"></a>
 
