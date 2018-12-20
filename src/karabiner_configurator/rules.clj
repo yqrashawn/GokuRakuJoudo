@@ -184,6 +184,7 @@
 ;;   basic.to_if_alone_timeout_milliseconds       |   :alone
 ;;   basic.to_if_held_down_threshold_milliseconds |   :held
 ;;   to_delayed_action_delay_milliseconds         |   :delay  FIXME should there be a "basic.", there's none on the spec page
+;;   basic.simultaneous_threshold_milliseconds    |   :sim
 (defn additional-key
   "parse additional keys"
   [des additional prevresult]
@@ -195,10 +196,11 @@
         result (if afterup (assoc result :to_after_key_up (to-key des afterup)) result)
         result (if invoked (assoc-in result [:to_delayed_action :to_if_invoked] (to-key des invoked)) result)
         result (if canceled (assoc-in result [:to_delayed_action :to_if_canceled] (to-key des canceled)) result)
-        {:keys [alone held delay]} params
+        {:keys [alone held delay sim]} params
         result (if (number? alone) (assoc-in result [:parameters :basic.to_if_alone_timeout_milliseconds] alone) result)
         result (if (number? held) (assoc-in result [:parameters :basic.to_if_held_down_threshold_milliseconds] held) result)
-        result (if (number? delay) (assoc-in result [:parameters :basic.to_delayed_action_delay_milliseconds] delay) result)]
+        result (if (number? delay) (assoc-in result [:parameters :basic.to_delayed_action_delay_milliseconds] delay) result)
+        result (if (number? sim) (assoc-in result [:parameters :basic.simultaneous_threshold_milliseconds] sim) result)]
     result))
 
 (defn parse-rule
