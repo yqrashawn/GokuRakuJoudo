@@ -12,6 +12,7 @@ deploy:
 before_install:
 - sh scripts/travis.sh
 - wget https://github.com/oracle/graal/releases/download/vm-1.0.0-rc6/graalvm-ce-1.0.0-rc6-macos-amd64.tar.gz
+- brew install candid82/brew/joker
 - tar xf graalvm-ce-1.0.0-rc6-macos-amd64.tar.gz
 - export PATH=$PATH:$PWD/graalvm-ce-1.0.0-rc6/Contents/Home/bin/
 script:
