@@ -83,7 +83,7 @@
           (json/generate-string updated-configs {:pretty true}))))
 
 (defn check-edn-syntax [path]
-  (shell/sh "joker" path))
+  (shell/sh "/usr/local/opt/joker/bin/joker"  "--lint" path))
 
 (defn parse-edn [path]
   (let [edn-syntax-err (:err (check-edn-syntax path))]
@@ -94,7 +94,6 @@
   (update-to-karabiner-json (parse (load-edn path))))
 
 (defn open-log-file []
-  (println "open")
   (shell/sh "open" (log-file)))
 
 ;; cli things

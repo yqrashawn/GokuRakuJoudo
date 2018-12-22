@@ -3,9 +3,19 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.13...HEAD
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.14...HEAD
+
+** 1.14 - 2018-12-22
+*** Added
+- add :sim in <other options> :params, [[https://github.com/yqrashawn/GokuRakuJoudo/blob/b9b334a187379f9bc8182ad59e2cca2a1789e9c0/src/karabiner_configurator/rules.clj#L183][params spec]]
+
+*** Fixed
+- error when running with brew service caused by new version of joker (v0.10.2)
+
+[0.1.14]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.13...v0.1.14
 
 ** 1.13 - 2018-12-07
+*** Added
 - add command to open log file
 - use [[https://github.com/candid82/joker][joker]] to check edn file syntax, (add joker as dependency via homebrew)
 
