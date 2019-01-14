@@ -14,7 +14,7 @@
 (defn is-simple-set-variable? [vec]
   (and (= 2 (count vec)) (string? (first vec)) (number? (second vec))))
 
-(defn parse-conditions [condis & [from to]]
+(defn parse-conditions [condis & [from to layers]]
   (if (not (vector? condis))
     []
     (into []
@@ -64,7 +64,8 @@
                                   :value 1
                                   :type condi-type})
                                result)
-                      result (if (and (keyword? condi) (nn? (condi (:layers conf-data))))
+                      result (if (and (keyword? condi) (nn? (or (condi (:layers conf-data))
+                                                                (condi layers))))
                                {:name (name condi)
                                 :value 1
                                 :type condi-type}

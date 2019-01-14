@@ -13,7 +13,8 @@
    [karabiner-configurator.rules :as rules]
    [clojure.edn :as edn]
    [me.raynes.fs :as fs]
-   [clojure.tools.cli :as cli])
+   [clojure.tools.cli :as cli]
+   [environ.core :refer [env]])
   (:gen-class))
 
 (defn update-static-conf
@@ -36,7 +37,6 @@
     (modifiers/parse-modifiers modifiers)
     (layers/parse-layers layers)
     (layers/parse-simlayers simlayers)
-    (layers/parse-layers layers)
     (froms/parse-froms froms)
     (tos/parse-tos tos)
     (rules/parse-mains main)))
@@ -90,7 +90,7 @@
     (if (> (count edn-syntax-err) 0)
       (do (println "Syntax error in config:")
           (println edn-syntax-err)
-          (System/exit 1))))
+          (if (not (env :is-dev)) (System/exit 1)))))
   (update-to-karabiner-json (parse (load-edn path))))
 
 (defn open-log-file []
@@ -146,7 +146,7 @@
 
 (defn exit [status & [msg]]
   (if msg (println msg))
-  (System/exit status))
+  (if (not (env :is-dev)) (System/exit status)))
 
 (defn -main
   [& args]

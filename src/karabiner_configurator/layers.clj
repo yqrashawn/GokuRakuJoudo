@@ -83,8 +83,8 @@
           result (dissoc-in result [k :alone])
           result (if (nn? condi)
                    (if (is-simple-set-variable? condi)
-                     (assoc-in result [k :conditions] (parse-conditions [condi]))
-                     (assoc-in result [k :conditions] (parse-conditions condi)))
+                     (assoc-in result [k :conditions] (parse-conditions [condi] nil nil layers))
+                     (assoc-in result [k :conditions] (parse-conditions condi nil nil layers)))
                    result)]
       (update-conf-data (assoc conf-data :layers result)))))
 
