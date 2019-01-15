@@ -10,3 +10,5 @@ if [ -d "$brew_lein" ]; then
 else
     brew install leiningen
 fi
+brew link leiningen
+brew link watchexec
