@@ -3,7 +3,13 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.15...HEAD
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.16...HEAD
+
+** 1.16 - 2019-01-16
+*** Added
+- user can now specify not already defined conditions using keyword
+
+[0.1.16]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.15...0.1.16
 
 ** 1.15 - 2019-01-14
 *** Fixed

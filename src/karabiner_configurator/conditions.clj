@@ -75,6 +75,14 @@
                                 :value (second condi)
                                 :type "variable_if"}
                                result)
+                      ;; if we still can't find the right condition, assume
+                      ;; user's input is correct and the condition is just not
+                      ;; defined yet
+                      result (if (and (nil? result) (keyword? condi))
+                               {:name (name condi)
+                                :value 1
+                                :type condi-type}
+                               result)
                       validate-result (massert (nn? result)
                                                (str "invalid condition keyword " condi ", can't find in any predefined conditions"))]]
             result))))
