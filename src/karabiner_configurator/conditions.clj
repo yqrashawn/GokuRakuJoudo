@@ -36,7 +36,7 @@
                       condi-type (if condi!?
                                    "device_unless"
                                    "device_if")
-                      result (if (and (keyword? condi) (nn? (condi (:devices conf-data))))
+                      result (if (and (keyword? condi) (devices? condi))
                                {:identifiers
                                 (into [] (condi (:devices conf-data)))
                                 :type condi-type}
@@ -44,7 +44,7 @@
                       condi-type (if condi!?
                                    "input_source_unless"
                                    "input_source_if")
-                      result (if (and (keyword? condi) (nn? (condi (:input-sources conf-data))))
+                      result (if (and (keyword? condi) (input-sources? condi))
                                {:input_sources
                                 [(condi (:input-sources conf-data))]
                                 :type condi-type}
@@ -52,7 +52,7 @@
                       condi-type (if condi!?
                                    "variable_unless"
                                    "variable_if")
-                      result (if (and (keyword? condi) (nn? (condi (:simlayers conf-data))))
+                      result (if (and (keyword? condi) (simlayers? condi))
                                (do
                                  (if (and from to (not condi!?))
                                    (do

@@ -4,7 +4,9 @@
             [clojure.edn :as edn]
             [environ.core :refer [env]]))
 
-(defn massert [exp error-str]
+(defn massert
+  "Assert without stacktrace"
+  [exp error-str]
   (let [error-str (str "ERROR: " error-str)]
     (if (env :is-dev)
       (assert exp error-str)

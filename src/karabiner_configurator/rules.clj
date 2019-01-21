@@ -203,16 +203,19 @@
         result (if (number? sim) (assoc-in result [:parameters :basic.simultaneous_threshold_milliseconds] sim) result)]
     result))
 
+
 (defn parse-rule
   "generate one manipulator"
   ([des from to]
    (let [result {}
+         ;; result {:goku-id (next-rule-id)}
          result (assoc result :from (:from (from-key des from)))
          result (assoc result :to (to-key des to))
          result (assoc result :type "basic")]
      result))
   ([des from to conditions]
    (let [result {}
+         ;; result {:goku-id (next-rule-id)}
          result (assoc result :from (:from (from-key des from)))
          result (assoc result :to (to-key des to))
          result (if conditions
@@ -233,6 +236,7 @@
      result))
   ([des from to conditions additional]
    (let [result {}
+         ;; result {:goku-id (next-rule-id)}
          result (if additional
                   (additional-key des additional result)
                   {})
@@ -267,54 +271,85 @@
                     [result insert-simlayer])
                   result)]
      result)))
+
 (def current-in-rules-conditions nil)
-(defn dcirc [condis]
+
+(defn define-current-in-rule-conditions
+  "record current in rule conditions and used in following rules"
+  [condis]
   (if (nil? condis)
     (def current-in-rules-conditions nil)
     (if (not (vector? condis))
       (def current-in-rules-conditions [condis])
       (def current-in-rules-conditions (pop (into [] (reverse condis)))))))
 
+(defn add-current-in-rule-conditions
+  "add current in rule conditions into following rules"
+  [rule]
+  (let [[from to conditions other-options] rule
+        ;; check condition format
+        vector-conditions? (vector? conditions)
+        simple-set-variable? (and vector-conditions? (condis/is-simple-set-variable? conditions))
+        keyword-conditions? (keyword? conditions)
+
+        ;; add current in rule conditions
+        conditions
+        (cond (or simple-set-variable? keyword-conditions?)
+              (conj current-in-rules-conditions conditions)
+              vector-conditions?
+              (into [] (concat current-in-rules-conditions conditions))
+              :else
+              current-in-rules-conditions)]
+    ;; return results
+    (cond (nn? other-options) [from to conditions other-options]
+          (nn? conditions) [from to conditions]
+          :else [from to])))
+
+(def all-the-rules
+  "all rules defined in edn config file, use index of vector as rule id
+
+  [{:condis [:Emacs :Browsers :q-mode]}]"
+  [])
+
+(defn store-and-add-id-to-rule
+  "store rule into vector of maps and add id to rule for later use"
+  [rule]
+  (let [[from to condition other-options] rule]))
+
+(defn generate-one-rules
+  "generate on rules (one object with des and manipulators in karabiner.json)"
+  [des rules]
+  {:description des
+   :manipulators
+   (into []
+         (flatten
+          ;; check in rule conditions
+          (let [rules-with-current-in-rule-conditions
+                (into [] (for [rule rules]
+                           (if (or (keyword? rule) (and (vector? rule) (= (first rule) :condi)))
+                             (do (define-current-in-rule-conditions rule) nil)
+                             (if (nn? current-in-rules-conditions)
+                               (add-current-in-rule-conditions rule)
+                               rule))))
+                cleanup-circ (define-current-in-rule-conditions nil)]
+            ;; parse rule
+            (for [rule rules-with-current-in-rule-conditions
+                  :when (nn? rule)]
+              (let [[from to condition other-options] rule
+                    ;; a rule must have a from event defination and to event defination
+                    ;; from event defination is defined in <from> section
+                    ;; to event defination can be defined in <to> section or <other-options> section (as :alone :delayed :afterup)
+                    validate-rule (massert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to>/<other-options> is nil"))]
+                    ;; current-profile (if (= from :profile) (into [] (rest rule)) [data/default-profile-name])]
+                (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to)
+                      (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
+                      (nn? other-options) (parse-rule des from to condition other-options)))))))})
+
 (defn generate
-  "generate one rule"
+  "parse mains and generate all rules for converting to json"
   [mains]
   (let [user-result (for [{:keys [des rules]} mains]
-                      {:description des
-                       :manipulators
-                       (into []
-                             (flatten
-                              (let [processed-rules
-                                    (into [] (for [rule rules]
-                                               (if (or (keyword? rule) (and (vector? rule) (= (first rule) :condi)))
-                                                 (do (dcirc rule) nil)
-                                                 (if (nn? current-in-rules-conditions)
-                                                   (let [[from to conditions other-options] rule
-                                                         vector-conditions? (vector? conditions)
-                                                         simple-set-variable? (and vector-conditions? (condis/is-simple-set-variable? conditions))
-                                                         keyword-conditions? (keyword? conditions)
-                                                         conditions
-                                                         (cond (or simple-set-variable? keyword-conditions?)
-                                                               (conj current-in-rules-conditions conditions)
-                                                               vector-conditions?
-                                                               (into [] (concat current-in-rules-conditions conditions))
-                                                               :else
-                                                               current-in-rules-conditions)]
-                                                     (cond (nn? other-options)
-                                                           [from to conditions other-options]
-                                                           (nn? conditions)
-                                                           [from to conditions]
-                                                           :else
-                                                           [from to]))
-                                                   rule))))
-                                    cleanup-circ (dcirc nil)]
-                                (for [rule processed-rules
-                                      :when (nn? rule)]
-                                  (let [[from to condition other-options] rule]
-                                    (do
-                                      (massert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to> is nil"))
-                                      (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to)
-                                            (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
-                                            (nn? other-options) (parse-rule des from to condition other-options))))))))})
+                      (generate-one-rules des rules))
         layer-result {:description "auto generated layer trigger key"
                       :manipulators (into [] (for [[layer-name layer-definition] (:layers conf-data)]
                                                layer-definition))}
