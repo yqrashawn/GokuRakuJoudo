@@ -30,10 +30,10 @@
   [mkey]
   (into {} (map update-mouse-map mkey)))
 
-(def special-modi-re #"(^![!CSTOFP]+#[#CSTOFP]+)")
-(def special-modi-mandatory-re #"(^![!CSTOFP]+)")
-(def special-modi-optional-re #"(^#[#CSTOFP]+)")
-(def special-modi-optional-both-re #"(#[#CSTOFP]+)")
+(def special-modi-re #"(^![!CSTOFP]+#[#CSTOQWERFP]+)")
+(def special-modi-mandatory-re #"(^![!CSTOQWERFP]+)")
+(def special-modi-optional-re #"(^#[#CSTOQWERFP]+)")
+(def special-modi-optional-both-re #"(#[#CSTOQWERFP]+)")
 
 (defn special-modi-realkey [smodi]
   (let [keystr (name smodi)
@@ -64,6 +64,10 @@
           result (if (contains?? vec \T) (conj result (name :left_control)) result)
           result (if (contains?? vec \O) (conj result (name :left_option)) result)
           result (if (contains?? vec \S) (conj result (name :left_shift)) result)
+          result (if (contains?? vec \Q) (conj result (name :right_command)) result)
+          result (if (contains?? vec \W) (conj result (name :right_control)) result)
+          result (if (contains?? vec \E) (conj result (name :right_option)) result)
+          result (if (contains?? vec \R) (conj result (name :right_shift)) result)
           result (if (contains?? vec \F) (conj result (name :fn)) result)
           result (if (contains?? vec \P) (conj result (name :caps_lock)) result)
           result (if (contains?? vec \#) [(name :any)] result)
