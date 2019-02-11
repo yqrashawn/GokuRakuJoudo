@@ -47,8 +47,9 @@
                      :rules [[:j "say 'j double press'" [["q-mode" 1] ["q-mode-j-dbpress-mode" 1]]]
                              :q-mode
                              [:j ["say 'j press down'" ["q-mode-j-dbpress-mode" 1]] nil {:delayed {:canceled ["q-mode-j-dbpress-mode" 0]
-                                                                                                      :invoked ["q-mode-j-dbpress-mode" 0]}
-                                                                                            :held "say 'j held down'"}]]}])
+                                                                                                   :invoked ["q-mode-j-dbpress-mode" 0]}
+                                                                                         :held "say 'j held down'"}]]}
+                    {:des "QWER in to right modifier keys" :rules [[:!QWERa :a]]}])
 
 (def result [{:description "auto generated layer trigger key",
               :manipulators [{:type "basic",
@@ -360,7 +361,15 @@
                 {:to_if_invoked
                  [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}],
                  :to_if_canceled
-                 [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}]}}]}])
+                 [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}]}}]}
+             {:description "QWER in to right modifier keys",
+              :manipulators [{:from {:key_code "a",
+                                     :modifiers {:mandatory ["right_command"
+                                                             "right_control"
+                                                             "right_option"
+                                                             "right_shift"]}},
+                              :to [{:key_code "a"}],
+                              :type "basic"}]}])
 
 (t/deftest generate-mains
   (init-conf-data)
