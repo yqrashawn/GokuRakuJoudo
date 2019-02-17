@@ -112,12 +112,11 @@
    :f24 {:not-to true}
    :display_brightness_decrement {:not-from true :consumer-key true}
    :display_brightness_increment {:not-from true :consumer-key true}
-   ;; :mission_control {:not-from true :consumer-key true}
    :mission_control {:not-from true}
-   :launchpad {:not-from true :consumer-key true}
-   :dashboard {:not-from true :consumer-key true}
-   :illumination_decrement {:not-from true :consumer-key true}
-   :illumination_increment {:not-from true :consumer-key true}
+   :launchpad {:not-from true}
+   :dashboard {:not-from true}
+   :illumination_decrement {:not-from true}
+   :illumination_increment {:not-from true}
    :rewind {:not-from true :consumer-key true}
    :play_or_pause {:not-from true :consumer-key true}
    :fastforward {:not-from true :consumer-key true}
@@ -125,10 +124,10 @@
    :volume_decrement {:consumer-key true}
    :volume_increment {:consumer-key true}
    :eject {:not-from true :consumer-key true}
-   :apple_display_brightness_decrement {:not-from true :consumer-key true}
-   :apple_display_brightness_increment {:not-from true :consumer-key true}
-   :apple_top_case_display_brightness_decrement {:not-from true :consumer-key true}
-   :apple_top_case_display_brightness_increment {:not-from true :consumer-key true}
+   :apple_display_brightness_decrement {:not-from true}
+   :apple_display_brightness_increment {:not-from true}
+   :apple_top_case_display_brightness_decrement {:not-from true}
+   :apple_top_case_display_brightness_increment {:not-from true}
    :keypad_num_lock {:display true}
    :keypad_slash {:display true}
    :keypad_asterisk {:display true}
