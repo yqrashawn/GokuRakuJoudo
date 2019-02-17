@@ -1,11 +1,16 @@
-{:applications {:vim-mode-disabled-application ["^com\\.apple\\.Terminal$",
-                                                                     "^com\\.googlecode\\.iterm2$",
-                                                                     "^co\\.zeit\\.hyperterm$",
-                                                                     "^co\\.zeit\\.hyper$",
-                                                                     "^io\\.alacritty$",
-                                                                     "^net\\.kovidgoyal\\.kitty$",
-                                                                     "^org\\.vim\\.",
-                                                                     "^com\\.qvacua\\.VimR$"]}
+{:profiles {:Goku-test {:default true
+                        :sim 50
+                        :delay 500
+                        :alone 1000
+                        :held 500}}
+ :applications {:vim-mode-disabled-application ["^com\\.apple\\.Terminal$",
+                                                "^com\\.googlecode\\.iterm2$",
+                                                "^co\\.zeit\\.hyperterm$",
+                                                "^co\\.zeit\\.hyper$",
+                                                "^io\\.alacritty$",
+                                                "^net\\.kovidgoyal\\.kitty$",
+                                                "^org\\.vim\\.",
+                                                "^com\\.qvacua\\.VimR$"]}
  :simlayers {:vi-mode {:key :d}
              :vi-visual-mode {:key :v :condi :!vim-mode-disabled-application}}
  :main [{:des "Vi Mode [D as Trigger Key]"

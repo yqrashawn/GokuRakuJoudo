@@ -23,7 +23,7 @@
   "Helper function to update conf-data from reading rules"
   [key conf]
   (if (nn? conf)
-    (update-conf-data (assoc conf-data key conf))))
+    (assoc-conf-data key conf)))
 
 (defn karabiner-json-path
   "Return karabiner.json file location"
@@ -49,12 +49,12 @@
 
 ;; main logic
 (defn parse-edn
-  "Init conf data and return new rules based on karabiner.edn"
+  "Init conf data and return new rules based on karabiner.edn (main section in edn file)"
   [conf]
   (init-conf-data)
   (let [{:keys [applications devices keyboard-type input-sources tos froms modifiers layers simlayers raws main simlayer-threshold templates profiles]} conf]
     (if (nil? profiles)
-      (profiles/parse-profiles [default-profile])
+      (profiles/parse-profiles (:profiles conf-data))
       (profiles/parse-profiles profiles))
     (update-static-conf :applications applications)
     (update-static-conf :devices devices)
@@ -68,25 +68,33 @@
     (layers/parse-simlayers simlayers)
     (froms/parse-froms froms)
     (tos/parse-tos tos)
-    (rules/parse-mains main)))
+    (profiles/parse-rules (rules/parse-mains main))))
+
+(defn update-karabiner-config
+  [config]
+  (def karabiner-config config)
+  karabiner-config)
 
 (defn update-to-karabiner-json
   "Find profile 'goku' in karabiner.json and update its rules"
-  [rules]
-  (let [karabiner-config (load-json (karabiner-json-path))
-        profile-indexed-list (map-indexed (fn [idx itm] [idx itm]) (:profiles karabiner-config))
-        profile-to-update
-        (first
-         (for [[index {:keys [name] :as x}] profile-indexed-list
-               :when (= name "Goku")]
-           {:index index :profile x}))
-        updated-rules rules
-        validate-right-profile (massert (nn? profile-to-update) "Can't find profile named \"Goku\" in karabiner.json, please create a profile named \"Goku\" using the Karabiner-Elements.app.")
-        updated-profile (:profile (assoc-in profile-to-update [:profile :complex_modifications :rules] updated-rules))
-        updated-profiles (assoc (:profiles karabiner-config ) (:index profile-to-update) updated-profile)
-        updated-configs (assoc karabiner-config :profiles updated-profiles)]
+  [profiles]
+  (let [local-karabiner-config (update-karabiner-config (load-json (karabiner-json-path)))
+        profile-indexed-list (map-indexed (fn [idx itm] [idx itm]) (:profiles local-karabiner-config))]
+    (doseq [a profiles]
+      (doseq [[profile-name profile-complex-modifications] a]
+        (let [profile-name-str (name profile-name)
+              profile-to-update
+              (first
+               (for [[index {:keys [name] :as x}] profile-indexed-list
+                     :when (= name profile-name-str)]
+                 {:index index :profile x}))
+              updated-complex-modifications profile-complex-modifications
+              validate-right-profile (massert (nn? profile-to-update) (format "Can't find profile named \"%s\" in karabiner.json, please create a profile named \"%s\" using the Karabiner-Elements.app." profile-name-str profile-name-str))
+              updated-profile (:profile (assoc-in profile-to-update [:profile :complex_modifications] (:complex_modifications updated-complex-modifications)))
+              updated-profiles (assoc-in (:profiles karabiner-config ) [(:index profile-to-update) :complex_modifications] (:complex_modifications updated-profile))
+              updated-configs (update-karabiner-config (assoc karabiner-config :profiles updated-profiles))])))
     (spit (karabiner-json-path)
-          (json/generate-string updated-configs {:pretty true}))))
+          (json/generate-string karabiner-config {:pretty true}))))
 
 ;; actions
 (defn parse
@@ -97,6 +105,7 @@
       (do (println "Syntax error in config:")
           (println edn-syntax-err)
           (if (not (env :is-dev)) (System/exit 1)))))
+  ;; (parse-edn (load-edn path)))
   (update-to-karabiner-json (parse-edn (load-edn path))))
 
 (defn open-log-file []

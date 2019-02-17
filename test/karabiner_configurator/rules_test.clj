@@ -4,52 +4,54 @@
             [clojure.test :as t]))
 
 (def example-mains [
-                    {:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
-                    {:des "command a to control 1"                            :rules [[:!C#Pa :!T1]]} ;; command a to control 1
-                    {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
-                    {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
-                    {:des "c to example osascript"                            :rules [[:c "osascript -e 'display dialog \"example apple script\"'"]]} ;; key to shell script
-                    {:des "d to 1 then example osascript"                     :rules [[:d [:1 [:example-template "example apple script"]]]]} ;; key to key then shell script
-                    {:des "simultaneous e f to 3"                             :rules [[[:e :f] :3]]} ;; simultaneous key to key
-                    {:des "g to 4 when variable vi-mode is 1"                 :rules [[:g :4 :vi-mode]]} ;; vi-mode is 1
-                    {:des "h to 5 when variable vi-mode is not 1"             :rules [[:h :5 :!vi-mode]]} ;; vi-mode is not 1
-                    {:des "i to 6 only for device hhkb-bt"                    :rules [[:i :6 [:hhkb-bt :hhkb]]]} ;; key to key in layer b (in layer a) specific to hhkb-bt device
-                    {:des "j to 7 on hhkb-bt when variable vi-mode is 1"      :rules [[:j :7 [:vi-mode :hhkb-bt]]]} ;; multiple condition
-                    {:des "press h insert 8 then set variable some-mode to 0" :rules [[:h [:8 {:set ["some-mode" 0]}]]]}
-                    {:des "capslock to control as modifier to escape when press alone" :rules [[:##caps_lock :left_control nil {:alone :escape}]]}
-                    {:des "Quit application by pressing command-q twice" :rules [[:!C#Pq :!Cq ["command-q" 1]]
-                                                                                 [:!C#Pq ["command-q" 1] nil {:delayed {:invoked ["command-q" 0] :canceled ["commandq" 0]}}]]}
-                    {:des "Quit application by holding command-q" :rules [[:!C#Pq nil nil {:held {:key :q :modi :left_command :repeat false}}]]}
-                    {:des "Quit Safari by pressing command-q twice" :rules [[:!C#Pq :!Cq [:safari ["command-q" 1]]]
-                                                                            [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :canceled ["command-q" 0]}}]]}
-                    {:des "Mouse button"
-                     :rules [[{:pkey :button5} :mission_control]
-                             [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]]}
+                    ;; {:des "a to 1"                                            :rules [[:a :1]]} ;; a to 1
+                    ;; {:des "command a to control 1"                            :rules [[:!C#Pa :!T1]]} ;; command a to control 1
+                    ;; {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
+                    ;; {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
+                    ;; {:des "c to example osascript"                            :rules [[:c "osascript -e 'display dialog \"example apple script\"'"]]} ;; key to shell script
+                    ;; {:des "d to 1 then example osascript"                     :rules [[:d [:1 [:example-template "example apple script"]]]]} ;; key to key then shell script
+                    ;; {:des "simultaneous e f to 3"                             :rules [[[:e :f] :3]]} ;; simultaneous key to key
+                    ;; {:des "g to 4 when variable vi-mode is 1"                 :rules [[:g :4 :vi-mode]]} ;; vi-mode is 1
+                    ;; {:des "h to 5 when variable vi-mode is not 1"             :rules [[:h :5 :!vi-mode]]} ;; vi-mode is not 1
+                    ;; {:des "i to 6 only for device hhkb-bt"                    :rules [[:i :6 [:hhkb-bt :hhkb]]]} ;; key to key in layer b (in layer a) specific to hhkb-bt device
+                    ;; {:des "j to 7 on hhkb-bt when variable vi-mode is 1"      :rules [[:j :7 [:vi-mode :hhkb-bt]]]} ;; multiple condition
+                    ;; {:des "press h insert 8 then set variable some-mode to 0" :rules [[:h [:8 {:set ["some-mode" 0]}]]]}
+                    ;; {:des "capslock to control as modifier to escape when press alone" :rules [[:##caps_lock :left_control nil {:alone :escape}]]}
+                    ;; {:des "Quit application by pressing command-q twice" :rules [[:!C#Pq :!Cq ["command-q" 1]]
+                    ;;                                                              [:!C#Pq ["command-q" 1] nil {:delayed {:invoked ["command-q" 0] :canceled ["commandq" 0]}}]]}
+                    ;; {:des "Quit application by holding command-q" :rules [[:!C#Pq nil nil {:held {:key :q :modi :left_command :repeat false}}]]}
+                    ;; {:des "Quit Safari by pressing command-q twice" :rules [[:!C#Pq :!Cq [:safari ["command-q" 1]]]
+                    ;;                                                         [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :canceled ["command-q" 0]}}]]}
+                    ;; {:des "Mouse button"
+                    ;;  :rules [[{:pkey :button5} :mission_control]
+                    ;;          [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]]}
                     {:des "Change input source"
                      :rules [[:i :us :q-mode]
                              [:o :squirrel :q-mode]]}
                     {:des "tab-mode"
-                     :rules [:chunkwm-move-mode
+                     :rules [:test-profile
+                             :chunkwm-move-mode
                              [:h "/usr/local/bin/chunkc tiling::window --warp west"]
+                             :Default
                              :chunkwm-scale-mode
-                             [:h "/usr/local/bin/chunkc tiling::window --use-temporary-ratio 0.03 --adjust-window-edge west"]
-                             :tab-mode
-                             [:h "/usr/local/bin/chunkc tiling::window --focus west"]
-                             [:condi :chunkwm-move-mode :chunkwm-scale-mode]
-                             [:l "/usr/local/bin/chunkc tiling::window --focus east"]]}
-                    {:des "input source as condition"
-                     :rules [[:a :a :us]]}
-                    {:des "any keycode"
-                     :rules [[{:any :key_code} :a]
-                             [{:any :consumer_key_code} :a]
-                             [{:any :pointing_button} :a]]}
-                    {:des "double press and held key in simlayer (to_delayed_action, to_if_held_down)"
-                     :rules [[:j "say 'j double press'" [["q-mode" 1] ["q-mode-j-dbpress-mode" 1]]]
-                             :q-mode
-                             [:j ["say 'j press down'" ["q-mode-j-dbpress-mode" 1]] nil {:delayed {:canceled ["q-mode-j-dbpress-mode" 0]
-                                                                                                   :invoked ["q-mode-j-dbpress-mode" 0]}
-                                                                                         :held "say 'j held down'"}]]}
-                    {:des "QWER in to right modifier keys" :rules [[:!QWERa :a]]}])
+                             [:h "/usr/local/bin/chunkc tiling::window --use-temporary-ratio 0.03 --adjust-window-edge west"]]}])
+                             ;; :tab-mode
+                             ;; [:h "/usr/local/bin/chunkc tiling::window --focus west"]
+                             ;; [:condi :chunkwm-move-mode :chunkwm-scale-mode]
+                             ;; [:l "/usr/local/bin/chunkc tiling::window --focus east"]]}])
+;; {:des "input source as condition"
+;;  :rules [[:a :a :us]]}
+;; {:des "any keycode"
+;;  :rules [[{:any :key_code} :a]
+;;          [{:any :consumer_key_code} :a]
+;;          [{:any :pointing_button} :a]]}
+;; {:des "double press and held key in simlayer (to_delayed_action, to_if_held_down)"
+;;  :rules [[:j "say 'j double press'" [["q-mode" 1] ["q-mode-j-dbpress-mode" 1]]]
+;;          :q-mode
+;;          [:j ["say 'j press down'" ["q-mode-j-dbpress-mode" 1]] nil {:delayed {:canceled ["q-mode-j-dbpress-mode" 0]
+;;                                                                                :invoked ["q-mode-j-dbpress-mode" 0]}
+;;                                                                      :held "say 'j held down'"}]]}
+;; {:des "QWER in to right modifier keys" :rules [[:!QWERa :a]]}])
 
 (def result [{:description "auto generated layer trigger key",
               :manipulators [{:type "basic",
@@ -304,16 +306,13 @@
                                {:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
                               :type "basic"}]}
              {:description "input source as condition",
-              :manipulators
-              [{:from {:key_code "a"},
-                :to [{:key_code "a"}],
-                :conditions
-                [{:input_sources
-                  [{:input_mode_id "",
-                    :input_source_id "com.apple.keylayout.US",
-                    :language "en"}],
-                  :type "input_source_if"}],
-                :type "basic"}]}
+              :manipulators [{:from {:key_code "a"},
+                              :to [{:key_code "a"}],
+                              :conditions [{:input_sources [{:input_mode_id "",
+                                                             :input_source_id "com.apple.keylayout.US",
+                                                             :language "en"}],
+                                            :type "input_source_if"}],
+                              :type "basic"}]}
              {:description "any keycode",
               :manipulators [{:from {:any "key_code"},
                               :to [{:key_code "a"}],
@@ -373,7 +372,19 @@
 
 (t/deftest generate-mains
   (init-conf-data)
-  (update-conf-data {:applications {:safari ["^com\\.apple\\.Safari$"]
+  (update-conf-data {:profiles [{:name :Default,
+                                 :complex_modifications {:parameters {:basic.simultaneous_threshold_milliseconds 50,
+                                                                      :basic.to_delayed_action_delay_milliseconds 500,
+                                                                      :basic.to_if_alone_timeout_milliseconds 1000,
+                                                                      :basic.to_if_held_down_threshold_milliseconds 500},
+                                                         :rules []}}
+                                {:name :test-profile,
+                                 :complex_modifications {:parameters {:basic.simultaneous_threshold_milliseconds 50,
+                                                                      :basic.to_delayed_action_delay_milliseconds 500,
+                                                                      :basic.to_if_alone_timeout_milliseconds 1000,
+                                                                      :basic.to_if_held_down_threshold_milliseconds 500},
+                                                         :rules []}}]
+                     :applications {:safari ["^com\\.apple\\.Safari$"]
                                     :chrome ["^com\\.google\\.Chrome$"]
                                     :chrome-canary ["^com\\.google\\.Chrome\\.canary$"]
                                     :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
@@ -436,6 +447,86 @@
                                                                :afterup {:set ["vi-mode" 0]}}}}}
                      :simlayer-threshold 250})
 
-
   (t/testing
       (t/is (= (sut/parse-mains example-mains) result))))
+
+(defn ttt []
+  (init-conf-data)
+  (update-conf-data
+   {:profiles [{:name :Default,
+                :complex_modifications {:parameters {:basic.simultaneous_threshold_milliseconds 50,
+                                                     :basic.to_delayed_action_delay_milliseconds 500,
+                                                     :basic.to_if_alone_timeout_milliseconds 1000,
+                                                     :basic.to_if_held_down_threshold_milliseconds 500},
+                                        :rules []}}
+               {:name :test-profile
+                :complex_modifications {:parameters {:basic.simultaneous_threshold_milliseconds 50,
+                                                     :basic.to_delayed_action_delay_milliseconds 500,
+                                                     :basic.to_if_alone_timeout_milliseconds 1000,
+                                                     :basic.to_if_held_down_threshold_milliseconds 500},
+                                        :rules []}}]
+    :applications {:safari ["^com\\.apple\\.Safari$"]
+                   :chrome ["^com\\.google\\.Chrome$"]
+                   :chrome-canary ["^com\\.google\\.Chrome\\.canary$"]
+                   :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
+    :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
+              :hhkb [{:vendor_id 2131 :product_id 256}]}
+    :input-sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
+                               :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
+                               :language "zh-Hans"}
+                    :us {:input_mode_id ""
+                         :input_source_id "com.apple.keylayout.US"
+                         :language "en"}}
+    :templates {:example-template "osascript -e 'display dialog \"%s\"'"}
+    :modifiers {}
+    :froms {:my-spacebar {:key :spacebar}}
+    :tos {}
+    :layers
+    {:tab-mode {:type "basic",
+                :to [{:set_variable {:name "tab-mode", :value 1}}],
+                :from {:key_code "tab"},
+                :to_after_key_up [{:set_variable {:name "tab-mode", :value 0}}
+                                  {:set_variable {:name "chunkwm-move-mode",
+                                                  :value 0}}
+                                  {:set_variable {:name "chunkwm-scale-mode",
+                                                  :value 0}}],
+                :to_if_alone [{:key_code "tab"}]},
+     :chunkwm-move-mode {:type "basic",
+                         :to [{:set_variable {:name "chunkwm-move-mode",
+                                              :value 1}}],
+                         :from {:key_code "f"},
+                         :to_after_key_up [{:set_variable {:name "chunkwm-move-mode",
+                                                           :value 0}}],
+                         :to_if_alone [{:key_code "f"}],
+                         :conditions [{:name "tab-mode",
+                                       :value 1,
+                                       :type "variable_if"}]},
+     :chunkwm-scale-mode {:type "basic",
+                          :to [{:set_variable {:name "chunkwm-scale-mode",
+                                               :value 1}}],
+                          :from {:key_code "c"},
+                          :to_after_key_up [{:set_variable {:name "chunkwm-scale-mode",
+                                                            :value 0}}],
+                          :to_if_alone [{:key_code "c"}],
+                          :conditions [{:name "tab-mode",
+                                        :value 1,
+                                        :type "variable_if"}]}}
+    :simlayers {:q-mode {:key :q}
+                :vi-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
+                          :to [{:set ["vi-mode" 1]}],
+                          :from {:sim [:d],
+                                 :simo {:interrupt true,
+                                        :dorder :strict,
+                                        :uorder :strict_inverse,
+                                        :afterup {:set ["vi-mode" 0]}}}}
+                :launcher-mode {:parameters {:basic.simultaneous_threshold_milliseconds 250},
+                                :to [{:set ["vi-mode" 1]}],
+                                :from {:sim [:d],
+                                       :simo {:interrupt true,
+                                              :dorder :strict,
+                                              :uorder :strict_inverse,
+                                              :afterup {:set ["vi-mode" 0]}}}}}
+    :simlayer-threshold 250})
+  (sut/parse-mains example-mains))
+
+;; (ttt)

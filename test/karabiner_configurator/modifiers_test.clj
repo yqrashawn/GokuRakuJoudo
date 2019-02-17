@@ -19,7 +19,8 @@
              :devices {},
              :layers {},
              :froms {},
-             :simlayers {}})
+             :simlayers {}
+             :profiles {}})
 
 (deftest convert-modifiers
   (init-conf-data)
