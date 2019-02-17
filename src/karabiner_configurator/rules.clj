@@ -61,32 +61,32 @@
   [des to prevresult]
   (if (conditions/is-simple-set-variable? to)
     [(parse-simple-set-variable des to)]
-    (into []
-          (flatten
-           (for [v to] ;; this for only return flatten vector
-             (do
-               (massert (or (contains? (:tos conf-data) v)
-                            (k? v)
-                            (special-modi-k? v)
-                            (vector? v)
-                            (string? v)
-                            (map? v))
-                        (str "invalid to definition in main section's " des))
-               (cond (keyword? v)
-                     (rule-parse-keyword des v)
-                     (and (vector? v) (conditions/is-simple-set-variable? v))
-                     (parse-simple-set-variable des v)
-                     (string? v)
-                     (tos/parse-to des [{:shell v}])
-                     (map? v)
-                     (tos/parse-to des [v]))))))))
+    (vec
+     (flatten
+      (for [v to] ;; this for only return flatten vector
+        (do
+          (massert (or (contains? (:tos conf-data) v)
+                       (k? v)
+                       (special-modi-k? v)
+                       (vector? v)
+                       (string? v)
+                       (map? v))
+                   (str "invalid to definition in main section's " des))
+          (cond (keyword? v)
+                (rule-parse-keyword des v)
+                (and (vector? v) (conditions/is-simple-set-variable? v))
+                (parse-simple-set-variable des v)
+                (string? v)
+                (tos/parse-to des [{:shell v}])
+                (map? v)
+                (tos/parse-to des [v]))))))))
 
 (defn process-to-shell-template-vector [to]
-  (into []
-        (for [x to]
-          (if (and (vector? x) (templates? x))
-            {:shell x}
-            x))))
+  (vec
+   (for [x to]
+     (if (and (vector? x) (templates? x))
+       {:shell x}
+       x))))
 
 ;; <to> section
 ;; :a                        | normal key or predefined tos
@@ -120,7 +120,7 @@
                                  (map? to))
                              (str "invalid <to> in main section's " des))
         result (if (contains? (:input-sources conf-data) to)
-                 (into [] (tos/parse-to des [{:input to}]))
+                 (vec (tos/parse-to des [{:input to}]))
                  result)
         result (if (and (keyword? to) (not (contains? (:input-sources conf-data) to)))
                  (rule-parse-keyword des to)
@@ -138,27 +138,30 @@
                      (vector? to)
                      (to-key-vector des to result)
                      (string? to)
-                     (into [] (tos/parse-to des [{:shell to}]))
+                     (vec (tos/parse-to des [{:shell to}]))
                      (map? to)
-                     (into [] (tos/parse-to des [to]))
+                     (vec (tos/parse-to des [to]))
                      :else result)]
     result))
 
 (defn merge-multiple-device-conditions
-  [vec]
-  (update-conf-data (assoc conf-data :devices (dissoc (:devices conf-data) :temp-device)))
-  (let [devices-list (for [item vec
-                           :when (and (keyword? item) (devices? item))
-                           :let [this-device-vec (item (:devices conf-data))
-                                 temp-device-vec (if (devices? :temp-device)
-                                                   (into [] (concat (:temp-device (:devices conf-data)) this-device-vec))
-                                                   this-device-vec)
-                                 update-temp-device-into-conf-data (update-conf-data (assoc-in conf-data [:devices :temp-device] temp-device-vec))]]
-                       item)
-        use-temp-device? (> (count devices-list) 0)
-        new-conditions (if use-temp-device? (conj (into [] (reduce #(remove #{%2} %1) vec devices-list)) :temp-device)
-                           vec)]
+  [device-vec]
+  (assoc-conf-data :devices (dissoc (:devices conf-data) :temp-device))
+  (let [devices-list
+        (for [item device-vec
+              :when (and (keyword? item) (devices? item))
+              :let [this-device-vec (item (:devices conf-data))
+                    temp-device-vec (if (devices? :temp-device)
+                                      (vec (concat (:temp-device (:devices conf-data)) this-device-vec))
+                                      this-device-vec)
+                    update-temp-device-into-conf-data (update-conf-data (assoc-in conf-data [:devices :temp-device] temp-device-vec))]]
+          item)
+        use-temp-device? (pos? (count devices-list))
+        new-conditions (if use-temp-device? (conj (vec (reduce #(remove #{%2} %1) device-vec devices-list)) :temp-device)
+                           device-vec)]
     new-conditions))
+
+(def profile-layer-condis {})
 
 ;; <conditions>
 ;; :chrome
@@ -167,11 +170,20 @@
 ;; ["vi-mode" 0]
 ;; [:vi-mode ["w mode" 1] :!chrome]
 (defn conditions-key
-  [des conditions prev-result]
-  (let [conditions (merge-multiple-device-conditions conditions)]
-    (if (conditions/is-simple-set-variable? conditions)
-      {:conditions (conditions/parse-conditions [conditions] (:from prev-result) (:to prev-result))}
-      {:conditions (conditions/parse-conditions conditions (:from prev-result) (:to prev-result))})))
+  [des conditions prev-result profiles]
+  (let [conditions (merge-multiple-device-conditions conditions)
+        result-condi
+        (if (conditions/is-simple-set-variable? conditions)
+          {:conditions (conditions/parse-conditions [conditions] (:from prev-result) (:to prev-result))}
+          {:conditions (conditions/parse-conditions conditions (:from prev-result) (:to prev-result))})
+        layer-condis (filter #(:is-layer (meta %)) (:conditions result-condi))]
+    (when (pos? (count layer-condis))
+      (doseq [profile profiles]
+        (doseq [layer-condi layer-condis]
+          (when (not (contains?? (profile profile-layer-condis) (keyword (:name layer-condi))))
+            (def profile-layer-condis
+              (assoc profile-layer-condis profile (conj (or (profile profile-layer-condis) []) (keyword (:name layer-condi)))))))))
+    result-condi))
 
 ;; <other options> section
 ;; to_if_alone                                    | :alone
@@ -203,77 +215,46 @@
         result (if (number? sim) (assoc-in result [:parameters :basic.simultaneous_threshold_milliseconds] sim) result)]
     result))
 
-
 (defn parse-rule
-  "generate one manipulator"
-  ([des from to]
-   (let [result {}
-         ;; result {:goku-id (next-rule-id)}
-         result (assoc result :from (:from (from-key des from)))
-         result (assoc result :to (to-key des to))
-         result (assoc result :type "basic")]
-     result))
-  ([des from to conditions]
-   (let [result {}
-         ;; result {:goku-id (next-rule-id)}
-         result (assoc result :from (:from (from-key des from)))
-         result (assoc result :to (to-key des to))
-         result (if conditions
-                  (if (vector? conditions)
-                    (assoc result :conditions (:conditions (conditions-key des conditions result)))
-                    (assoc result :conditions (:conditions (conditions-key des (into [] (flatten [conditions])) result))))
-                  result)
-         result (assoc result :type "basic")
-         result (if conditions/used-simlayers-config
-                  (let [insert-simlayer conditions/used-simlayers-config
-                        insert-simlayer (assoc insert-simlayer :from
-                                               (froms/parse-from des (:from insert-simlayer)))
-                        insert-simlayer (assoc insert-simlayer :to
-                                               (into [] (concat (tos/parse-to des (:to insert-simlayer)) (:to result))))
-                        cleanup-used-simlayers-config (conditions/cleanup-used-simlayers-config)]
-                    [result insert-simlayer])
-                  result)]
-     result))
-  ([des from to conditions additional]
-   (let [result {}
-         ;; result {:goku-id (next-rule-id)}
-         result (if additional
-                  (additional-key des additional result)
-                  {})
-         result (assoc result :from (:from (from-key des from)))
-         result (if to (assoc result :to (to-key des to)) result)
-         result (if conditions
-                  (if (vector? conditions)
-                    (assoc result :conditions (:conditions (conditions-key des conditions result)))
-                    (assoc result :conditions (:conditions (conditions-key des (into [] (flatten [conditions])) result))))
-                  result)
-         result (assoc result :type "basic")
-         result (if conditions/used-simlayers-config
-                  (let [insert-simlayer conditions/used-simlayers-config
-                        insert-simlayer (assoc insert-simlayer :from
-                                               (froms/parse-from des (:from insert-simlayer)))
-                        insert-simlayer (assoc insert-simlayer :to
-                                               (into [] (concat (tos/parse-to des (:to insert-simlayer)) (:to result))))
-                        insert-simlayer (if (:to_if_held_down result)
-                                          (assoc insert-simlayer :to_if_held_down (:to_if_held_down result))
-                                          insert-simlayer)
-                        insert-simlayer (if (:to_if_invoked (:to_delayed_action result))
-                                          (assoc-in insert-simlayer
-                                                    [:to_delayed_action :to_if_invoked]
-                                                    (:to_if_invoked (:to_delayed_action result)))
-                                          insert-simlayer)
-                        insert-simlayer (if (:to_if_canceled (:to_delayed_action result))
-                                          (assoc-in insert-simlayer
-                                                    [:to_delayed_action :to_if_canceled]
-                                                    (:to_if_canceled (:to_delayed_action result)))
-                                          insert-simlayer)
-                        cleanup-used-simlayers-config (conditions/cleanup-used-simlayers-config)]
-                    [result insert-simlayer])
-                  result)]
-     result)))
+  "generate one manipulator/rule"
+  [des from to conditions additional profiles]
+  (let [result {}
+        result (if additional
+                 (additional-key des additional result)
+                 {})
+        result (assoc result :from (:from (from-key des from)))
+        result (if to (assoc result :to (to-key des to)) result)
+        result (if conditions
+                 (if (vector? conditions)
+                   (assoc result :conditions (:conditions (conditions-key des conditions result profiles)))
+                   (assoc result :conditions (:conditions (conditions-key des (vec (flatten [conditions])) result profiles))))
+                 result)
+        result (assoc result :type "basic")
+        result (if conditions/used-simlayers-config
+                 (let [insert-simlayer conditions/used-simlayers-config
+                       insert-simlayer (assoc insert-simlayer :from
+                                              (froms/parse-from des (:from insert-simlayer)))
+                       insert-simlayer (assoc insert-simlayer :to
+                                              (vec (concat (tos/parse-to des (:to insert-simlayer)) (:to result))))
+                       insert-simlayer (if (:to_if_held_down result)
+                                         (assoc insert-simlayer :to_if_held_down (:to_if_held_down result))
+                                         insert-simlayer)
+                       insert-simlayer (if (:to_if_invoked (:to_delayed_action result))
+                                         (assoc-in insert-simlayer
+                                                   [:to_delayed_action :to_if_invoked]
+                                                   (:to_if_invoked (:to_delayed_action result)))
+                                         insert-simlayer)
+                       insert-simlayer (if (:to_if_canceled (:to_delayed_action result))
+                                         (assoc-in insert-simlayer
+                                                   [:to_delayed_action :to_if_canceled]
+                                                   (:to_if_canceled (:to_delayed_action result)))
+                                         insert-simlayer)
+                       cleanup-used-simlayers-config (conditions/cleanup-used-simlayers-config)]
+                   [(with-meta result {:profiles profiles}) (with-meta insert-simlayer {:profiles profiles})])
+                 (with-meta result {:profiles profiles}))]
+    result))
 
 (def current-in-rules-conditions nil)
-
 (defn define-current-in-rule-conditions
   "record current in rule conditions and used in following rules"
   [condis]
@@ -281,8 +262,7 @@
     (def current-in-rules-conditions nil)
     (if (not (vector? condis))
       (def current-in-rules-conditions [condis])
-      (def current-in-rules-conditions (pop (into [] (reverse condis)))))))
-
+      (def current-in-rules-conditions (pop (vec (reverse condis)))))))
 (defn add-current-in-rule-conditions
   "add current in rule conditions into following rules"
   [rule]
@@ -297,13 +277,31 @@
         (cond (or simple-set-variable? keyword-conditions?)
               (conj current-in-rules-conditions conditions)
               vector-conditions?
-              (into [] (concat current-in-rules-conditions conditions))
+              (vec (concat current-in-rules-conditions conditions))
               :else
               current-in-rules-conditions)]
     ;; return results
     (cond (nn? other-options) [from to conditions other-options]
           (nn? conditions) [from to conditions]
           :else [from to])))
+
+(def current-in-rules-profiles nil)
+(defn define-current-in-rule-profiles
+  "record current in rule profiles and used in following rules"
+  [profiles]
+  (if (nil? profiles)
+    (def current-in-rules-profiles nil)
+    (if (not (vector? profiles))
+      (def current-in-rules-profiles [profiles])
+      (let [profiles (pop (vec (reverse profiles)))
+            assert-profiles (massert (= (count (filter profile? profiles)) (count profiles)) (str "invalid profile in " profiles))]
+        (def current-in-rules-profiles profiles)))))
+
+(defn add-current-in-rule-profiles
+  "add current in rule profiles into following rules"
+  [rule]
+  (let [[from to conditions other-options] rule]
+    [from to conditions other-options current-in-rules-profiles]))
 
 (def all-the-rules
   "all rules defined in edn config file, use index of vector as rule id
@@ -316,47 +314,118 @@
   [rule]
   (let [[from to condition other-options] rule]))
 
+(def multi-profile-rules
+  "{:profile-1
+    {:description \"some manipulators\"
+     :manipulators [rule1 rule2]}}"
+  {})
+
+(defn add-rule-into-multi-profile-rules
+  "update mtuli-profile-rules depends on rules' profiles"
+  [des parsed-rules]
+  (doseq [parsed-rule parsed-rules]
+    (doseq [profile (-> parsed-rule meta :profiles)]
+      (if (nil? (profile multi-profile-rules))
+        ;; (def multi-profile-rules (assoc multi-profile-rules profile [{:description des :manipulators []}]))
+        (def multi-profile-rules (assoc multi-profile-rules profile [{:description des :manipulators []}])))
+      (let [target-des (vec (keep-indexed #(if (= des (:description %2)) [%1 %2]) (profile multi-profile-rules)))
+            target-des (filter nn? target-des)
+            ;; target-des (filter #(= des (:description %)) (profile multi-profile-rules))
+            target-des (and (pos? (count target-des)) (first target-des))]
+        (if target-des
+          (def multi-profile-rules
+            (assoc-in multi-profile-rules
+                      [profile (first target-des)]
+                      {:description des
+                       :manipulators (conj
+                                      (:manipulators (second target-des))
+                                      parsed-rule)}))
+          (def multi-profile-rules
+            (assoc multi-profile-rules
+                   profile
+                   (conj (profile multi-profile-rules)
+                         {:description des
+                          :manipulators [parsed-rule]}))))))))
+
 (defn generate-one-rules
   "generate on rules (one object with des and manipulators in karabiner.json)"
   [des rules]
-  {:description des
-   :manipulators
-   (into []
-         (flatten
-          ;; check in rule conditions
-          (let [rules-with-current-in-rule-conditions
-                (into [] (for [rule rules]
-                           (if (or (keyword? rule) (and (vector? rule) (= (first rule) :condi)))
-                             (do (define-current-in-rule-conditions rule) nil)
-                             (if (nn? current-in-rules-conditions)
-                               (add-current-in-rule-conditions rule)
-                               rule))))
-                cleanup-circ (define-current-in-rule-conditions nil)]
-            ;; parse rule
-            (for [rule rules-with-current-in-rule-conditions
+  (add-rule-into-multi-profile-rules
+   des
+   (vec
+    (flatten
+     ;; check in rule conditions
+     (let [result-rules
+           (vec
+            (for [rule rules]
+              (if (or (and (keyword? rule) (not (profile? rule))) (and (vector? rule) (or (= (first rule) :condis)
+                                                                                          (= (first rule) :condi))))
+                (do (define-current-in-rule-conditions rule) nil)
+                (if (and
+                     (nn? current-in-rules-conditions)
+                     (not (profile? rule))
+                     (and (vector? rule) (not (or (= (first rule) :profiles)
+                                                  (= (first rule) :profile)))))
+                  (add-current-in-rule-conditions rule)
+                  rule))))
+           cleanup-circ (define-current-in-rule-conditions nil)
+           result-rules
+           (vec
+            (for [rule result-rules
                   :when (nn? rule)]
-              (let [[from to condition other-options] rule
-                    ;; a rule must have a from event defination and to event defination
-                    ;; from event defination is defined in <from> section
-                    ;; to event defination can be defined in <to> section or <other-options> section (as :alone :delayed :afterup)
-                    validate-rule (massert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to>/<other-options> is nil"))]
-                    ;; current-profile (if (= from :profile) (into [] (rest rule)) [data/default-profile-name])]
-                (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to)
-                      (and (nil? other-options) (nn? condition)) (parse-rule des from to condition)
-                      (nn? other-options) (parse-rule des from to condition other-options)))))))})
+              ;; a rule is a keyword of profile name or a vector [:profile :profile-name]
+              (if (or (and (keyword? rule) (profile? rule)) (and (vector? rule) (or (= (first rule) :profiles)
+                                                                                    (= (first rule) :profile))))
+                (do (define-current-in-rule-profiles rule) nil)
+                (if (nn? current-in-rules-profiles)
+                  (add-current-in-rule-profiles rule)
+                  rule))))
+           cleanup-cirp (define-current-in-rule-profiles nil)]
+
+       ;; parse rule
+       (for [rule result-rules
+             :when (nn? rule)]
+         (let [[from to condition other-options profiles] rule
+               profiles (if (nn? profiles) profiles [user-default-profile-name])
+               ;; a rule must have a from event defination and to event defination
+               ;; from event defination is defined in <from> section
+               ;; to event defination can be defined in <to> section or <other-options> section (as :alone :delayed :afterup)
+               validate-rule (massert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to>/<other-options> is nil" from "\n" to "\n" other-options))]
+           (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to nil nil profiles)
+                 (and (nil? other-options) (nn? condition)) (parse-rule des from to condition nil profiles)
+                 (nn? other-options) (parse-rule des from to condition other-options profiles)))))))))
 
 (defn generate
   "parse mains and generate all rules for converting to json"
   [mains]
-  (let [user-result (for [{:keys [des rules]} mains]
-                      (generate-one-rules des rules))
-        layer-result {:description "auto generated layer trigger key"
-                      :manipulators (into [] (for [[layer-name layer-definition] (:layers conf-data)]
-                                               layer-definition))}
-        add-layer-result (if (> (count (:manipulators layer-result)) 0) (conj user-result layer-result) user-result)]
-    (into [] add-layer-result)))
+  (let [
+        ;; user-result (do
+        ;;               (doseq [{:keys [des rules]} mains]
+        ;;                 (generate-one-rules des rules))
+        ;;               multi-profile-rules)
+        update-multi-profile-rules
+        (doseq [{:keys [des rules]} mains]
+          (generate-one-rules des rules))
+        update-profile-layer-condis
+        (doseq [[profile condis] profile-layer-condis]
+          (def profile-layer-condis (assoc profile-layer-condis profile (vec (for [condi condis]  (condi (:layers conf-data)))))))
+
+        add-layer-result (doseq [[profile condis] profile-layer-condis]
+                           (when (profile multi-profile-rules)
+                             (def multi-profile-rules
+                               (assoc multi-profile-rules
+                                      profile
+                                      (vec (cons
+                                            {:description "Auto generated layer conditions"
+                                             :manipulators (into
+                                                            condis
+                                                            (:manipulators (profile multi-profile-rules)))}
+                                            (profile multi-profile-rules)))))))]
+    multi-profile-rules))
 
 (defn parse-mains
   "parse main section to final edn format, ready to convert to json"
   [mains]
+  (def multi-profile-rules {})
+  (def profile-layer-condis {})
   (generate mains))

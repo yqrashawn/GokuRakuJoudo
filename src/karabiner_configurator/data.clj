@@ -19,10 +19,16 @@
   rule-id)
 
 (declare conf-data)
+
 (defn init-conf-data
   []
   (init-rule-id)
-  (def conf-data {:profiles {}
+  (def user-default-profile-name :Default)
+  (def conf-data {:profiles {:Default {:sim 50 ;; basic.simultaneous_threshold_milliseconds
+                                       :delay 500 ;; basic.to_delayed_action_delay_milliseconds
+                                       :alone 1000 ;; basic.to_if_alone_timeout_milliseconds
+                                       :held 500 ;; basic.to_if_held_down_threshold_milliseconds
+                                       :default true}}
                   :applications {}
                   :devices {}
                   :input-sources {}
@@ -35,7 +41,7 @@
 
 (defn applications? [k] (nn? (k (:applications conf-data))))
 (defn devices? [k] (nn? (k (:devices conf-data))))
-(defn input-sources? [k] (nn? (k (:input-source conf-data))))
+(defn input-sources? [k] (nn? (k (:input-sources conf-data))))
 (defn modifiers? [k] (nn? (k (:modifiers conf-data))))
 (defn froms? [k] (nn? (k (:froms conf-data))))
 (defn layers? [k] (nn? (k (:layers conf-data))))
@@ -46,27 +52,22 @@
         (vector? k-or-vec)
         (contains? (:templates conf-data) (first k-or-vec))))
 
-(def goku-default-profile {:Default {:default true
-                                     :sim 50
-                                     :delay 500
-                                     :alone 1000
-                                     :held 500}})
+(defn profile? [k]
+  (and (keyword? k) (k (:profiles conf-data))))
 
-(def default-profile {:name "Default"
-                      :sim 50 ;; basic.simultaneous_threshold_milliseconds
-                      :delay 500 ;; basic.to_delayed_action_delay_milliseconds
-                      :alone 1000 ;; basic.to_if_alone_timeout_milliseconds
-                      :held 500 ;; basic.to_if_held_down_threshold_milliseconds
-                      :default true})
+(def default-profile {:Default {:sim 50 ;; basic.simultaneous_threshold_milliseconds
+                                :delay 500 ;; basic.to_delayed_action_delay_milliseconds
+                                :alone 1000 ;; basic.to_if_alone_timeout_milliseconds
+                                :held 500 ;; basic.to_if_held_down_threshold_milliseconds
+                                :default true}})
 
-(declare default-profiles)
+(def user-default-profile-name :Default)
 
-(defn update-profiles [& profiles]
-  (if profiles
-    (do
-      (assert-profiles (filter))
-      (def default-profiles profiles))
-    (def default-profiles [default-profile])))
+(defn update-user-default-profile-name [profile-name]
+  (massert
+   (keyword? profile-name)
+   (str "invalid profile name " profile-name ", profile name must be a keyword"))
+  (def user-default-profile-name profile-name))
 
 (defn k?
   [k]

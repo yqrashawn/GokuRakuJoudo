@@ -3,19 +3,24 @@
    [karabiner-configurator.misc :refer :all]
    [karabiner-configurator.data :refer :all]))
 
-(defn generate-profiles [profiles]
-  (massert (= (count (filter #(= (:default %) true) profiles)) 1)
+(defn parse-profiles
+  "Parse profiles and save it in conf data for later use."
+  [profiles]
+  (massert (map? profiles) "Invalid profiles. Must be a map")
+  (massert (= (count (filter #(:default (second %)) profiles)) 1)
            "There should be one and only one default profile")
-  (for [[{:keys [name held sim delay alone default]} profile] profiles]
-    {:name name
-     :complex_modifications
-     {:parameters
-      {:basic.simultaneous_threshold_milliseconds sim
-       :basic.to_delayed_action_delay_milliseconds delay
-       :basic.to_if_alone_timeout_milliseconds alone
-       :basic.to_if_held_down_threshold_milliseconds held}
-      :rules []}}))
-
-(defn parse-profiles [profiles]
-  (massert (vector? profiles) "Invalid profiles. Must be a vector")
-  (generate-profiles profiles))
+  (let [user-default-profile (update-user-default-profile-name
+                              (first (first (filter #(:default (second %)) profiles))))]
+    (doseq [profile profiles
+            :let [[name {:keys [held sim delay alone default]}] profile]]
+      (assoc-in-conf-data [:profiles name] {:complex_modifications
+                                            {:parameters
+                                             {:basic.simultaneous_threshold_milliseconds sim
+                                              :basic.to_delayed_action_delay_milliseconds delay
+                                              :basic.to_if_alone_timeout_milliseconds alone
+                                              :basic.to_if_held_down_threshold_milliseconds held}}}))))
+(defn parse-rules
+  "Parse generated rules into profiles"
+  [rules]
+  (vec (for [[profile-name profile-complex-modification] rules]
+         {profile-name (assoc-in (profile-name (:profiles  conf-data)) [:complex_modifications :rules] profile-complex-modification)})))

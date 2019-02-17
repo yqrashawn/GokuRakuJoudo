@@ -67,11 +67,12 @@
         (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
 
 (defmacro when-let*
-  ([bindings & body]
-   (if (seq bindings)
-     `(when-let [~(first bindings) ~(second bindings)]
-        (when-let* ~(drop 2 bindings) ~@body))
-     `(do ~@body))))
+  "Multiple binding version of when-let"
+  [bindings & body]
+  (if (seq bindings)
+    `(when-let [~(first bindings) ~(second bindings)]
+       (when-let* ~(vec (drop 2 bindings)) ~@body))
+    `(do ~@body)))
 
 (defn dissoc-in
   "Dissociates an entry from a nested associative structure returning a new

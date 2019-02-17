@@ -14,3 +14,4 @@ pom.xml.asc
 /Makefile.local
 /goku
 /karabiner-configurator-0.1.0-standalone
+/.eastwood
