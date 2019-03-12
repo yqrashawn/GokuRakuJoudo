@@ -6,6 +6,7 @@
                                                 "^net\\.kovidgoyal\\.kitty$",
                                                 "^org\\.vim\\.",
                                                 "^com\\.qvacua\\.VimR$"]}
+ :profiles {:vi-mode-default-profile {:default true}}
  :simlayers {:vi-mode {:key :d}
              :vi-visual-mode {:key :v :condi :!vim-mode-disabled-application}}
  :main [{:des "Vi Mode [D as Trigger Key]"

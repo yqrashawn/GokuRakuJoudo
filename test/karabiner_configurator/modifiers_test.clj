@@ -20,7 +20,8 @@
              :layers {},
              :froms {},
              :simlayers {}
-             :profiles {}})
+             :profiles {:Default
+                        {:sim 50,:delay 500,:alone 1000,:held 500,:default true}}})
 
 (deftest convert-modifiers
   (init-conf-data)

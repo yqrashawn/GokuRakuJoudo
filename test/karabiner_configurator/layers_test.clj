@@ -59,7 +59,9 @@
                                                    :value 0}}],
                  :to_if_alone [{:key_code "escape"}]}}
    :froms {},
-   :simlayers {}})
+   :simlayers {}
+   :profiles {:Default
+              {:sim 50, :delay 500, :alone 1000, :held 500, :default true}}})
 
 (def simlayers-example {:vi-mode {:key :d}
                         :test-to-after-key-up-mode {:key :l :afterup {:set ["foo" 0]}}
@@ -136,7 +138,9 @@
                                                                             0]}}},
                                               :conditions [{:name "foo",
                                                             :value 1,
-                                                            :type "variable_if"}]}}})
+                                                            :type "variable_if"}]}}
+   :profiles {:Default
+              {:sim 50, :delay 500, :alone 1000, :held 500, :default true}}})
 
 (t/deftest convert-simlayers
   (init-conf-data)

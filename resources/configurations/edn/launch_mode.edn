@@ -1,4 +1,6 @@
 {:templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+ :profiles {:launch-default-profile {:default true}
+            :launch-second-profile {}}
  :simlayers {:launch-mode {:key :w}}
  :main [{:des "launcher mode"
          :rules [[:j [:launch "Alacritty"] :launch-mode]
@@ -8,6 +10,7 @@
                  [:v [:launch "WeChat"] :launch-mode]
                  [:q [:launch "KE"] :launch-mode]
                  [:9 [:launch "PDFExpert"] :launch-mode]
+                 :launch-second-profile
                  [:comma [:launch "Safari"] :launch-mode]
                  [:period [:launch "Paw"] :launch-mode]
                  [:equal_sign [:launch "Textual"] :launch-mode]
