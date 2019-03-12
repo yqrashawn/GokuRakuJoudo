@@ -4,7 +4,6 @@
             [karabiner-configurator.data :refer :all]
             [karabiner-configurator.misc :refer :all]))
 
-(def yqrashawn-example (load-edn "resources/configurations/edn/yqrashawn.edn"))
 (def vi-mode-example (load-edn "resources/configurations/edn/vi_mode.edn"))
 (def launch-mode-example (load-edn "resources/configurations/edn/launch_mode.edn"))
 
@@ -18,6 +17,3 @@
   (init-conf-data)
   (t/testing "generate launch-mode config"
     (t/is (= (sut/parse-edn launch-mode-example) launch-mode-result))))
-;; (sut/parse-edn yqrashawn-example)
-
-
