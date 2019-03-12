@@ -3,21 +3,32 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.16...HEAD
+[Unreleased]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.0...HEAD
 
-** 1.16 - 2019-01-16
+** 0.2.0
+*** Added
+- multiple profile support
+- QWER as right command control option shift
+
+*** Fixed
+- some macos functionaly keys are set as consumer key, make them can be used in
+  to defination.
+  
+[0.2.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.16...0.2.0
+
+** 0.1.16 - 2019-01-16
 *** Added
 - user can now specify not already defined conditions using keyword
 
 [0.1.16]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.15...0.1.16
 
-** 1.15 - 2019-01-14
+** 0.1.15 - 2019-01-14
 *** Fixed
 - can't read already defined :layers in :layers pre-defination
 
 [0.1.15]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.14...0.1.15
 
-** 1.14 - 2018-12-22
+** 0.1.14 - 2018-12-22
 *** Added
 - add :sim in <other options> :params, [[https://github.com/yqrashawn/GokuRakuJoudo/blob/b9b334a187379f9bc8182ad59e2cca2a1789e9c0/src/karabiner_configurator/rules.clj#L183][params spec]]
 
@@ -26,28 +37,28 @@ All notable changes to this project will be documented in this file. This change
 
 [0.1.14]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.13...v0.1.14
 
-** 1.13 - 2018-12-07
+** 0.1.13 - 2018-12-07
 *** Added
 - add command to open log file
 - use [[https://github.com/candid82/joker][joker]] to check edn file syntax, (add joker as dependency via homebrew)
 
 [0.1.13]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.12...v0.1.13
 
-** 1.12 - 2018-12-07
+** 0.1.12 - 2018-12-07
 *** Added
 - error message when goku can't find the "Goku" profile
 - now we support ~{:held <to defination>}~ ~{:dealyed {:invoked <to defination>} {:dealyed <to defination>}}~ in simlayer keys (not simlayer defination) #15
 
 [0.1.12]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.11...v0.1.12
 
-** 1.11 - 2018-10-17
+** 0.1.11 - 2018-10-17
 *** Fixed
 - error while parsing ~{:any :key_code}~ as <from> section in rule
 - more friendly error message, simply removed the stacktrace of the AssertionError
 
 [0.1.11]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.10...v0.1.11
 
-** 1.10 - 2018-10-14
+** 0.1.10 - 2018-10-14
 *** Fixed
 - documentation typo, make readme more clear
 *** Added
