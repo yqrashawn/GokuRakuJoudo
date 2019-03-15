@@ -1,2 +1,241 @@
 * Examples
-Examples for user to check as quick reference and source of inspiration. WIP
+Examples for user to check as quick reference and source of inspiration. Most
+docs are comments (start with ;;) in code block.
+
+** minimal configuration
+
+This is the minimal configuration, it will do nothing. Make sure you have a
+profile named "Default" in karabiner.json.
+
+#+begin_src clojure
+{}
+#+end_src
+
+** swap key
+| from        | to          |
+|-------------+-------------|
+| ;           | :           |
+| shift + ;   | ;           |
+| command + ; | command + ; |
+| option + ;  | option + ;  |
+| control + ; | control + ; |
+
+#+begin_src clojure
+{:main [{:des   "swap ; :"
+         :rules [[:semicolon :!Ssemicolon]
+                 [:!Ssemicolon :semicolon]]}]}
+#+end_src
+
+** modifier keys
+
+#+begin_src clojure
+{:main [{:des   "demo modifier keys"
+         :rules [
+                 ;; shift 1 to 1
+                 ;; !S here means shift
+                 [:!S1 :1]
+                 ;; 1 to !
+                 [:1 :!S1]
+                 ;; control shift 1 to 12
+                 ;; !TS means control shift
+                 [:!TS1 [:1 :2]]]}]}
+
+;; C T O S stands for left_command left_control left_option left_shift
+;; Q W E R stands for right_command right_control right_option right_shift
+
+;;;; hyper
+;; !! stands for left_command + left_control + left_option + left_shift
+;; :!!1 left_command + left_control + left_option + left_shift + 1
+#+end_src
+
+** right_command to f16
+
+| from                         | to                 |
+|------------------------------+--------------------|
+| right_command                | f16                |
+| left_command + right_command | left_command + f16 |
+| option + right_command       | option + f16       |
+| shift + right_command        | shift + f16        |
+| control + right_command      | control + f16      |
+
+#+begin_src clojure
+{:main [{:des   "right_command to f16"
+         :rules [[:##right_command :f16]]}]}
+#+end_src
+
+#+begin_quote
+Note: Other modifier keys works because the "~##~" prefix. If you replace ~##~ with ~#C~ (~C~ for ~left_command~), only    
+
+> left_command + right_command -> left_command + f16 will work.    
+
+Others will be treated like    
+
+> control + right_command -> control + right_command    
+#+end_quote
+
+** caps_lock to esc when pressed alone, to ctrl as modifier
+
+#+begin_src clojure
+{:main [{:des   "caps_lock to esc when pressed alone, to ctrl as modifier"
+         :rules [[:##caps_lock :left_control nil {:alone :escape}]]}]}
+#+end_src
+
+** press j and l simultaneously to f16
+
+#+begin_src clojure
+{:main [{:des   "press j and l simultaneously to f16"
+         :rules [[[:h :j] :f16]]}]}
+#+end_src
+
+** normal key as modifer key
+
+simlayer, templates example
+#+begin_src clojure
+{:templates {:open "open \"%s\""}
+ :layers    {}
+ :simlayers {;; make w key a simlayer key
+             ;; layers works too, but only recommended for none typing keys
+             ;; like . , tab
+             ;; or keys like z, which used less often
+             :launch-mode {:key :w}}
+ :main      [{:des   "launch mode"
+              :rules [:launch-mode
+                      [:k [:open "/Applications/Emacs.app"]]
+                      [:l [:open "/Applications/Google Chrome.app"]]]}]}
+#+end_src
+
+same as below config, all conditions (layer, simlayer, application,
+input-source, device) works this way.
+#+begin_src clojure
+{:templates {:open "open \"%s\""}
+ :layers    {}
+ :simlayers {:launch-mode {:key :w}}
+ :main      [{:des   "launch mode"
+              :rules [[:k [:open "/Applications/Emacs.app"] :launch-mode]
+                      [:l [:open "/Applications/Google Chrome.app"] :launch-mode]]}]}
+#+end_src
+
+layer example
+#+begin_src clojure
+{:templates {:open   "open \"%s\""
+             :alfred "osascript -e 'tell application \"Alfred 3\" to run trigger \"%s\" in workflow \"%s\" with argument \"%s\"'"}
+ :layers    {:alfred-layer {:key :z}}
+ :simlayers {:launch-mode {:key :w}}
+ :main      [{:des   "launch mode"
+              :rules [:launch-mode
+                      [:k [:open "/Applications/Emacs.app"]]
+                      [:l [:open "/Applications/Google Chrome.app"]]]}
+
+             {:des   "alfred mode"
+              :rules [:alfred-mode
+                      [:h [:alf "search repos" "me.lachlan.githubjump"]]
+                      [:x [:alf "killProcess" "com.ngreenstein.alfred-process-killer"]]]}]}
+#+end_src
+
+below config works as well
+#+begin_src clojure
+{:templates {:open   "open \"%s\""
+             :alfred "osascript -e 'tell application \"Alfred 3\" to run trigger \"%s\" in workflow \"%s\" with argument \"%s\"'"}
+ :layers    {:alfred-layer {:key :z}}
+ :simlayers {:launch-mode {:key :w}}
+ :main      [{:des   "all normal key as modifier key rules"
+              :rules [:launch-mode
+                      [:k [:open "/Applications/Emacs.app"]]
+                      [:l [:open "/Applications/Google Chrome.app"]]
+                      :alfred-mode ;; all conditions works this way
+                      [:h [:alf "search repos" "me.lachlan.githubjump"]]
+                      [:x [:alf "killProcess" "com.ngreenstein.alfred-process-killer"]]]}]}
+#+end_src
+
+** custom variable
+
+#+begin_src clojure
+{:main [{:des   "alfred"
+         :rules [;; set f16 as the trigger key of alfred
+                 ;; press h + l will trigger alfred and set "in-alfred" to 1
+                 [[:h :j] [:f16 ["in-alfred" 1]]]
+
+                 :in-alfred ;;;; when "in-alfred" is 1
+
+                 ;; press enter will select one alfred result and set "in-alfred" to 0
+                 [:##return_or_enter [:return_or_enter ["in-alfred" 0]]]
+
+                 ;; press esc will exit alfred and set "in-alfred" to 0
+                 [:##escape [:escape ["in-alfred" 0]]]
+
+                 ;; press ctrl + j will invoke down_arrow
+                 [:!Tj :down_arrow]
+
+                 ;; press ctrl + k will invoke up_arrow
+                 [:!Tk :up_arrow]
+
+                 ;; press ctrl + l will invoke return_or_enter and set "in-alfred" to 0
+                 [:!Tl [:return_or_enter ["in-alfred 0"]]]]}]}
+#+end_src
+
+** device, input-method, application conditions
+
+#+begin_src clojure
+{:layers        {:z-mode {:key :z}}
+ :devices       {;; define devices
+                 ;; vendor_id and product_id can be found in Karabiner EventViewer gui
+                 :hhkb [{:vendor_id 2131 :product_id 256}]}
+ :applications  {;; define applications
+                 :Browsers [;; these strings are regex to match applications bundle_identifiers
+                            ;; you can find bundle_identifiers in the Info.plist file of an applications
+                            ;; eg. in /Applications/Mail.app/Contents/Info.plist
+                            ;; search for "CFBundleIdentifier"
+                            "^org\\.mozilla\\.firefox$"
+                            "^org\\.mozilla\\.firefoxdeveloperedition$"
+                            "^com\\.google\\.Chrome$"
+                            "^org\\.chromium\\.Chromium$"
+                            "^com\\.google\\.Chrome\\.canary$"
+                            "^com\\.apple\\.Safari$"]}
+ :input-sources {;; define input-source, these data can be founhd in Karabiner EventViewer gui
+                 :us {:input_mode_id   ""
+                      :input_source_id "com.apple.keylayout.US"
+                      :language        "en"}}
+
+ ;; can config like this
+ :main [{:des   "contions demo"
+         :rules [;; multiple conditions
+                          ;;;; when
+                 ;; the input-method is :us
+                 ;; the activated application is one of app in :Browsers
+                 ;; the key is triggered by :hhkb
+                 ;; may l key to command + optional + l
+                 [:condi :us :hhkb :Browsers :z-mode]
+                 [:l :!COi]]}]
+ ;; or
+ :main [{:des   "contions demo"
+         :rules [[:l :!COi [:us :hhkb :Browsers :z-mode]]]}]
+
+ ;; or
+ :main [{:des   "contions demo"
+         :rules [[:condi :us :hhkb]
+                 [:l :!COi [:Browsers :z-mode]]]}]}
+#+end_src
+
+** profiles (WIP)
+
+#+begin_src clojure
+{:profiles {:Default {;; "default true means" rules default goes into this rule if no profiles specified
+                      :default true
+                      ;; simultaneous key press threshold
+                      ;; simlayer is implemented with to_if_alone and simultaneous key press feature
+                      :sim     250
+                      ;; to_delayed_action_delay_milliseconds
+                      ;; checkout karabiner's documentation
+                      ;; https://pqrs.org/osx/karabiner/json.html
+                      ;; basically it means time after which the key press is count delayed
+                      :delay   500
+                      ;; https://pqrs.org/osx/karabiner/json.html#to-if-alone
+                      ;; to_if_alone_timeout_milliseconds
+                      ;; affects to_if_alone behavior
+                      ;; simlayer is implemented with to_if_alone and simultaneous key press feature
+                      :alone   1000
+                      ;; to_if_held_down_threshold_milliseconds
+                      ;; check the doc, I don't know what does this mean.
+                      ;; maybe press this milliseconds counts a "held" ?
+                      :held    500}}}
+#+end_src
