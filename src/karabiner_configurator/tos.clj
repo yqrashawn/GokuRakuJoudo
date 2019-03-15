@@ -76,7 +76,15 @@
                    (assoc result :shell_command shell)
                    result)
           result (if (vector? shell)
-                   (assoc result :shell_command (apply format (flatten [((first shell) (:templates conf-data)) (rest shell)])))
+                   (assoc result
+                          :shell_command (apply
+                                          format
+                                          (flatten
+                                           [((first shell)
+                                             (:templates conf-data))
+                                            (rest shell)
+                                            ;; optional arguments
+                                            "" "" "" "" "" ""])))
                    result)
           result (if (vector? set)
                    (assoc result :set_variable {:name (first set) :value (second set)})
