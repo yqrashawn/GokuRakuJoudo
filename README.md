@@ -89,7 +89,7 @@ If there's any question or advice, just [open an issue](../../issues/new) or joi
 
 ## Note
 
--   Using `#_` to comment out rules [like this](https://github.com/yqrashawn/yqdotfiles/blob/2699f833f9431ca197d50f6905c825712f7aee8d/.config/karabiner.edn#L41) will leave a null rule (see below) in karabiner.json, it won't cause any error.
+-  ~~Using `#_` to comment out rules [like this](https://github.com/yqrashawn/yqdotfiles/blob/2699f833f9431ca197d50f6905c825712f7aee8d/.config/karabiner.edn#L41) will leave a null rule (see below) in karabiner.json, it won't cause any error.~~
 
 ```json
     {

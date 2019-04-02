@@ -26,6 +26,8 @@ profile named "Default" in karabiner.json.
                  [:!Ssemicolon :semicolon]]}]}
 #+end_src
 
+You can find all keycodes [[https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj][here]] or using the Karabiner-EventViewer.app.
+
 ** modifier keys
 
 #+begin_src clojure

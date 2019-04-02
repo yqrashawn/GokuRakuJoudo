@@ -20,10 +20,11 @@
 
 # Intro
 
-Goku supports all the features that Karabiner Elements provides via its [JSON spec](<https://pqrs.org/osx/karabiner/json.html>). 
+Goku supports (almost?) all the features that Karabiner Elements provides via its [JSON spec](<https://pqrs.org/osx/karabiner/json.html>). 
 
 If you have any question or advice on how to improve the tool, just open an issue or ask questions in the [Telegram group](https://t.me/karabinermac). 
 
+Most docs are comments (after `;;`) in the code block.
 
 <a id="basic"></a>
 
@@ -54,7 +55,7 @@ If you have any question or advice on how to improve the tool, just open an issu
     ;; these keycode is just original karabiner keycode prefix with colon
 ```
 
-you can find all keycode definition in [this file](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj) or use the Karabiner-EventViewer.app
+You can find all keycode definition in [this file](https://github.com/yqrashawn/Goku/blob/master/src/karabiner_configurator/keys_info.clj) or use the Karabiner-EventViewer.app
 
 
 <a id="basic2"></a>
@@ -103,7 +104,7 @@ you can find all keycode definition in [this file](https://github.com/yqrashawn/
     ;; HHKB-BT keyboard.
 ```
 
-the only condition that GokuRakuJoudo dose not support yet is [keyboard type](https://pqrs.org/osx/karabiner/json.html#condition-definition-keyboard-type).
+The only condition that Goku dose not support is [keyboard type](https://pqrs.org/osx/karabiner/json.html#condition-definition-keyboard-type).
 
 
 <a id="basic4"></a>
@@ -127,6 +128,10 @@ the only condition that GokuRakuJoudo dose not support yet is [keyboard type](ht
     ;; O  | left_option
     ;; S  | left_shift
     ;; F  | fn
+    ;; Q  | right_command
+    ;; W  | right_control
+    ;; E  | right_option
+    ;; R  | right_shift
     ;; !! | mandatory command + control + optional + shift (hyper)
     ;; ## | optional any
     
@@ -148,14 +153,14 @@ the only condition that GokuRakuJoudo dose not support yet is [keyboard type](ht
 
 ### from simultaneous key
 
-Karabiner also has this functionality that can map simultaneous key presses to other events. We can use that in GokuRakuJoudo as well.
+Karabiner also has this functionality that can map simultaneous key presses to other events. You can use that in Goku as well.
 
 ```clojure
     {:main [{:des "simultaneous j l press to F19" :rules [[[:j :l] :f19]]}]}
     ;; rule [[:j :l] :f19]
     ;;       <from>  <to>
     
-    ;; so when from is a vector (or array), GokuRakuJoudo will parse it as
+    ;; so when from is a vector (or array), Goku will parse it as
     ;; simultaneous key press
 ```
 
@@ -164,7 +169,7 @@ Karabiner also has this functionality that can map simultaneous key presses to o
 
 ### to shell command
 
-We can set <to> to string to invoke shell command.
+You can set <to> to string to invoke shell command.
 
 ```clojure
     {:main [{:des "hyper 1 to cleanup personal folder"
@@ -185,8 +190,10 @@ When we use karabiner to run shell commands or applescripts, we write them as st
 
 It's same with those string templates in some programming languages. In fact, it use the clojure's string templates, which is actually java's string templates implementation. eg.
 
+Goku support omitting the last n parameters after version 0.2.1.
+
 ```clojure
-    {:templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+    {:templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"%s\"'"}
      :main [{:des "launcher mode"
              :rules [[:j [:launch "Alacritty"] :launch-mode]
                      [:k [:launch "Emacs"] :launch-mode]
@@ -207,7 +214,7 @@ It's same with those string templates in some programming languages. In fact, it
     ;; First I define the :launch template. Then I use it in <to>.
     
     ;; [:j [:launch "Alacritty"] :launch-mode]
-    ;; GokuRakuJoudo will parse the rule and replace "%s" with "Alacritty".
+    ;; Goku will parse the rule and replace "%s" with "Alacritty".
     ;; The "%s" is for string. If you need other formats, check out here.
     ;; java.util.Formatter doc:
     ;; https://docs.oracle.com/javase/7/docs/api/java/util/Formatter.html
@@ -230,7 +237,7 @@ Don't define conditions with the name of keycode. If you define a application co
 
 ### variable condition
 
-Karabiner's variable condition functionality make it posible to define keyboard layers. We can use this functionality to use most keys as modifier keys. GokuRakuJoudo makes it really easy to use variable conditions.
+Karabiner's variable condition functionality make it posible to define keyboard layers. You can use this functionality to use most keys as modifier keys. Goku makes it really easy to use variable conditions.
 
 ```clojure
     {:main [{:des "tap w to set w-layer to 1"
@@ -258,7 +265,7 @@ The rules above are not really useful. Cause we lose `w` key in the first rule a
 
 ### froms and tos
 
-So in the karabiner.json spec, there're [from event definition](https://pqrs.org/osx/karabiner/json.html#from-event-definition) and [to event definition](https://pqrs.org/osx/karabiner/json.html#to-event-definition). We can predefine this in GokuRakuJoudo as well.
+So in the karabiner.json spec, there're [from event definition](https://pqrs.org/osx/karabiner/json.html#from-event-definition) and [to event definition](https://pqrs.org/osx/karabiner/json.html#to-event-definition). We can predefine this in Goku as well.
 
 1.  froms definition
 
@@ -295,11 +302,11 @@ So in the karabiner.json spec, there're [from event definition](https://pqrs.org
                 :afterup {:set ["fj layer" 1]}}}
 ```
     
-    The simultaneous<sub>options</sub> won't be used frequently. You can find the the detail in the [froms documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/froms.clj#L9), which is above its implementation.
+    The simultaneous<sub>options</sub> won't be used frequently. You can find the the detail in the [froms documentation](https://github.com/yqrashawn/Goku/blob/master/src/karabiner_configurator/froms.clj#L9), which is above its implementation.
 
 2.  tos definition
 
-    Tos is used more often than froms. It's the same idea as froms definition. You can find the detailed [tos documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/tos.clj#L7) in the implementation file. There's shot cuts for tos in rules' <to>, like string to shell commands and multiple to definitions in vector.
+    Tos is used more often than froms. It's the same idea as froms definition. You can find the detailed [tos documentation](https://github.com/yqrashawn/Goku/blob/master/src/karabiner_configurator/tos.clj#L7) in the implementation file. There's shot cuts for tos in rules' <to>, like string to shell commands and multiple to definitions in vector.
     
     You only need to use to definition if you want to use or set `select_input_source`, `mouse_key`, `lazy`, `repeat`, `halt`, `hold_down_milliseconds`.
 
@@ -314,7 +321,7 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
 
     TLDR;
     
-    Basically, if you type fast, use simlayer, otherwise, use the old layer. If you don't care about this, you can just jump to the next header, which is how to set this in GokuRakuJoudo.
+    Basically, if you type fast, use simlayer, otherwise, use the old layer. If you don't care about this, you can just jump to the next header, which is how to set this in Goku.
     
     The old layer has the same definition as "layers" in thoes keyboard firmware keymap editors. eg.
     
@@ -343,7 +350,7 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
     
     This solves those two problems. But we need to trigger the second key fast, or the first key starts to repeat. We need must trigger a action the same time we enter a layer. We can't enter the layer in advance and think what we really want to do in that layer.
 
-2.  layer and simlayer in GokuRakuJoudo
+2.  layer and simlayer in Goku.
 
 ```clojure
         ;; simlayer
@@ -386,7 +393,8 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
         
         ;; The first 4 is same as tos definition, and we also have shotcusts for ~parameters~.
 ```
+
     
-    We can checkout [the documentation for <other options>](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L170).
-    And there're also [<to> documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L90), [<from> documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L11), [<conditions> documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L157).
+You can checkout [the documentation for <other options>](https://github.com/yqrashawn/Goku/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L170).  
+And there're also [<to> documentation](https://github.com/yqrashawn/Goku/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L90), [<from> documentation](https://github.com/yqrashawn/Goku/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L11), [<conditions> documentation](https://github.com/yqrashawn/Goku/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L157).
 
