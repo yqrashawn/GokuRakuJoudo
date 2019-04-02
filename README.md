@@ -4,10 +4,10 @@
 ![img](https://travis-ci.com/yqrashawn/GokuRakuJoudo.svg?branch=master)
 ![img](https://coveralls.io/repos/github/yqrashawn/GokuRakuJoudo/badge.svg)
 
-[Examples](./Examples.org) &mdash;
-[Tutorial](./Tutorial.md) &mdash;
+[Examples](./examples.org) &mdash;
+[Tutorial](./tutorial.md) &mdash;
 [Telegram](https://t.me/karabinermac) &mdash;
-[Goku in the wild](./In-The-Wild.md)
+[Goku in the wild](./in-the-wild.md)
 
 1.  [Intro](#intro)
     1.  [Why use Goku?](#why)
@@ -62,9 +62,9 @@ In practice this means that you can see multiple Karabiner rules on you screen a
 
 ## Usage
 
-Create a profile named "Goku" in Karabiner GUI tool.
+Make sure you have a profile named "Default" in Karabiner GUI tool.
 
-![img](./resources/images/karabiner-profile.png)
+![img](./resources/images/karabiner-profile.jpg)
 
 Goku reads `karabiner.edn` file which holds your Karabiner config. This file should be placed inside \`~/.config/\` directory on your mac. If you use a dots dir to hold your config files, you can symlink \`karabiner.edn\` and Goku will pick up the changes too.
 
@@ -81,7 +81,7 @@ Run command `brew services start goku` to use it as a service (runs `gokuw` in b
 
 ## Tutorial
 
-Read through the [Tutorial about how you can write the configuration in Goku](./Tutorial.md).
+Read through the [Tutorial about how you can write the configuration in Goku](./tutorial.md).
 
 If there's any question or advice, just [open an issue](../../issues/new) or join [Karabiner Telegram group](https://t.me/karabinermac) and ask your questions there.
 
