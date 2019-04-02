@@ -1,0 +1,6 @@
+# Goku In The Wild
+
+Feel free to add your goku config!
+
+- [yqrashawn](https://github.com/yqrashawn "yqrashawn")'s [dotfile](https://github.com/yqrashawn/yqdotfiles/blob/master/.config/karabiner.edn)
+- [nikitavoloboev](https://github.com/nikitavoloboev "nikitavoloboev") wrote an [article about karabiner](https://medium.com/@nikitavoloboev/karabiner-god-mode-7407a5ddc8f6 "article about karabiner"), and his [dotfile](https://github.com/nikitavoloboev/dotfiles/blob/master/karabiner/karabiner.edn "dotfile").
