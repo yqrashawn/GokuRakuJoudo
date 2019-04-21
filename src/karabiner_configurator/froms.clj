@@ -61,18 +61,18 @@
 
 (def simo-keywords
   "keyword while parsing froms, fisrt in vactor is the default value"
-  {:interrupt {:values [false true]
+  {:interrupt {:values      [false true]
                :json-values [false true]
-               :name :detect_key_down_uninterruptedly}
-   :uorder {:values [:insensitive :strict :strict_inverse]
-            :json-values ["insensitive" "strict" "strict_inverse"]
-            :name :key_up_order}
-   :dorder {:values [:insensitive :strict :strict_inverse]
-            :json-values ["insensitive" "strict" "strict_inverse"]
-            :name :key_down_order}
-   :upwhen {:values [:any :all]
-            :json-values ["any" "all"]
-            :name :key_up_when}})
+               :name        :detect_key_down_uninterruptedly}
+   :uorder    {:values      [:insensitive :strict :strict_inverse]
+               :json-values ["insensitive" "strict" "strict_inverse"]
+               :name        :key_up_order}
+   :dorder    {:values      [:insensitive :strict :strict_inverse]
+               :json-values ["insensitive" "strict" "strict_inverse"]
+               :name        :key_down_order}
+   :upwhen    {:values      [:any :all]
+               :json-values ["any" "all"]
+               :name        :key_up_when}})
 
 (defn parse-keycode-vec
   [vec]
@@ -101,27 +101,27 @@
 
 (defn parse-sim
   [fname finfo prevresult]
-  (let [result prevresult
-        {:keys [sim simo]} finfo
-        result (if (nn? sim) (assoc result :simultaneous (parse-keycode-vec sim)) result)
+  (let [result                                   prevresult
+        {:keys [sim simo]}                       finfo
+        result                                   (if (nn? sim) (assoc result :simultaneous (parse-keycode-vec sim)) result)
         {:keys [interrupt dorder uorder upwhen]} simo
-        result (parse-simo sim simo interrupt :interrupt result)
-        result (parse-simo sim simo dorder :dorder result)
-        result (parse-simo sim simo uorder :uorder result)
-        result (parse-simo sim simo upwhen :upwhen result)
-        simo (if (map? (:afterup simo)) (assoc simo :afterup [(:afterup simo)]) simo)
-        result (if (vector? (:afterup simo))
-                 (assoc-in result
-                           [:simultaneous_options :to_after_key_up]
-                           (into [] (tos/parse-to :tempto (:afterup simo))))
-                 result)]
+        result                                   (parse-simo sim simo interrupt :interrupt result)
+        result                                   (parse-simo sim simo dorder :dorder result)
+        result                                   (parse-simo sim simo uorder :uorder result)
+        result                                   (parse-simo sim simo upwhen :upwhen result)
+        simo                                     (if (map? (:afterup simo)) (assoc simo :afterup [(:afterup simo)]) simo)
+        result                                   (if (vector? (:afterup simo))
+                                                   (assoc-in result
+                                                             [:simultaneous_options :to_after_key_up]
+                                                             (into [] (tos/parse-to :tempto (:afterup simo))))
+                                                   result)]
     result))
 
 (defn parse-from
   [fname finfo]
   (let [{:keys [sim simo]} finfo
-        result (parse-key fname finfo)
-        result (if (or sim simo) (parse-sim fname finfo result) result)]
+        result             (parse-key fname finfo)
+        result             (if (or sim simo) (parse-sim fname finfo result) result)]
     result))
 
 (defn generate [froms]

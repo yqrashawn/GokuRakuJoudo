@@ -152,24 +152,24 @@
   (let [{:keys [options arguments summary errors]} (cli/parse-opts args cli-opts)]
     (cond
       (or (:help options) (= "help" (first arguments)))
-      {:action "help"
-       :ok true
+      {:action       "help"
+       :ok           true
        :exit-message (help-message summary) :ok? true}
       errors
-      {:action "errors"
-       :ok? false
+      {:action       "errors"
+       :ok?          false
        :exit-message (error-msg errors)}
       (or (:log options) (= "log" (first arguments)))
-      {:action "log"
-       :ok? true
+      {:action       "log"
+       :ok?          true
        :exit-message "open log file"}
       (= (count arguments) 0)
-      {:action "run"
-       :ok? true
+      {:action       "run"
+       :ok?          true
        :exit-message "Done!"}
       :else
-      {:action "default"
-       :ok? true
+      {:action       "default"
+       :ok?          true
        :exit-message (help-message summary)})))
 
 (defn exit [status & [msg]]
