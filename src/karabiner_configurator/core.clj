@@ -25,18 +25,22 @@
   (if (nn? conf)
     (assoc-conf-data key conf)))
 
-(defn karabiner-json-path
+(defn json-config-file-path
   "Return karabiner.json file location"
   []
   (if (System/getenv "XDG_CONFIG_HOME")
     (str (System/getenv "XDG_CONFIG_HOME") "karabiner/karabiner.json")
     (str (System/getenv "HOME") "/.config/karabiner/karabiner.json")))
 
-(defn config-file
+(defn edn-config-file-path
   "Return karabiner.edn file location"
   []
-  (if (System/getenv "XDG_CONFIG_HOME")
+  (cond
+    (System/getenv "GOKU_EDN_CONFIG_FILE")
+    (System/getenv "GOKU_EDN_CONFIG_FILE")
+    (System/getenv "XDG_CONFIG_HOME")
     (str (System/getenv "XDG_CONFIG_HOME") "karabiner.edn")
+    :else
     (str (System/getenv "HOME") "/.config/karabiner.edn")))
 
 (defn log-file []
@@ -70,31 +74,40 @@
     (tos/parse-tos tos)
     (profiles/parse-rules (rules/parse-mains main))))
 
-(defn update-karabiner-config
-  [config]
-  (def karabiner-config config)
-  karabiner-config)
-
 (defn update-to-karabiner-json
-  "Find profile 'goku' in karabiner.json and update its rules"
-  [profiles]
-  (let [local-karabiner-config (update-karabiner-config (load-json (karabiner-json-path)))
-        profile-indexed-list (map-indexed (fn [idx itm] [idx itm]) (:profiles local-karabiner-config))]
-    (doseq [a profiles]
-      (doseq [[profile-name profile-complex-modifications] a]
-        (let [profile-name-str (name profile-name)
-              profile-to-update
-              (first
-               (for [[index {:keys [name] :as x}] profile-indexed-list
-                     :when (= name profile-name-str)]
-                 {:index index :profile x}))
-              updated-complex-modifications profile-complex-modifications
-              validate-right-profile (massert (nn? profile-to-update) (format "Can't find profile named \"%s\" in karabiner.json, please create a profile named \"%s\" using the Karabiner-Elements.app." profile-name-str profile-name-str))
-              updated-profile (:profile (assoc-in profile-to-update [:profile :complex_modifications] (:complex_modifications updated-complex-modifications)))
-              updated-profiles (assoc-in (:profiles karabiner-config ) [(:index profile-to-update) :complex_modifications] (:complex_modifications updated-profile))
-              updated-configs (update-karabiner-config (assoc karabiner-config :profiles updated-profiles))])))
-    (spit (karabiner-json-path)
-          (json/generate-string karabiner-config {:pretty true}))))
+  "Update karabiner.json depend on parsed karabiner.edn
+
+  `customized-profiles` {:profile1 {,,,} :profile2 {,,,}}"
+  [customized-profiles]
+  (let [karabiner-config (load-json (json-config-file-path))
+        user-profiles    (apply array-map
+                                (apply concat
+                                       (mapv
+                                        (fn [json-profile]
+                                          [(keyword (:name json-profile))
+                                           json-profile])
+                                        (:profiles karabiner-config))))]
+    (doseq [[profile-k profile-v] customized-profiles]
+      (let [profile-name-str (name profile-k)]
+        (massert
+         (nn? (profile-k user-profiles))
+         (format
+          "Can't find profile named \"%s\" in karabiner.json, please create a profile named \"%s\" using the Karabiner-Elements.app."
+          profile-name-str
+          profile-name-str))))
+    (spit
+     (json-config-file-path)
+     (json/generate-string
+      (assoc
+       karabiner-config
+       :profiles
+       (mapv
+        (fn [[profile-k profile-v]]
+          (if-let [customized-profile (profile-k customized-profiles)]
+            (assoc-in profile-v [:profile :complex_modifications] (:complex_modifications customized-profile))
+            profile-v))
+        user-profiles))
+      {:pretty true}))))
 
 ;; actions
 (defn parse
@@ -105,7 +118,6 @@
       (do (println "Syntax error in config:")
           (println edn-syntax-err)
           (if (not (env :is-dev)) (System/exit 1)))))
-  ;; (parse-edn (load-edn path)))
   (update-to-karabiner-json (parse-edn (load-edn path))))
 
 (defn open-log-file []
@@ -120,8 +132,9 @@
   (->> ["GokuRakuJoudo -- karabiner configurator"
         ""
         "goku will read config file and update `Goku` profile in karabiner.json"
-        (str "- goku config file location: " (config-file))
-        (str "- karabiner config file:  " (karabiner-json-path))
+        (str "- goku config file location: " (edn-config-file-path))
+        (str "- karabiner config file location:  " (json-config-file-path))
+        "- you can also specify edn file path with env GOKU_EDN_CONFIG_FILE"
         ""
         "run without arg to update once, run with `-w` to update on .edn file change"
         ""
@@ -169,7 +182,7 @@
   (let [{:keys [action options exit-message ok?]} (validate-args args)]
     (if exit-message
       (case action
-        "run"  (do (parse (config-file))
+        "run"  (do (parse (edn-config-file-path))
                    (exit (if ok? 0 1) exit-message))
         "log" (do (open-log-file)
                   (exit 0))

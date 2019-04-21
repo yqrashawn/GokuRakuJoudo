@@ -22,5 +22,14 @@
 (defn parse-rules
   "Parse generated rules into profiles"
   [rules]
-  (vec (for [[profile-name profile-complex-modification] rules]
-         {profile-name (assoc-in (profile-name (:profiles  conf-data)) [:complex_modifications :rules] profile-complex-modification)})))
+  (apply array-map
+   (apply concat
+    (mapv
+     (fn [[profile-name
+           profile-complex-modification]]
+       [profile-name
+        (assoc-in (profile-name
+                   (:profiles conf-data))
+                  [:complex_modifications :rules]
+                  profile-complex-modification)])
+     rules))))
