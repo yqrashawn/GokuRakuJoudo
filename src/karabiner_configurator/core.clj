@@ -95,12 +95,6 @@
           "Can't find profile named \"%s\" in karabiner.json, please create a profile named \"%s\" using the Karabiner-Elements.app."
           profile-name-str
           profile-name-str))))
-    (prn (mapv
-          (fn [[profile-k profile-v]]
-            (if-let [customized-profile (profile-k customized-profiles)]
-              (assoc-in profile-v [:profile :complex_modifications] (:complex_modifications customized-profile))
-              profile-v))
-          user-profiles))
     (spit
      (json-config-file-path)
      (json/generate-string
