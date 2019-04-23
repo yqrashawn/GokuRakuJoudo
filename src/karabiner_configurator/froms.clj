@@ -77,10 +77,8 @@
 (defn parse-keycode-vec
   [vec]
   (massert (vector? vec) (str "invalid vector " vec))
-  (into []
-        (for [v vec]
-          (do (massert (from-k? v) (str "keycode " v " can't be used as from keycode"))
-              {:key_code (name v)}))))
+  (mapv (fn [v] (massert (from-k? v) (str "keycode " v " can't be used as from keycode"))
+          {:key_code (name v)}) vec))
 
 (defn parse-simo
   [sim simo simo-op-value simo-op-keyword result]
@@ -113,7 +111,7 @@
         result                                   (if (vector? (:afterup simo))
                                                    (assoc-in result
                                                              [:simultaneous_options :to_after_key_up]
-                                                             (into [] (tos/parse-to :tempto (:afterup simo))))
+                                                             (tos/parse-to :tempto (:afterup simo)))
                                                    result)]
     result))
 

@@ -75,9 +75,9 @@
                        (assoc-in result [k :alone] [alone])
                        :else
                        result)
-          result (assoc-in result [k :to_after_key_up] (into [] (tos/parse-to (str "auto insert definition of layer" (name k)) (:afterup (k result)))))
-          result (assoc-in result [k :to_if_alone] (into [] (tos/parse-to (str "auto insert definition of layer" (name k)) (:alone (k result)))))
-          result (assoc-in result [k :to] (into [] (tos/parse-to (str "auto insert definition of layer" (name k)) (:to (k result)))))
+          result (assoc-in result [k :to_after_key_up] (tos/parse-to (str "auto insert definition of layer" (name k)) (:afterup (k result))))
+          result (assoc-in result [k :to_if_alone] (tos/parse-to (str "auto insert definition of layer" (name k)) (:alone (k result))))
+          result (assoc-in result [k :to] (tos/parse-to (str "auto insert definition of layer" (name k)) (:to (k result))))
           result (assoc-in result [k :from] (froms/parse-from (str "auto insert definition of layer" (name k)) (:from (k result))))
           result (dissoc-in result [k :afterup])
           result (dissoc-in result [k :alone])

@@ -80,13 +80,12 @@
   `customized-profiles` {:profile1 {,,,} :profile2 {,,,}}"
   [customized-profiles]
   (let [karabiner-config (load-json (json-config-file-path))
-        user-profiles    (apply array-map
-                                (apply concat
-                                       (mapv
-                                        (fn [json-profile]
-                                          [(keyword (:name json-profile))
-                                           json-profile])
-                                        (:profiles karabiner-config))))]
+        user-profiles    (into
+                          {}
+                          (for [json-profile
+                                (:profiles karabiner-config)]
+                            {(keyword (:name json-profile))
+                             json-profile}))]
     (doseq [[profile-k profile-v] customized-profiles]
       (let [profile-name-str (name profile-k)]
         (massert

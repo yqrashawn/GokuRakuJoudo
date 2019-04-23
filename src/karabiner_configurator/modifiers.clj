@@ -2,7 +2,7 @@
   (:require [karabiner-configurator.misc :refer :all]
             [karabiner-configurator.data :refer :all]))
 
-;; this file parse modifier definition
+;; this file parses modifier definitions
 ;; spec https://pqrs.org/osx/karabiner/json.html#from-event-definition-modifiers
 
 ;; user can define modifier combination in advance and use it in `froms`, `tos` or `rules`
@@ -15,26 +15,34 @@
         (do (massert (modifier-k? modi) (str "invalid modifier " modi " in " modifier-name))
             [(name modi)])
         (vector? modi)
-        (into []
-              (for [v modi]
-                (do (massert (modifier-k? v) (str "invalid modifier " v " in " modifier-name))
-                    (name v))))))
+        (mapv
+         (fn [vec]
+           (massert (modifier-k? vec) (str "invalid modifier " vec " in " modifier-name))
+           (name vec)) modi)))
 
 (defn parse-vector-modifiers
   [modifier-name modifier-info]
   {:mandatory
-   (into []
-         (for [modifier-key modifier-info]
-           (do (massert (modifier-k? modifier-key)
-                       (str "invliad modifer key: " modifier-key " in " modifier-name))
-               (name modifier-key))))})
+   (mapv
+    (fn [modifier-key]
+      (massert (modifier-k? modifier-key)
+               (str "invliad modifer key: " modifier-key " in " modifier-name))
+      (name modifier-key))
+    modifier-info)})
 
 (defn parse-map-modifiers
   [modifier-name modifier-info]
   (let [{:keys [mandatory optional]} modifier-info
         result {}
-        result (if (nn? mandatory) (assoc result :mandatory (parse-modifier-arr-or-keyword mandatory modifier-name)) result)
-        result (if (nn? optional) (assoc result :optional (parse-modifier-arr-or-keyword optional modifier-name)) result)]
+        result (if (nn? mandatory)
+                 (assoc result
+                        :mandatory
+                        (parse-modifier-arr-or-keyword mandatory modifier-name))
+                 result)
+        result (if (nn? optional)
+                 (assoc result
+                        :optional
+                        (parse-modifier-arr-or-keyword optional modifier-name)) result)]
     result))
 
 (defn parse-keyword-modifiers
