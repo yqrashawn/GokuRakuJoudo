@@ -148,8 +148,6 @@
         (str "- karabiner config file location:  " (json-config-file-path))
         "- you can also specify edn file path with env GOKU_EDN_CONFIG_FILE"
         ""
-        "run without arg to update once, run with `-w` to update on .edn file change"
-        ""
         "Usage: run goku without arg to process config once"
         ""
         "-l, --log, to open the log file"
