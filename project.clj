@@ -8,7 +8,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [prismatic/schema "1.1.9"]
                  [org.clojure/tools.logging "0.4.1"]
-                 [org.clojure/tools.cli "0.3.7"]
+                 [org.clojure/tools.cli "0.4.2"]
                  [me.raynes/fs "1.4.6"]
                  [cheshire "5.8.0"]
                  [environ "1.1.0"]]

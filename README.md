@@ -69,25 +69,28 @@ significantly as you can create new rules as little as few characters.
 
 ## Usage
 
-Make sure you have a profile named "Default" in Karabiner GUI tool.
+Make sure you have a profile named "Default" in Karabiner GUI tool. You can
+specify your own profile name [using `:profiles`
+keyword](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org#profiles-wip). 
 
 ![img](./resources/images/karabiner-profile.jpg)
 
 Goku reads `karabiner.edn` file which holds your Karabiner config. This file
-should be placed inside \`~/.config/\` directory on your mac. If you use a dots
-dir to hold your config files, you can symlink \`karabiner.edn\` and Goku will
-pick up the changes too. Starting on version 0.2.2, you can specify your config
-file path using environment variable `GOKU_EDN_CONFIG_FILE`. 
+should be placed inside `~/.config/` directory on your mac. Starting from
+version 0.2.2, you can specify your config file path using environment variable
+`GOKU_EDN_CONFIG_FILE`.  
 
 Goku provides two commands:
 
 `goku`: Will update karabiner.json once.
 `gokuw`: Will keep watching your `karabiner.edn` and on saving, will update your
-configuration. 
+`karabiner.json` configuration. 
 
 Run command `brew services start goku` to use it as a service (runs `gokuw` in
-background). When Goku is ran as service, the logs are kept inside
+background). When Goku is ranning as service, the logs are kept inside
 `~/Library/Logs/goku.log`.  
+
+Try `goku -h` to find out more.  
 
 
 <a id="tutorial"></a>

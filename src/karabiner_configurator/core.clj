@@ -25,6 +25,16 @@
   (if (nn? conf)
     (assoc-conf-data key conf)))
 
+(defn check-edn-syntax
+  "Call joker to check syntax of karabiner.edn"
+  [path]
+  (shell/sh "/usr/local/opt/joker/bin/joker"  "--lint" path))
+
+(defn exit [status & [msg]]
+  (if msg (println msg))
+  (if (not (env :is-dev)) (System/exit status)))
+
+;; paths
 (defn json-config-file-path
   "Return karabiner.json file location"
   []
@@ -45,13 +55,8 @@
 
 (defn log-file []
   (str (System/getenv "HOME") "/Library/Logs/goku.log"))
-
-(defn check-edn-syntax
-  "Call joker to check syntax of karabiner.edn"
-  [path]
-  (shell/sh "/usr/local/opt/joker/bin/joker"  "--lint" path))
-
 ;; main logic
+
 (defn parse-edn
   "Init conf data and return new rules based on karabiner.edn (main section in edn file)"
   [conf]
@@ -75,10 +80,9 @@
     (profiles/parse-rules (rules/parse-mains main))))
 
 (defn update-to-karabiner-json
-  "Update karabiner.json depend on parsed karabiner.edn
-
+  "Update karabiner.json depend on parsed karabiner.edn.
   `customized-profiles` {:profile1 {,,,} :profile2 {,,,}}"
-  [customized-profiles]
+  [customized-profiles & [dry-run dry-run-all]]
   (let [karabiner-config (load-json (json-config-file-path))
         user-profiles    (into
                           {}
@@ -94,38 +98,47 @@
           "Can't find profile named \"%s\" in karabiner.json, please create a profile named \"%s\" using the Karabiner-Elements.app."
           profile-name-str
           profile-name-str))))
-    (spit
-     (json-config-file-path)
-     (json/generate-string
-      (assoc
-       karabiner-config
-       :profiles
-       (mapv
-        (fn [[profile-k profile-v]]
-          (if-let [customized-profile (profile-k customized-profiles)]
-            (assoc profile-v :complex_modifications (:complex_modifications customized-profile))
-            profile-v))
-        user-profiles))
-      {:pretty true}))))
+    (when dry-run
+      (doseq [[profile-k profile-v] user-profiles]
+        (when-let [customized-profile (profile-k customized-profiles)]
+          (println (json/generate-string
+                    (assoc profile-v :complex_modifications (:complex_modifications customized-profile))
+                    {:pretty true}))))
+      (exit 1))
+    (let [result-config (assoc
+                         karabiner-config
+                         :profiles
+                         (mapv
+                          (fn [[profile-k profile-v]]
+                            (if-let [customized-profile (profile-k customized-profiles)]
+                              (assoc profile-v :complex_modifications (:complex_modifications customized-profile))
+                              profile-v))
+                          user-profiles))]
+      (when dry-run-all
+        (println (json/generate-string
+                  result-config
+                  {:pretty true}))
+        (exit 1))
+      (spit
+       (json-config-file-path)
+       (json/generate-string
+        result-config
+        {:pretty true})))))
 
 ;; actions
 (defn parse
   "Root function to parse karabiner.edn and update karabiner.json."
-  [path]
+  [path & [dry-run dry-run-all]]
   (let [edn-syntax-err (:err (check-edn-syntax path))]
     (if (> (count edn-syntax-err) 0)
       (do (println "Syntax error in config:")
           (println edn-syntax-err)
-          (if (not (env :is-dev)) (System/exit 1)))))
-  (update-to-karabiner-json (parse-edn (load-edn path))))
+          (exit 1))))
+  (update-to-karabiner-json (parse-edn (load-edn path)) dry-run dry-run-all))
 
 (defn open-log-file []
   (shell/sh "open" (log-file)))
-
 ;; cli stuff
-(def cli-opts
-  [["-h" "--help"]
-   ["-l" "--log"]])
 
 (defn help-message [options-summary]
   (->> ["GokuRakuJoudo -- karabiner configurator"
@@ -139,49 +152,73 @@
         ""
         "Usage: run goku without arg to process config once"
         ""
-        "-l, --log, log  to open the log file"
-        "-h, --help, help  to show this message"]
+        "-l, --log, to open the log file"
+        "-d, --dry-run, to spit the new config of modified profiles into stdout instead of update karabiner.json"
+        "-A, --dry-run-all, to spit the new whole config into stdout instead of update karabiner.json"
+        "-c, --config PATH, to specify edn config file from command line"
+        "-h, --help, to show this message"]
        (string/join \newline)))
 
 (defn error-msg [errors]
   (str "The following errors occurred while parsing your command:\n"
        (string/join \newline errors)))
 
+(defn abs-path [path]
+  (if (= (first path) \~)
+    (.getPath (fs/expand-home path))
+    path))
+
+(def cli-opts
+  [["-h" "--help"]
+   ["-l" "--log"]
+   ["-c" "--config PATH" "Config PATH"
+    :parse-fn abs-path
+    :validate [(fn [path]
+                 (let [path (abs-path path)]
+                   (and (fs/exists? path)
+                        (fs/file? path)
+                        (fs/readable? path)))) "Make sure the file is exits and readable"]]
+   ["-d" "--dry-run"]
+   ["-A" "--dry-run-all"]])
+
 (defn validate-args [args]
   (let [{:keys [options arguments summary errors]} (cli/parse-opts args cli-opts)]
     (cond
-      (or (:help options) (= "help" (first arguments)))
-      {:action       "help"
-       :ok           true
-       :exit-message (help-message summary) :ok? true}
+      ;; error
       errors
       {:action       "errors"
        :ok?          false
        :exit-message (error-msg errors)}
-      (or (:log options) (= "log" (first arguments)))
-      {:action       "log"
+      ;; help
+      (:help options)
+      {:action       "help"
        :ok?          true
-       :exit-message "open log file"}
+       :exit-message (help-message summary)}
+      ;; run
       (= (count arguments) 0)
       {:action       "run"
        :ok?          true
+       :dry-run-all (:dry-run-all options)
+       :dry-run (:dry-run options)
+       :config (:config options)
        :exit-message "Done!"}
+      ;; log
+      (:log options)
+      {:action       "log"
+       :ok?          true
+       :exit-message "open log file"}
       :else
       {:action       "default"
        :ok?          true
        :exit-message (help-message summary)})))
 
-(defn exit [status & [msg]]
-  (if msg (println msg))
-  (if (not (env :is-dev)) (System/exit status)))
-
 ;; main
 (defn -main
   [& args]
-  (let [{:keys [action options exit-message ok?]} (validate-args args)]
+  (let [{:keys [action options exit-message ok? config dry-run dry-run-all]} (validate-args args)]
     (if exit-message
       (case action
-        "run"  (do (parse (edn-config-file-path))
+        "run"  (do (parse (or config (edn-config-file-path)) dry-run dry-run-all)
                    (exit (if ok? 0 1) exit-message))
         "log" (do (open-log-file)
                   (exit 0))
@@ -197,3 +234,8 @@
 ;; (-main "-l")
 ;; (-main "--log")
 ;; (-main "log")
+;; (-main "--config" "./")
+;; (-main "-c" "./")
+;; (-main "-dc" "./")
+;; (-main "-dc" "~/.config/karabiner.edn")
+;; (-main "-d")
