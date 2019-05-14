@@ -55,7 +55,7 @@ Most docs are comments (after `;;`) in the code block.
     ;; these keycode is just original karabiner keycode prefix with colon
 ```
 
-You can find all keycode definition in [this file](https://github.com/yqrashawn/Goku/blob/master/src/karabiner_configurator/keys_info.clj) or use the Karabiner-EventViewer.app
+You can find all keycode definition in [this file](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/keys_info.clj) or use the Karabiner-EventViewer.app
 
 
 <a id="basic2"></a>
@@ -302,11 +302,11 @@ So in the karabiner.json spec, there're [from event definition](https://pqrs.org
                 :afterup {:set ["fj layer" 1]}}}
 ```
     
-    The simultaneous<sub>options</sub> won't be used frequently. You can find the the detail in the [froms documentation](https://github.com/yqrashawn/Goku/blob/master/src/karabiner_configurator/froms.clj#L9), which is above its implementation.
+    The simultaneous<sub>options</sub> won't be used frequently. You can find the the detail in the [froms documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/froms.clj#L9), which is above its implementation.
 
 2.  tos definition
 
-    Tos is used more often than froms. It's the same idea as froms definition. You can find the detailed [tos documentation](https://github.com/yqrashawn/Goku/blob/master/src/karabiner_configurator/tos.clj#L7) in the implementation file. There's shot cuts for tos in rules' <to>, like string to shell commands and multiple to definitions in vector.
+    Tos is used more often than froms. It's the same idea as froms definition. You can find the detailed [tos documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/tos.clj#L7) in the implementation file. There's shot cuts for tos in rules' <to>, like string to shell commands and multiple to definitions in vector.
     
     You only need to use to definition if you want to use or set `select_input_source`, `mouse_key`, `lazy`, `repeat`, `halt`, `hold_down_milliseconds`.
 
@@ -395,6 +395,6 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
 ```
 
     
-You can checkout [the documentation for <other options>](https://github.com/yqrashawn/Goku/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L170).  
-And there're also [<to> documentation](https://github.com/yqrashawn/Goku/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L90), [<from> documentation](https://github.com/yqrashawn/Goku/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L11), [<conditions> documentation](https://github.com/yqrashawn/Goku/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L157).
+You can checkout [the documentation for <other options>](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L170).  
+And there're also [<to> documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L90), [<from> documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L11), [<conditions> documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L157).
 
