@@ -25,15 +25,15 @@
 
 # Intro
 
-Goku is a tool to let you manage your
+Goku is a tool that lets you manage your
 [Karabiner](https://github.com/tekezo/Karabiner-Elements) configuration with
 ease. 
 
-Karbiner Elements uses JSON as it's config file. This leads to thousands lines
-of JSON (sometimes over 20,000 lines). Which makes it really hard to edit the
-config file and iterate on your keymap. 
+Karbiner Elements uses JSON as its config file format. This leads to thousands of lines
+of JSON (sometimes over 20,000 lines), which makes it really hard to edit the
+config file and iterate on your keymap.
 
-Goku use the [edn format](https://github.com/edn-format/edn) to the rescue.
+But fear not! Goku brings the [edn format](https://github.com/edn-format/edn) to the rescue.
 
 
 <a id="why"></a>
@@ -69,28 +69,28 @@ significantly as you can create new rules as little as few characters.
 
 ## Usage
 
-Make sure you have a profile named "Default" in Karabiner GUI tool. You can
+Make sure you have a profile named "Default" in Karabiner's GUI tool. You can
 specify your own profile name [using `:profiles`
 keyword](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org#profiles-wip). 
 
 ![img](./resources/images/karabiner-profile.jpg)
 
-Goku reads `karabiner.edn` file which holds your Karabiner config. This file
-should be placed inside `~/.config/` directory on your mac. Starting from
-version 0.2.2, you can specify your config file path using environment variable
+Goku reads the `karabiner.edn` file which holds your Karabiner config. This file
+should be placed inside `~/.config/` directory on your Mac. Starting from
+version 0.2.2, you can specify your config file path using the environment variable
 `GOKU_EDN_CONFIG_FILE`.  
 
 Goku provides two commands:
 
 `goku`: Will update karabiner.json once.
-`gokuw`: Will keep watching your `karabiner.edn` and on saving, will update your
+`gokuw`: Will keep watching your `karabiner.edn` and when it changes, it will update your
 `karabiner.json` configuration. 
 
 Run command `brew services start goku` to use it as a service (runs `gokuw` in
-background). When Goku is ranning as service, the logs are kept inside
+background). When Goku is running as service, the logs are kept inside
 `~/Library/Logs/goku.log`.  
 
-Try `goku -h` to find out more.  
+Use `goku -h` to learn more.
 
 
 <a id="tutorial"></a>
@@ -130,9 +130,9 @@ Check [CHANGELOG](./CHANGELOG.org) file.
 
 ## Dependencies
 
-[watchexec](https://github.com/watchexec/watchexec) for watching edn config
+[watchexec](https://github.com/watchexec/watchexec) for watching the edn config
 file.   
-[joker](https://github.com/candid82/joker) for linting edn config file.   
+[joker](https://github.com/candid82/joker) for linting the edn config file.   
 
 <a id="contributing"></a>
 
