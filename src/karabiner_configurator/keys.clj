@@ -30,7 +30,7 @@
   [mkey]
   (into {} (map update-mouse-map mkey)))
 
-(def special-modi-re #"(^![!CSTOFP]+#[#CSTOQWERFP]+)")
+(def special-modi-re #"(^![!CSTOQWERFP]+#[#CSTOQWERFP]+)")
 (def special-modi-mandatory-re #"(^![!CSTOQWERFP]+)")
 (def special-modi-optional-re #"(^#[#CSTOQWERFP]+)")
 (def special-modi-optional-both-re #"(#[#CSTOQWERFP]+)")

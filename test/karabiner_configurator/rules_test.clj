@@ -6,7 +6,8 @@
 (def example-mains [{:des "a to 1"                                            :rules [[:condi :chunkwm-move-mode]
                                                                                       [:profiles :Default :test-profile-2]
                                                                                       [:a :1]]} ;; a to 1
-                    {:des "command a to control 1"                            :rules [[:!C#Pa :!T1]]} ;; command a to control 1
+                    {:des "left command a to control 1"                            :rules [[:!C#Pa :!T1]]}
+                    {:des "right command a to control 1"                            :rules [[:!Q#Pa :!T1]]} ;; command a to control 1
                     {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
                     {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
                     {:des "c to example osascript"                            :rules [[:c "osascript -e 'display dialog \"example apple script\"'"]]} ;; key to shell script
@@ -127,12 +128,20 @@
                  :conditions
                  [{:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
                  :type "basic"}]}
-              {:description "command a to control 1",
+              {:description "left command a to control 1",
                :manipulators
                [{:from
                  {:key_code "a",
                   :modifiers
                   {:mandatory ["left_command"], :optional ["caps_lock"]}},
+                 :to   [{:key_code "1", :modifiers ["left_control"]}],
+                 :type "basic"}]}
+              {:description "right command a to control 1",
+               :manipulators
+               [{:from
+                 {:key_code "a",
+                  :modifiers
+                  {:mandatory ["right_command"], :optional ["caps_lock"]}},
                  :to   [{:key_code "1", :modifiers ["left_control"]}],
                  :type "basic"}]}
               {:description "my spacebar to control 1",
