@@ -175,6 +175,15 @@ below config works as well
                  [:!Tl [:return_or_enter ["in-alfred 0"]]]]}]}
 #+end_src
 
+** double tap right shift twice to enter double shift mode
+#+BEGIN_SRC clojure
+  {:des   "Press right_shift twice to enter douvle shift mode, press right_shift once to leave it"
+                         :rules [[:right_shift ["double-right-shift-mode" 1] ["shift-pressed-once" 1]]
+                                 [:right_shift [:right_shift ["shift-pressed-once" 1]] ["double-right-shift-mode" 0] {:delayed {:invoked ["shift-pressed-once" 0] :canceled ["shift-pressed-once" 0]}}]
+                                 :double-right-shift-mode
+                                 [:right_shift ["double-right-shift-mode" 0]]
+                                 [:a "say 'know we are in double shift mode'"]]}
+#+END_SRC
 ** device, input-method, application conditions
 
 #+begin_src clojure
