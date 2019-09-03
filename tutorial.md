@@ -33,7 +33,7 @@ Most docs are comments (after `;;`) in the code block.
 
 <a id="basic1"></a>
 
-### tap a to insert 1, tap b to insert 2
+### tap a to insert 1, tap b to insert 2, tap c to insert 123
 
 ```clojure
     ;; main contains multiple manipulators
@@ -43,9 +43,9 @@ Most docs are comments (after `;;`) in the code block.
     ;; manipulator         -> {:des "..." :rules [rule1 rule2 ...]}
     ;; manipulator's rules -> [rule1 rule2 ...]
     {:main [{:des "a to 1, b to 2, c to insert 1 2 3"
-             :rules [[:a :1] [:b :2] [:c :1 :2 :3]]}]}
+             :rules [[:a :1] [:b :2] [:c [:1 :2 :3]]]}]}
     
-    ;; or we can separate them into two manipulators
+    ;; or we can separate them into three manipulators
     {:main [{:des "a to 1" :rules [[:a :1]]}
             {:des "b to 2" :rules [[:b :2]]}
             {:des "c to insert 123" :rules [[:c [:1 :2 :3]]]}]}
