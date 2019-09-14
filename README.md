@@ -29,7 +29,7 @@ Goku is a tool that lets you manage your
 [Karabiner](https://github.com/tekezo/Karabiner-Elements) configuration with
 ease. 
 
-Karbiner Elements uses JSON as its config file format. This leads to thousands of lines
+Karabiner Elements uses JSON as its config file format. This leads to thousands of lines
 of JSON (sometimes over 20,000 lines), which makes it really hard to edit the
 config file and iterate on your keymap.
 
