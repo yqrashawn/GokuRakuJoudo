@@ -66,13 +66,13 @@ You can find all keycodes [[https://github.com/yqrashawn/GokuRakuJoudo/blob/mast
 #+end_src
 
 #+begin_quote
-Note: Other modifier keys works because the "~##~" prefix. If you replace ~##~ with ~#C~ (~C~ for ~left_command~), only    
+Note: Other modifier keys works because the "~##~" prefix. If you replace ~##~ with ~#C~ (~C~ for ~left_command~), only
 
-> left_command + right_command -> left_command + f16 will work.    
+> left_command + right_command -> left_command + f16 will work.
 
-Others will be treated like    
+Others will be treated like
 
-> control + right_command -> control + right_command    
+> control + right_command -> control + right_command
 #+end_quote
 
 ** caps_lock to esc when pressed alone, to ctrl as modifier
@@ -184,6 +184,25 @@ below config works as well
                                  [:right_shift ["double-right-shift-mode" 0]]
                                  [:a "say 'know we are in double shift mode'"]]}
 #+END_SRC
+** use the [[https://pqrs.org/osx/karabiner/json.html#multitouch-extension][multitouch]] feature
+#+BEGIN_SRC clojure
+  {:des "ctrl+y to command+v (trackpad example)"
+   :rules
+   [;; ctrl+y to command+v
+    [:!Ty :!Cv]
+    ;; ctrl+y to command+v when one finger on trackpad
+    [:!Ty :!Cv :multitouch_extension_finger_count_total]
+    ;; ctrl+y to command+v when one finger on trackpad
+    [:!Ty :!Cv ["multitouch_extension_finger_count_total" 1]]
+    ;; ctrl+y to command+v when two finger on trackpad
+    [:!Ty :!Cv ["multitouch_extension_finger_count_total" 2]]
+    ;; ctrl+y to command+v when three finger on the upper half of trackpad
+    [:!Ty :!Cv ["multitouch_extension_finger_count_upper_half_area" 3]]]}
+#+END_SRC
+This syntax don't support specify negative multitouch conditions. For example:
+#+BEGIN_EXAMPLE
+Don't map a to b when there are three fingers on the trackpad.
+#+END_EXAMPLE
 ** device, input-method, application conditions
 
 #+begin_src clojure
