@@ -246,8 +246,23 @@ Don't map a to b when there are three fingers on the trackpad.
                  [:l :!COi [:Browsers :z-mode]]]}]}
 #+end_src
 
-** profiles (WIP)
+** profiles
+   Skip this section if you don't use profiles.
+   
+   Since [[https://pqrs.org/osx/karabiner/document.html#command-line-interface][karabiner cli]] now support set variables, profiles are mainly used for
+   multiple users using same the machine or gaming profile and normal profile.
+   Goku don't support that well for now.
+   
+   Basically you can define your multiple profiles. Only one of them can be set
+   as the default profile (~:default true~).
 
+   Then you can use profile keyword ~:Default~ as conditions or layers keyword.
+   You need to specify each rule to a profile or they will be considered in the
+   default profile.
+
+   If you just want to have a empty profile for gaming. You can just create one
+   in karabiner gui (no need to change anything in goku).
+   
 #+begin_src clojure
 {:profiles {:Default {;; "default true means" rules default goes into this rule if no profiles specified
                       :default true
@@ -268,4 +283,42 @@ Don't map a to b when there are three fingers on the trackpad.
                       ;; check the doc, I don't know what does this mean.
                       ;; maybe press this milliseconds counts a "held" ?
                       :held    500}}}
+#+end_src
+
+** same key in different mode, from @nikitavoloboev's [[https://github.com/nikitavoloboev/dotfiles/blob/178ed88fadaeb889e8a5431e9790f0791dd75b05/karabiner/karabiner.edn#L718][config]]
+   Use [[https://pqrs.org/osx/karabiner/document.html#command-line-interface][karabiner command line interface]] to set variable when you open specifc
+   type of files in your editor.
+   
+#+begin_src clojure
+  {:profiles
+   {:Default {:default true
+              :sim     50
+              :delay   80
+              :alone   120
+              :held    70}}
+   :simlayers {:js-mode {:key :period :condi ["in-js" 1]} ;;  karabiner_cli --set-variables {"in-js": 1}
+               :go-mode {:key :period :condi ["in-go" 1]} ;;  karabiner_cli --set-variables {"in-go": 1}
+               :py-mode {:key :period :condi ["in-python" 1]} ;;  karabiner_cli --set-variables {"in-python": 1}
+               :elixir-mode {:key :period :condi ["in-elixir" 1]} ;;  karabiner_cli --set-variables {"in-elixir": 1}
+               :rust-mode {:key :period :condi ["in-rust" 1]}} ;;  karabiner_cli --set-variables {"in-rust": 1}
+   :main [{:des "jsdot"
+           :rules [:js-mode
+                   [:a [:c :o :n :s :o :l :e :period :l :o :g :!S9 :!S0 :left_arrow]] ; -> console.log()
+                   [:v [:j :a :v :a :s :c :r :i :p :t :spacebar]]]} ; -> javascript
+          {:des "godot"
+           :rules[:go-mode
+                  [:a [:f :m :t :period :!Sp :r :i :n :t :l :n :!S9 :!S0 :left_arrow]] ; -> fmt.Println()
+                  [:v [:g :o :l :a :n :g :spacebar]]]} ; -> golang
+          {:des "pydot"
+           :rules[:py-mode
+                  [:a [:p :r :i :n :t :!S9 :!S0 :left_arrow]] ; -> print()
+                  [:v [:p :y :t :h :o :n :spacebar]]]} ; -> python
+          {:des "elixdot"
+           :rules[:elixir-mode
+                  [:a [:!Si :!So :period :p :u :t :s :!S9 :!S0 :left_arrow]] ; -> IO.puts()
+                  [:v [:e :l :i :x :i :r :spacebar]]]} ; -> elixir
+          {:des "rustdot"
+           :rules[:rust-mode
+                  [:a [:p :r :i :n :t :l :n :!S1 :!S9 :!S0 :left_arrow]] ; -> println!()
+                  [:v [:r :u :s :t :spacebar]]]}]} ; -> rust
 #+end_src
