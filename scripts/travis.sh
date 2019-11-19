@@ -1,5 +1,5 @@
-brew_watchexec="/usr/local/Cellar/watchexec/1.9.0/"
-brew_lein="/usr/local/Cellar/leiningen/2.8.1/"
+brew_watchexec="/usr/local/Cellar/watchexec/1.11.0/"
+brew_lein="/usr/local/Cellar/leiningen/2.9.1/"
 if [ -d "$brew_watchexec" ]; then
     ln -s "$brew_watchexec"bin/watchexec /usr/local/bin
 else

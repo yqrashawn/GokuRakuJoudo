@@ -11,10 +11,13 @@ deploy:
     repo: yqrashawn/GokuRakuJoudo
 before_install:
 - sh scripts/travis.sh
-- wget https://github.com/oracle/graal/releases/download/vm-1.0.0-rc13/graalvm-ce-1.0.0-rc13-macos-amd64.tar.gz
+# - wget https://github.com/oracle/graal/releases/download/vm-1.0.0-rc13/graalvm-ce-1.0.0-rc13-macos-amd64.tar.gz
 - brew install candid82/brew/joker
-- tar xf graalvm-ce-1.0.0-rc13-macos-amd64.tar.gz
-- export PATH=$PATH:$PWD/graalvm-ce-1.0.0-rc13/Contents/Home/bin/
+- curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
+- ~/.jabba/bin/jabba install graalvm@19.2.1
+# - tar xf graalvm-ce-1.0.0-rc13-macos-amd64.tar.gz
+- ~/.jabba/jdk/graalvm@19.2.1/Contents/Home/bin/gu install native-image
+- export PATH=$PATH:$HOME/.jabba/jdk/graalvm@19.2.1/Contents/Home/bin/
 script:
 - lein test
 - make

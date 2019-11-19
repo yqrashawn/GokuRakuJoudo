@@ -1,6 +1,5 @@
 (ns karabiner-configurator.rules
   (:require
-   [clojure.tools.logging :as log]
    [karabiner-configurator.conditions :as conditions]
    [karabiner-configurator.keys :as keys]
    [karabiner-configurator.froms :as froms]
@@ -215,6 +214,7 @@
         result (if (number? sim) (assoc-in result [:parameters :basic.simultaneous_threshold_milliseconds] sim) result)]
     result))
 
+(defn parse-raw-rule [from profiles] (with-meta from {:profiles profiles}))
 (defn parse-rule
   "generate one manipulator/rule"
   [des from to conditions additional profiles]
@@ -390,10 +390,18 @@
                ;; a rule must have a from event defination and to event defination
                ;; from event defination is defined in <from> section
                ;; to event defination can be defined in <to> section or <other-options> section (as :alone :delayed :afterup)
-               validate-rule (massert (and (nn? from) (or (nn? other-options) (nn? to))) (str "invalid rule: " des ", <from> or <to>/<other-options> is nil" from "\n" to "\n" other-options))]
-           (cond (and (nil? other-options) (nil? condition)) (parse-rule des from to nil nil profiles)
-                 (and (nil? other-options) (nn? condition)) (parse-rule des from to condition nil profiles)
-                 (nn? other-options) (parse-rule des from to condition other-options profiles)))))))))
+               validate-rule (massert
+                              (and (nn? from)
+                                   (or
+                                    (nn? (:type from))
+                                    (nn? other-options)
+                                    (nn? to)))
+                              (str "invalid rule: " des ", <from> or <to>/<other-options> is nil" from "\n" to "\n" other-options))]
+           (cond
+             (nn? (:type from)) (parse-raw-rule from profiles)
+             (and (nil? other-options) (nil? condition)) (parse-rule des from to nil nil profiles)
+             (and (nil? other-options) (nn? condition)) (parse-rule des from to condition nil profiles)
+             (nn? other-options) (parse-rule des from to condition other-options profiles)))))))))
 
 (defn generate
   "parse mains and generate all rules for converting to json"

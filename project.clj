@@ -5,9 +5,7 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :main karabiner-configurator.core
   :aot :all
-  :dependencies [[org.clojure/clojure "1.8.0"]
-                 [prismatic/schema "1.1.9"]
-                 [org.clojure/tools.logging "0.4.1"]
+  :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/tools.cli "0.4.2"]
                  [me.raynes/fs "1.4.6"]
                  [cheshire "5.8.0"]

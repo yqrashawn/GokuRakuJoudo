@@ -1,6 +1,5 @@
 (ns karabiner-configurator.core
   (:require
-   [schema.core :as s]
    [cheshire.core :as json]
    [clojure.string :as string]
    [clojure.java.shell :as shell]
