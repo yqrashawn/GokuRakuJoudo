@@ -51,6 +51,10 @@
         (contains? (:templates conf-data) k-or-vec)
         (vector? k-or-vec)
         (contains? (:templates conf-data) (first k-or-vec))))
+(defn raw-rule? [rule]
+  (and (map? rule)
+       (or (= :basic (:type rule))
+           (= :mouse_motion_to_scroll (:type rule)))))
 
 (defn profile? [k]
   (and (keyword? k) (k (:profiles conf-data))))

@@ -346,7 +346,6 @@
                    (conj (profile multi-profile-rules)
                          {:description des
                           :manipulators [parsed-rule]}))))))))
-
 (defn generate-one-rules
   "generate on rules (one object with des and manipulators in karabiner.json)"
   [des rules]
@@ -358,16 +357,17 @@
      (let [result-rules
            (vec
             (for [rule rules]
-              (if (or (and (keyword? rule) (not (profile? rule))) (and (vector? rule) (or (= (first rule) :condis)
-                                                                                          (= (first rule) :condi))))
-                (do (define-current-in-rule-conditions rule) nil)
-                (if (and
-                     (nn? current-in-rules-conditions)
-                     (not (profile? rule))
-                     (and (vector? rule) (not (or (= (first rule) :profiles)
-                                                  (= (first rule) :profile)))))
-                  (add-current-in-rule-conditions rule)
-                  rule))))
+              (let [rule (if (raw-rule? rule) [rule] rule)]
+                (if (or (and (keyword? rule) (not (profile? rule))) (and (vector? rule) (or (= (first rule) :condis)
+                                                                                            (= (first rule) :condi))))
+                  (do (define-current-in-rule-conditions rule) nil)
+                  (if (and
+                       (nn? current-in-rules-conditions)
+                       (not (profile? rule))
+                       (and (vector? rule) (not (or (= (first rule) :profiles)
+                                                    (= (first rule) :profile)))))
+                    (add-current-in-rule-conditions rule)
+                    rule)))))
            cleanup-circ (define-current-in-rule-conditions nil)
            result-rules
            (vec

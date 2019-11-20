@@ -54,7 +54,14 @@
                              [:j ["say 'j press down'" ["q-mode-j-dbpress-mode" 1]] nil {:delayed {:canceled ["q-mode-j-dbpress-mode" 0]
                                                                                                    :invoked ["q-mode-j-dbpress-mode" 0]}
                                                                                          :held "say 'j held down'"}]]}
-                    {:des "QWER in to right modifier keys" :rules [[:!QWERa :a]]}])
+                    {:des "QWER in to right modifier keys" :rules [[:!QWERa :a]]}
+                    {:des "raw rules"
+                     :rules [{:type :mouse_motion_to_scroll :from {:modifiers {:mandatory [:left_control]}}}
+                             {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}
+                    {:des "raw rules test-profile"
+                     :rules [:test-profile
+                             {:type :mouse_motion_to_scroll :from {:modifiers {:mandatory [:left_control]}}}
+                             {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}])
 
 (def result {:test-profile-2
              [{:description "Auto generated layer conditions",
@@ -435,7 +442,14 @@
                     "right_option"
                     "right_shift"]}},
                  :to   [{:key_code "a"}],
-                 :type "basic"}]}],
+                 :type "basic"}]}
+              {:description "raw rules",
+               :manipulators
+               [{:type :mouse_motion_to_scroll,
+                 :from {:modifiers {:mandatory [:left_control]}}}
+                {:type :basic,
+                 :from {:key_code :h, :modifiers {:mandatory [:left_control]}},
+                 :to [{:key_code :delete_or_backspace}]}]}],
              :test-profile
              [{:description "Auto generated layer conditions",
                :manipulators
@@ -483,7 +497,14 @@
                  :conditions
                  [{:name "chunkwm-scale-mode", :value 1, :type "variable_if"}
                   {:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
-                 :type "basic"}]}]})
+                 :type "basic"}]}
+              {:description "raw rules test-profile",
+               :manipulators
+               [{:type :mouse_motion_to_scroll,
+                 :from {:modifiers {:mandatory [:left_control]}}}
+                {:type :basic,
+                 :from {:key_code :h, :modifiers {:mandatory [:left_control]}},
+                 :to [{:key_code :delete_or_backspace}]}]}]})
 
 (t/deftest generate-mains
   (init-conf-data)
