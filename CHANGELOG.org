@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file. This change
 
 [Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.5...HEAD
 
+** 0.2.7 - 2019-11-20
+*** Added
+- support parsing raw karabiner rules (support ~mouse_motion_to_scroll~), [[https://github.com/yqrashawn/GokuRakuJoudo/blob/6a0f5de5c476ff6e6fcf372a3345232e33c8eba2/test/karabiner_configurator/rules_test.clj#L58][check
+  the examples]]
+  
+[commits in 0.2.6]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.5...0.2.7
 ** 0.2.5 - 2019-04-26
 *** Added
 - ~goku -d~ or ~goku --dry-run~ for testing configs.
