@@ -76,9 +76,10 @@ keyword](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org#pro
 ![img](./resources/images/karabiner-profile.jpg)
 
 Goku reads the `karabiner.edn` file which holds your Karabiner config. This file
-should be placed inside `~/.config/` directory on your Mac. Starting from
-version 0.2.2, you can specify your config file path using the environment variable
-`GOKU_EDN_CONFIG_FILE`.  
+should be placed inside `~/.config/` directory on your Mac (you can start with
+[example.edn](./resources/configurations/edn/example.edn "example.edn")).
+Starting from version 0.2.2, you can specify your config file path using the
+environment variable `GOKU_EDN_CONFIG_FILE`.   
 
 Goku provides two commands:
 
