@@ -6,6 +6,32 @@
    :button3 {:button true}
    :button4 {:button true}
    :button5 {:button true}
+   :button6 {:button true}
+   :button7 {:button true}
+   :button8 {:button true}
+   :button9 {:button true}
+   :button10 {:button true}
+   :button11 {:button true}
+   :button12 {:button true}
+   :button13 {:button true}
+   :button14 {:button true}
+   :button15 {:button true}
+   :button16 {:button true}
+   :button17 {:button true}
+   :button18 {:button true}
+   :button19 {:button true}
+   :button21 {:button true}
+   :button22 {:button true}
+   :button23 {:button true}
+   :button24 {:button true}
+   :button25 {:button true}
+   :button26 {:button true}
+   :button27 {:button true}
+   :button28 {:button true}
+   :button29 {:button true}
+   :button30 {:button true}
+   :button31 {:button true}
+   :button32 {:button true}
    ;; :x {:mouse_key true}
    ;; :y {:mouse_key true}
    :any {:modifier true :both true}
