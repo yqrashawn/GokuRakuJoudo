@@ -38,7 +38,7 @@
   "Return karabiner.json file location"
   []
   (if (System/getenv "XDG_CONFIG_HOME")
-    (str (System/getenv "XDG_CONFIG_HOME") "karabiner/karabiner.json")
+    (str (System/getenv "XDG_CONFIG_HOME") "/karabiner/karabiner.json")
     (str (System/getenv "HOME") "/.config/karabiner/karabiner.json")))
 
 (defn edn-config-file-path
@@ -48,7 +48,7 @@
     (System/getenv "GOKU_EDN_CONFIG_FILE")
     (System/getenv "GOKU_EDN_CONFIG_FILE")
     (System/getenv "XDG_CONFIG_HOME")
-    (str (System/getenv "XDG_CONFIG_HOME") "karabiner.edn")
+    (str (System/getenv "XDG_CONFIG_HOME") "/karabiner.edn")
     :else
     (str (System/getenv "HOME") "/.config/karabiner.edn")))
 
