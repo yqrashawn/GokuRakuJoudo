@@ -3,8 +3,14 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.8...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.9...HEAD
 
+** 0.2.9 - 2020-01-31
+*** Fixed
+- ~gokuw~ ~GOKU_EDN_CONFIG_FILE~ env support, [[https://github.com/yqrashawn/GokuRakuJoudo/issues/48][issue 48]] 
+- no need to have the ending ~/~ in env variable ~XDG_CONFIG_HOME~,[[https://github.com/yqrashawn/GokuRakuJoudo/pull/49][ PR 49]] 
+
+[commits in 0.2.8]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.8...0.2.9
 ** 0.2.8 - 2019-11-28
 *** Added
 - support mouse button up to ~:button32~
