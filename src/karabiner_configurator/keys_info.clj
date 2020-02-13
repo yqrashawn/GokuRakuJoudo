@@ -149,7 +149,7 @@
    :mute {:consumer-key true}
    :volume_decrement {:consumer-key true}
    :volume_increment {:consumer-key true}
-   :eject {:not-from true :consumer-key true}
+   :eject {:consumer-key true}
    :apple_display_brightness_decrement {:not-from true}
    :apple_display_brightness_increment {:not-from true}
    :apple_top_case_display_brightness_decrement {:not-from true}
@@ -192,14 +192,14 @@
    :paste {:not-to true}
    :find {:not-to true}
    :international1 {}
-   :international2 {:not-to true}
+   :international2 {}
    :international3 {}
-   :international4 {:not-to true}
-   :international5 {:not-to true}
-   :international6 {:not-to true}
-   :international7 {:not-to true}
-   :international8 {:not-to true}
-   :international9 {:not-to true}
+   :international4 {}
+   :international5 {}
+   :international6 {}
+   :international7 {}
+   :international8 {}
+   :international9 {}
    :lang1 {}
    :lang2 {}
    :lang3 {:not-to true}
