@@ -137,7 +137,7 @@ file.
 
 <a id="contributing"></a>
 
-## Contibuting
+## Contributing
 
 Use `lein repl` for developing.
 
