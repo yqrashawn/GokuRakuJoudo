@@ -61,7 +61,9 @@
                     {:des "raw rules test-profile"
                      :rules [:test-profile
                              {:type :mouse_motion_to_scroll :from {:modifiers {:mandatory [:left_control]}}}
-                             {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}])
+                             {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}
+                    {:des "more than two sim keys"
+                     :rules [[:a :b :c] :d]}])
 
 (def result {:test-profile-2
              [{:description "Auto generated layer conditions",
@@ -449,7 +451,13 @@
                  :from {:modifiers {:mandatory [:left_control]}}}
                 {:type :basic,
                  :from {:key_code :h, :modifiers {:mandatory [:left_control]}},
-                 :to [{:key_code :delete_or_backspace}]}]}],
+                 :to [{:key_code :delete_or_backspace}]}]}
+              {:description "more than two sim keys",
+               :manipulators
+               [{:from {:key_code "a"},
+                 :to [{:key_code "b"}],
+                 :conditions [{:name "c", :value 1, :type "variable_if"}],
+                 :type "basic"}]}],
              :test-profile
              [{:description "Auto generated layer conditions",
                :manipulators
