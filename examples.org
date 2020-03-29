@@ -1,11 +1,11 @@
 * Examples
-Examples for user to check as quick reference and source of inspiration. Most
+Examples for users to check as quick reference and source of inspiration. Most
 docs are comments (start with ;;) in code block.
 
 ** minimal configuration
 
-This is the minimal configuration, it will do nothing. Make sure you have a
-profile named "Default" in karabiner.json.
+Below is the minimal configuration. It does nothing. Make sure you have a
+profile named "Default" in karabiner.json. 
 
 #+begin_src clojure
 {}
@@ -66,7 +66,8 @@ You can find all keycodes [[https://github.com/yqrashawn/GokuRakuJoudo/blob/mast
 #+end_src
 
 #+begin_quote
-Note: Other modifier keys works because the "~##~" prefix. If you replace ~##~ with ~#C~ (~C~ for ~left_command~), only
+Note: Other modifier keys works because of the "~##~" prefix. If you replace
+~##~ with ~#C~ (~C~ for ~left_command~), only 
 
 > left_command + right_command -> left_command + f16 will work.
 
@@ -75,7 +76,7 @@ Others will be treated like
 > control + right_command -> control + right_command
 #+end_quote
 
-** caps_lock to esc when pressed alone, to ctrl as modifier
+** caps_lock to ESC when pressed alone, to ctrl as modifier
 
 #+begin_src clojure
 {:main [{:des   "caps_lock to esc when pressed alone, to ctrl as modifier"
@@ -89,7 +90,7 @@ Others will be treated like
          :rules [[[:h :j] :f16]]}]}
 #+end_src
 
-** normal key as modifer key
+** regular key as modifer key
 
 simlayer, templates example
 #+begin_src clojure
@@ -140,7 +141,7 @@ below config works as well
              :alfred "osascript -e 'tell application \"Alfred 3\" to run trigger \"%s\" in workflow \"%s\" with argument \"%s\"'"}
  :layers    {:alfred-layer {:key :z}}
  :simlayers {:launch-mode {:key :w}}
- :main      [{:des   "all normal key as modifier key rules"
+ :main      [{:des   "character key as modifier key rules"
               :rules [:launch-mode
                       [:k [:open "/Applications/Emacs.app"]]
                       [:l [:open "/Applications/Google Chrome.app"]]
@@ -175,9 +176,9 @@ below config works as well
                  [:!Tl [:return_or_enter ["in-alfred 0"]]]]}]}
 #+end_src
 
-** double tap right shift twice to enter double shift mode
+** double-tap right shift twice to enter double shift mode
 #+BEGIN_SRC clojure
-  {:des   "Press right_shift twice to enter douvle shift mode, press right_shift once to leave it"
+  {:des   "Press right_shift twice to enter double shift mode, press right_shift once to leave it"
                          :rules [[:right_shift ["double-right-shift-mode" 1] ["shift-pressed-once" 1]]
                                  [:right_shift [:right_shift ["shift-pressed-once" 1]] ["double-right-shift-mode" 0] {:delayed {:invoked ["shift-pressed-once" 0] :canceled ["shift-pressed-once" 0]}}]
                                  :double-right-shift-mode
@@ -249,19 +250,19 @@ Don't map a to b when there are three fingers on the trackpad.
 ** profiles
    Skip this section if you don't use profiles.
    
-   Since [[https://pqrs.org/osx/karabiner/document.html#command-line-interface][karabiner cli]] now support set variables, profiles are mainly used for
-   multiple users using same the machine or gaming profile and normal profile.
-   Goku don't support that well for now.
+   Since [[https://pqrs.org/osx/karabiner/document.html#command-line-interface][karabiner cli]] now supports set variables, profiles are mainly used for
+   multiple users using the same machine or between different usages like gaming
+   profile and working profile. Goku doesn't support that well for now.  
    
-   Basically you can define your multiple profiles. Only one of them can be set
-   as the default profile (~:default true~).
+   Basically, you can define your multiple profiles. Only one of them can be set
+   as the default profile (~:default true~). 
 
    Then you can use profile keyword ~:Default~ as conditions or layers keyword.
    You need to specify each rule to a profile or they will be considered in the
    default profile.
 
-   If you just want to have a empty profile for gaming. You can just create one
-   in karabiner gui (no need to change anything in goku).
+   If you want to have a empty profile for gaming. You can create one in
+   karabiner gui (no need to change anything in goku).  
    
 #+begin_src clojure
 {:profiles {:Default {;; "default true means" rules default goes into this rule if no profiles specified
@@ -286,8 +287,8 @@ Don't map a to b when there are three fingers on the trackpad.
 #+end_src
 
 ** same key in different mode, from @nikitavoloboev's [[https://github.com/nikitavoloboev/dotfiles/blob/178ed88fadaeb889e8a5431e9790f0791dd75b05/karabiner/karabiner.edn#L718][config]]
-   Use [[https://pqrs.org/osx/karabiner/document.html#command-line-interface][karabiner command line interface]] to set variable when you open specifc
-   type of files in your editor.
+   Use [[https://pqrs.org/osx/karabiner/document.html#command-line-interface][karabiner command-line interface]] to set variables when you open specifc
+   type of files in your editor. 
    
 #+begin_src clojure
   {:profiles
