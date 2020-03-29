@@ -429,6 +429,7 @@
         ;;               multi-profile-rules)
         update-multi-profile-rules
         (doseq [{:keys [des rules]} mains]
+          (massert (nn? des) "missing description key :des in one rule, please check your config file")
           (generate-one-rules des rules))
         update-profile-layer-condis
         (doseq [[profile condis] profile-layer-condis]
