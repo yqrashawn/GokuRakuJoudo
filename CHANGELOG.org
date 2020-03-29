@@ -3,14 +3,21 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.9...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.0...HEAD
 
+** 0.3.0 - 2020-03-29
+*** Fixed
+- Condi and parameter settings won't go into both generated simlayer rules #30
+- More than 2 keys in simultaneous keys #52
+- Throw error when there's missing `:des` key #56
+- 
+[commits in 0.3.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.9...0.3.0
 ** 0.2.9 - 2020-01-31
 *** Fixed
 - ~gokuw~ ~GOKU_EDN_CONFIG_FILE~ env support, [[https://github.com/yqrashawn/GokuRakuJoudo/issues/48][issue 48]] 
 - no need to have the ending ~/~ in env variable ~XDG_CONFIG_HOME~,[[https://github.com/yqrashawn/GokuRakuJoudo/pull/49][ PR 49]] 
 
-[commits in 0.2.8]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.8...0.2.9
+[commits in 0.2.9]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.8...0.2.9
 ** 0.2.8 - 2019-11-28
 *** Added
 - support mouse button up to ~:button32~
