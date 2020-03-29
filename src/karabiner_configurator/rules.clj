@@ -249,6 +249,18 @@
                                                    [:to_delayed_action :to_if_canceled]
                                                    (:to_if_canceled (:to_delayed_action result)))
                                          insert-simlayer)
+                       additional-condis (vec (filter
+                                           (fn [condi]
+                                             (not (meta condi)))
+                                           (or (:conditions result) [])))
+                       insert-simlayer (if (not (= (count additional-condis) 0))
+                                         (assoc insert-simlayer :conditions (vec (concat additional-condis
+                                                                                         (or (:conditions insert-simlayer) []))))
+                                         insert-simlayer)
+                       insert-simlayer (if (:parameters result)
+                                           (assoc insert-simlayer :parameters (merge (or (:parameters insert-simlayer) {})
+                                                                                     (:parameters result)))
+                                           insert-simlayer)
                        cleanup-used-simlayers-config (conditions/cleanup-used-simlayers-config)]
                    [(with-meta result {:profiles profiles}) (with-meta insert-simlayer {:profiles profiles})])
                  (with-meta result {:profiles profiles}))]
@@ -333,18 +345,20 @@
             ;; target-des (filter #(= des (:description %)) (profile multi-profile-rules))
             target-des (and (pos? (count target-des)) (first target-des))]
         (if target-des
+          ;; TODO: change it to the clojure way (don't use mutable data)
           (def multi-profile-rules
             (assoc-in multi-profile-rules
                       [profile (first target-des)]
-                      {:description des
+                      {:description  des
                        :manipulators (conj
                                       (:manipulators (second target-des))
                                       parsed-rule)}))
+          ;; TODO: change it to the clojure way (don't use mutable data)
           (def multi-profile-rules
             (assoc multi-profile-rules
                    profile
                    (conj (profile multi-profile-rules)
-                         {:description des
+                         {:description  des
                           :manipulators [parsed-rule]}))))))))
 (defn generate-one-rules
   "generate on rules (one object with des and manipulators in karabiner.json)"
@@ -358,8 +372,10 @@
            (vec
             (for [rule rules]
               (let [rule (if (raw-rule? rule) [rule] rule)]
+                ;; if there's current in rule conditions define them
                 (if (or (and (keyword? rule) (not (profile? rule))) (and (vector? rule) (or (= (first rule) :condis)
                                                                                             (= (first rule) :condi))))
+                  ;; TODO: change it to the clojure way (don't use mutable data)
                   (do (define-current-in-rule-conditions rule) nil)
                   (if (and
                        (nn? current-in-rules-conditions)
@@ -416,10 +432,12 @@
           (generate-one-rules des rules))
         update-profile-layer-condis
         (doseq [[profile condis] profile-layer-condis]
+          ;; TODO: change it to the clojure way (don't use mutable data)
           (def profile-layer-condis (assoc profile-layer-condis profile (vec (for [condi condis]  (condi (:layers conf-data)))))))
 
         add-layer-result (doseq [[profile condis] profile-layer-condis]
                            (when (profile multi-profile-rules)
+                             ;; TODO: change it to the clojure way (don't use mutable data)
                              (def multi-profile-rules
                                (assoc multi-profile-rules
                                       profile
@@ -434,6 +452,7 @@
 (defn parse-mains
   "parse main section to final edn format, ready to convert to json"
   [mains]
+  ;; TODO: change it to the clojure way (don't use mutable data)
   (def multi-profile-rules {})
   (def profile-layer-condis {})
   (generate mains))

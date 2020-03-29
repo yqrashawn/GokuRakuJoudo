@@ -60,9 +60,13 @@
                                 (update-used-simlayers-config (assoc-in used-simlayers-config [:from :sim]
                                                                         (vec (conj (:sim (:from used-simlayers-config))
                                                                                    (keyword (:key_code from))))))))
-                            {:name (name condi)
-                             :value 1
-                             :type condi-type})
+
+                            ;; so that we can filter simlayer conditions in the
+                            ;; none sim one and concat it into the sim one
+                            (with-meta {:name (name condi)
+                                        :value 1
+                                        :type condi-type}
+                              {:simlayer condi}))
                           result)
                  result (if (and (keyword? condi) (nn? (or (condi (:layers conf-data))
                                                            (condi layers))))

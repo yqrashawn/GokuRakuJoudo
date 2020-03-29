@@ -63,7 +63,12 @@
                              {:type :mouse_motion_to_scroll :from {:modifiers {:mandatory [:left_control]}}}
                              {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}
                     {:des "more than two sim keys"
-                     :rules [[:a :b :c] :d]}])
+                     :rules [[:a :b :c] :d]}
+                    {:des "redefine params or condis in simlayer issue #30"
+                     :rules [:vi-mode
+                             [:##j :down_arrow nil {:params {:sim 432}}]
+                             [:##j :down_arrow :chrome]
+                             [:##j :down_arrow :chrome {:params {:sim 432}}]]}])
 
 (def result {:test-profile-2
              [{:description "Auto generated layer conditions",
@@ -242,7 +247,10 @@
                    :key_up_order                    "strict_inverse",
                    :key_up_when                     "any",
                    :to_after_key_up
-                   [{:set_variable {:name "vi-mode", :value 0}}]}}}]}
+                   [{:set_variable {:name "vi-mode", :value 0}}]}}
+                 :conditions
+                 [{:identifiers [{:vendor_id 1278, :product_id 51966}],
+                   :type        "device_if"}]}]}
               {:description "press h insert 8 then set variable some-mode to 0",
                :manipulators
                [{:from {:key_code "h"},
@@ -451,13 +459,80 @@
                  :from {:modifiers {:mandatory [:left_control]}}}
                 {:type :basic,
                  :from {:key_code :h, :modifiers {:mandatory [:left_control]}},
-                 :to [{:key_code :delete_or_backspace}]}]}
+                 :to   [{:key_code :delete_or_backspace}]}]}
               {:description "more than two sim keys",
                :manipulators
-               [{:from {:key_code "a"},
-                 :to [{:key_code "b"}],
+               [{:from       {:key_code "a"},
+                 :to         [{:key_code "b"}],
                  :conditions [{:name "c", :value 1, :type "variable_if"}],
-                 :type "basic"}]}],
+                 :type       "basic"}]}
+              {:description "redefine params or condis in simlayer issue #30",
+               :manipulators
+               [{:parameters {:basic.simultaneous_threshold_milliseconds 432},
+                 :from       {:key_code "j", :modifiers {:optional ["any"]}},
+                 :to         [{:key_code "down_arrow"}],
+                 :conditions [{:name "vi-mode", :value 1, :type "variable_if"}],
+                 :type       "basic"}
+                {:parameters {:basic.simultaneous_threshold_milliseconds 432},
+                 :to
+                 [{:set_variable {:name "vi-mode", :value 1}}
+                  {:key_code "down_arrow"}],
+                 :from
+                 {:simultaneous [{:key_code "d"} {:key_code "j"}],
+                  :simultaneous_options
+                  {:detect_key_down_uninterruptedly true,
+                   :key_down_order                  "strict",
+                   :key_up_order                    "strict_inverse",
+                   :key_up_when                     "any",
+                   :to_after_key_up
+                   [{:set_variable {:name "vi-mode", :value 0}}]}}}
+                {:from {:key_code "j", :modifiers {:optional ["any"]}},
+                 :to   [{:key_code "down_arrow"}],
+                 :conditions
+                 [{:name "vi-mode", :value 1, :type "variable_if"}
+                  {:bundle_identifiers ["^com\\.google\\.Chrome$"],
+                   :type               "frontmost_application_if"}],
+                 :type "basic"}
+                {:parameters {:basic.simultaneous_threshold_milliseconds 250},
+                 :conditions
+                 [{:bundle_identifiers ["^com\\.google\\.Chrome$"],
+                   :type               "frontmost_application_if"}]
+                 :to
+                 [{:set_variable {:name "vi-mode", :value 1}}
+                  {:key_code "down_arrow"}],
+                 :from
+                 {:simultaneous [{:key_code "d"} {:key_code "j"}],
+                  :simultaneous_options
+                  {:detect_key_down_uninterruptedly true,
+                   :key_down_order                  "strict",
+                   :key_up_order                    "strict_inverse",
+                   :key_up_when                     "any",
+                   :to_after_key_up
+                   [{:set_variable {:name "vi-mode", :value 0}}]}}}
+                {:parameters {:basic.simultaneous_threshold_milliseconds 432},
+                 :from       {:key_code "j", :modifiers {:optional ["any"]}},
+                 :to         [{:key_code "down_arrow"}],
+                 :conditions
+                 [{:name "vi-mode", :value 1, :type "variable_if"}
+                  {:bundle_identifiers ["^com\\.google\\.Chrome$"],
+                   :type               "frontmost_application_if"}],
+                 :type       "basic"}
+                {:parameters {:basic.simultaneous_threshold_milliseconds 432},
+                 :conditions
+                 [{:bundle_identifiers ["^com\\.google\\.Chrome$"],
+                   :type               "frontmost_application_if"}]
+                 :to
+                 [{:set_variable {:name "vi-mode", :value 1}}
+                  {:key_code "down_arrow"}],
+                 :from
+                 {:simultaneous [{:key_code "d"} {:key_code "j"}],
+                  :simultaneous_options
+                  {:detect_key_down_uninterruptedly true,
+                   :key_down_order                  "strict",
+                   :key_up_order                    "strict_inverse",
+                   :key_up_when                     "any",
+                   :to_after_key_up
+                   [{:set_variable {:name "vi-mode", :value 0}}]}}}]}],
              :test-profile
              [{:description "Auto generated layer conditions",
                :manipulators
@@ -512,7 +587,7 @@
                  :from {:modifiers {:mandatory [:left_control]}}}
                 {:type :basic,
                  :from {:key_code :h, :modifiers {:mandatory [:left_control]}},
-                 :to [{:key_code :delete_or_backspace}]}]}]})
+                 :to   [{:key_code :delete_or_backspace}]}]}]})
 
 (t/deftest generate-mains
   (init-conf-data)
@@ -596,5 +671,8 @@
     :simlayer-threshold 250})
 
   (t/testing
-      (t/is (= (sut/parse-mains example-mains) result))))
+      (t/is (= (sut/parse-mains example-mains)
+               result))))
+
+
 
