@@ -1,328 +1,328 @@
 {:result {:launch-default-profile
           {:complex_modifications
            {:parameters
-            {:basic.simultaneous_threshold_milliseconds    nil,
-             :basic.to_delayed_action_delay_milliseconds   nil,
-             :basic.to_if_alone_timeout_milliseconds       nil,
+            {:basic.simultaneous_threshold_milliseconds nil,
+             :basic.to_delayed_action_delay_milliseconds nil,
+             :basic.to_if_alone_timeout_milliseconds nil,
              :basic.to_if_held_down_threshold_milliseconds nil},
             :rules
             [{:description "launcher mode",
               :manipulators
               [{:from {:key_code "j"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchAlacritty\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchAlacritty\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchAlacritty\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchAlacritty\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "j"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "k"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchEmacs\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchEmacs\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchEmacs\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchEmacs\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "k"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "l"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchChrome\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchChrome\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchChrome\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchChrome\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "l"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "m"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchMail\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchMail\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchMail\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchMail\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "m"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "v"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchWeChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchWeChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchWeChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchWeChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "v"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "q"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKE\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKE\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKE\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKE\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "q"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "9"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPDFExpert\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPDFExpert\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPDFExpert\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPDFExpert\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "9"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
-                  [{:set_variable {:name "launch-mode", :value 0}}]}}}]}]}}
+                  [{:set_variable {:name "launch-mode", :value 0}}]}}}]}]}},
           :launch-second-profile
           {:complex_modifications
            {:parameters
-            {:basic.simultaneous_threshold_milliseconds    nil,
-             :basic.to_delayed_action_delay_milliseconds   nil,
-             :basic.to_if_alone_timeout_milliseconds       nil,
+            {:basic.simultaneous_threshold_milliseconds nil,
+             :basic.to_delayed_action_delay_milliseconds nil,
+             :basic.to_if_alone_timeout_milliseconds nil,
              :basic.to_if_held_down_threshold_milliseconds nil},
             :rules
             [{:description "launcher mode",
               :manipulators
               [{:from {:key_code "comma"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchSafari\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchSafari\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchSafari\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchSafari\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "comma"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "period"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPaw\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPaw\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPaw\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPaw\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "period"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "equal_sign"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTextual\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTextual\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTextual\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTextual\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "equal_sign"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "8"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKEEvents\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKEEvents\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKEEvents\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKEEvents\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "8"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "j"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "j"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "b"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchBearyChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchBearyChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchBearyChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchBearyChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "b"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}
                {:from {:key_code "t"},
                 :to
-                ({:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTG\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}),
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTG\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :conditions
                 [{:name "launch-mode", :value 1, :type "variable_if"}],
                 :type "basic"}
-               {:type       "basic",
+               {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:set_variable {:name "launch-mode", :value 1}}
-                 {:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTG\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
+                [{:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTG\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
+                 {:set_variable {:name "launch-mode", :value 1}}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "t"}],
                  :simultaneous_options
                  {:detect_key_down_uninterruptedly true,
-                  :key_down_order                  "strict",
-                  :key_up_order                    "strict_inverse",
-                  :key_up_when                     "any",
+                  :key_down_order "strict",
+                  :key_up_order "strict_inverse",
+                  :key_up_when "any",
                   :to_after_key_up
                   [{:set_variable {:name "launch-mode", :value 0}}]}}}]}]}}}}

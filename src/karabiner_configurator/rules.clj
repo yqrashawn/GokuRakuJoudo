@@ -235,7 +235,7 @@
                        insert-simlayer (assoc insert-simlayer :from
                                               (froms/parse-from des (:from insert-simlayer)))
                        insert-simlayer (assoc insert-simlayer :to
-                                              (vec (concat (tos/parse-to des (:to insert-simlayer)) (:to result))))
+                                              (vec (concat (:to result) (tos/parse-to des (:to insert-simlayer)))))
                        insert-simlayer (if (:to_if_held_down result)
                                          (assoc insert-simlayer :to_if_held_down (:to_if_held_down result))
                                          insert-simlayer)

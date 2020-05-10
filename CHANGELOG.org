@@ -3,14 +3,23 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.0...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.1...HEAD
+
+** 0.3.1 - 2020-05-10
+*** Fixed
+- insert simlayer :set-variable after user defined actions, resolve #60
+
+[commits in 0.3.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.0...0.3.1
 
 ** 0.3.0 - 2020-03-29
 *** Fixed
-- Condi and parameter settings won't go into both generated simlayer rules https://github.com/yqrashawn/GokuRakuJoudo/issues/30
-- More than 2 keys in simultaneous keys https://github.com/yqrashawn/GokuRakuJoudo/issues/52
-- Throw error when there's missing `:des` key https://github.com/yqrashawn/GokuRakuJoudo/issues/56
-- 
+- Condi and parameter settings won't go into both generated simlayer rules
+  https://github.com/yqrashawn/GokuRakuJoudo/issues/30 
+- More than 2 keys in simultaneous keys
+  https://github.com/yqrashawn/GokuRakuJoudo/issues/52 
+- Throw error when there's missing `:des` key
+  https://github.com/yqrashawn/GokuRakuJoudo/issues/56
+  
 [commits in 0.3.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.9...0.3.0
 ** 0.2.9 - 2020-01-31
 *** Fixed
