@@ -315,7 +315,7 @@ So in the karabiner.json spec, there're [from event definition](https://pqrs.org
 
 ### simlayers
 
-In karabiner, there's two kinds of layers implementation. I'll just call them the old layer and simlayer. I don't know if I can explain this clearly. You may really understand this after tring these two kinds of config. If you are familier with the karabiner.json configuration, you can compare [the old layer example](https://github.com/pqrs-org/KE-complex_modifications/blob/b944d9970aa256f7e86a191e6407a0f9685d511d/docs/json/vi_mode.json#L67) and the [new layer example](https://github.com/pqrs-org/KE-complex_modifications/blob/0417c1ead9455cb101af0cd52ab158a3bfb89b66/docs/json/vi_mode.json#L7).
+In karabiner, there's two kinds of layers implementation. I'll just call them the old layer and simlayer. I don't know if I can explain this clearly. You may really understand this after trying these two kinds of config. If you are familier with the karabiner.json configuration, you can compare [the old layer example](https://github.com/pqrs-org/KE-complex_modifications/blob/b944d9970aa256f7e86a191e6407a0f9685d511d/docs/json/vi_mode.json#L67) and the [new layer example](https://github.com/pqrs-org/KE-complex_modifications/blob/0417c1ead9455cb101af0cd52ab158a3bfb89b66/docs/json/vi_mode.json#L7).
 
 1.  explanation
 
