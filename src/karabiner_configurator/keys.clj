@@ -2,7 +2,8 @@
   (:require
    [karabiner-configurator.misc :refer :all]
    [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.modifiers :as kmodifier]))
+   [karabiner-configurator.modifiers :as kmodifier]
+   [clojure.string :refer [includes? join]]))
 
 (def any-key-keywords {:consumer_key_code {}
                        :pointing_button {}
@@ -30,8 +31,8 @@
   [mkey]
   (into {} (map update-mouse-map mkey)))
 
-(def special-modi-re #"(^![!CSTOQWERFP]+#[#CSTOQWERFP]+)")
-(def special-modi-mandatory-re #"(^![!CSTOQWERFP]+)")
+(def special-modi-re #"(^![!ACSTOQWERFP]+#[#CSTOQWERFP]+)")
+(def special-modi-mandatory-re #"(^![!ACSTOQWERFP]+)")
 (def special-modi-optional-re #"(^#[#CSTOQWERFP]+)")
 (def special-modi-optional-both-re #"(#[#CSTOQWERFP]+)")
 
@@ -60,10 +61,34 @@
   [vec]
   (if (vector? vec)
     (let [result []
-          result (if (contains?? vec \C) (conj result (name :left_command)) result)
-          result (if (contains?? vec \T) (conj result (name :left_control)) result)
-          result (if (contains?? vec \O) (conj result (name :left_option)) result)
-          result (if (contains?? vec \S) (conj result (name :left_shift)) result)
+          s      (join "" vec)
+          result (cond
+                   (includes? s "CC")
+                   (conj result (name :command))
+                   (contains?? vec \C)
+                   (conj result (name :left_command))
+                   :else
+                   result)
+          result (cond
+                   (includes? s "TT")
+                   (conj result (name :control))
+                   (contains?? vec \T)
+                   (conj result (name :left_control))
+                   :else
+                   result)
+          result (cond
+                   (includes? s "OO")
+                   (conj result (name :option))
+                   (contains?? vec \O) (conj result (name :left_option))
+                   :else
+                   result)
+          result (cond
+                   (includes? s "SS")
+                   (conj result (name :shift))
+                   (contains?? vec \S)
+                   (conj result (name :left_shift))
+                   :else
+                   result)
           result (if (contains?? vec \Q) (conj result (name :right_command)) result)
           result (if (contains?? vec \W) (conj result (name :right_control)) result)
           result (if (contains?? vec \E) (conj result (name :right_option)) result)
@@ -71,10 +96,19 @@
           result (if (contains?? vec \F) (conj result (name :fn)) result)
           result (if (contains?? vec \P) (conj result (name :caps_lock)) result)
           result (if (contains?? vec \#) [(name :any)] result)
-          result (if (contains?? vec \!) [(name :left_command)
-                                          (name :left_control)
-                                          (name :left_option)
-                                          (name :left_shift)] result)]
+          result (cond
+                   (includes? s "!A")
+                   [(name :command)
+                    (name :control)
+                    (name :option)
+                    (name :shift)]
+                   (contains?? vec \!)
+                   [(name :left_command)
+                    (name :left_control)
+                    (name :left_option)
+                    (name :left_shift)]
+                   :else
+                   result)]
       result)
     nil))
 

@@ -6,7 +6,9 @@
 (def example-mains [{:des "a to 1"                                            :rules [[:condi :chunkwm-move-mode]
                                                                                       [:profiles :Default :test-profile-2]
                                                                                       [:a :1]]} ;; a to 1
-                    {:des "left command a to control 1"                            :rules [[:!C#Pa :!T1]]}
+                    {:des "[left] command a to control 1"                            :rules [[:!C#Pa :!T1]
+                                                                                             [:!CC#Pa :!TT1]
+                                                                                             [:!CCTTOOSS#Pa :!TT1]]}
                     {:des "right command a to control 1"                            :rules [[:!Q#Pa :!T1]]} ;; command a to control 1
                     {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
                     {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
@@ -26,7 +28,8 @@
                                                                             [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :canceled ["command-q" 0]}}]]}
                     {:des "Mouse button"
                      :rules [[{:pkey :button5} :mission_control]
-                             [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]]}
+                             [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]
+                             [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!Agrave_accent_and_tilde]]]}
                     {:des "Change input source"
                      :rules [[:i :us :q-mode]
                              [:o :squirrel :q-mode]]}
@@ -142,13 +145,25 @@
                     :conditions
                     [{:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
                     :type "basic"}]}
-                 {:description "left command a to control 1",
+                 {:description "[left] command a to control 1",
                   :manipulators
                   [{:from
                     {:key_code "a",
                      :modifiers
                      {:mandatory ["left_command"], :optional ["caps_lock"]}},
                     :to [{:key_code "1", :modifiers ["left_control"]}],
+                    :type "basic"}
+                   {:from
+                    {:key_code "a",
+                     :modifiers
+                     {:mandatory ["command"], :optional ["caps_lock"]}},
+                    :to [{:key_code "1", :modifiers ["control"]}],
+                    :type "basic"}
+                   {:from
+                    {:key_code "a",
+                     :modifiers
+                     {:mandatory ["command", "control", "option", "shift"], :optional ["caps_lock"]}},
+                    :to [{:key_code "1", :modifiers ["control"]}],
                     :type "basic"}]}
                  {:description "right command a to control 1",
                   :manipulators
@@ -327,6 +342,14 @@
                      {:key_code "grave_accent_and_tilde",
                       :modifiers
                       ["left_command" "left_control" "left_option" "left_shift"]}],
+                    :type "basic"}
+                   {:from {:pointing_button "button4"},
+                    :to
+                    [{:pointing_button "button1"}
+                     {:pointing_button "button1"}
+                     {:key_code "grave_accent_and_tilde",
+                      :modifiers
+                      ["command" "control" "option" "shift"]}],
                     :type "basic"}]}
                  {:description "Change input source",
                   :manipulators
