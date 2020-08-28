@@ -185,7 +185,7 @@ below config works as well
                                  [:right_shift ["double-right-shift-mode" 0]]
                                  [:a "say 'know we are in double shift mode'"]]}
 #+END_SRC
-** use the [[https://pqrs.org/osx/karabiner/json.html#multitouch-extension][multitouch]] feature
+** use the [[https://karabiner-elements.pqrs.org/docs/json/extra/multitouch-extension/][multitouch]] feature
 #+BEGIN_SRC clojure
   {:des "ctrl+y to command+v (trackpad example)"
    :rules
@@ -250,7 +250,7 @@ Don't map a to b when there are three fingers on the trackpad.
 ** profiles
    Skip this section if you don't use profiles.
    
-   Since [[https://pqrs.org/osx/karabiner/document.html#command-line-interface][karabiner cli]] now supports set variables, profiles are mainly used for
+   Since [[https://karabiner-elements.pqrs.org/docs/manual/misc/command-line-interface/][karabiner cli]] now supports set variables, profiles are mainly used for
    multiple users using the same machine or between different usages like gaming
    profile and working profile. Goku doesn't support that well for now.  
    
@@ -286,9 +286,9 @@ Don't map a to b when there are three fingers on the trackpad.
                       :held    500}}}
 #+end_src
 
-** same key in different mode, from @nikitavoloboev's [[https://github.com/nikitavoloboev/dotfiles/blob/178ed88fadaeb889e8a5431e9790f0791dd75b05/karabiner/karabiner.edn#L718][config]]
-   Use [[https://pqrs.org/osx/karabiner/document.html#command-line-interface][karabiner command-line interface]] to set variables when you open specifc
-   type of files in your editor. 
+** same key in different mode, from @nikitavoloboev's [[https://github.com/nikitavoloboev/dotfiles/blob/6e2a96e1db1c85b393aa3898f88fdf93fa8fadd6/karabiner/karabiner.edn#L717][config]]
+   You can use [[https://karabiner-elements.pqrs.org/docs/manual/misc/command-line-interface/][karabiner command-line interface]] to set variables when you open specifc
+   type of files in your editor. See [[https://github.com/yqrashawn/GokuRakuJoudo/issues/79][ISSUE #79]].
    
 #+begin_src clojure
   {:profiles
