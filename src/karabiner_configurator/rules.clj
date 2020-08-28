@@ -194,7 +194,7 @@
 ;; parameters                                     | :params
 ;;   basic.to_if_alone_timeout_milliseconds       |   :alone
 ;;   basic.to_if_held_down_threshold_milliseconds |   :held
-;;   to_delayed_action_delay_milliseconds         |   :delay  FIXME should there be a "basic.", there's none on the spec page
+;;   basic.to_delayed_action_delay_milliseconds   |   :delay
 ;;   basic.simultaneous_threshold_milliseconds    |   :sim
 (defn additional-key
   "parse additional keys"
