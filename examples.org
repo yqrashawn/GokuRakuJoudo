@@ -216,6 +216,8 @@ Don't map a to b when there are three fingers on the trackpad.
                             ;; you can find bundle_identifiers in the Info.plist file of an applications
                             ;; eg. in /Applications/Mail.app/Contents/Info.plist
                             ;; search for "CFBundleIdentifier"
+                            ;; you can also find bundle_identifiers using command line:
+                            ;; osascript -e 'id of app "Google Chrome"'
                             "^org\\.mozilla\\.firefox$"
                             "^org\\.mozilla\\.firefoxdeveloperedition$"
                             "^com\\.google\\.Chrome$"
