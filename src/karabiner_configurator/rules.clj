@@ -96,7 +96,7 @@
 ;; ["vi-mode" 1]             | set variable, second element in vector isn't keyword
 ;; ["vi-mode" :a]            | shell command then insert a
 ;; [:launch-template "Mail"] | shell command then insert a
-;; ["cd" "ls"]               | multeple shell command
+;; ["cd" "ls"]               | multiple shell command
 ;; [["vi-mode" 1] :a]        | set variable then insert a
 ;; [{...}]                   | fallback to `tos` definition
 
@@ -104,7 +104,7 @@
 ;; ["cd" "ls"]
 ;; set_variable to string or two shell_command
 ;; two shell_command cd & ls, cd && ls
-;; ["cd" "ls"] | multeple shell command
+;; ["cd" "ls"] | multiple shell command
 ;; [{:set ["variable name" "variable value"]}] | set variable's value to string (fallback to `tos` definition)
 (defn to-key
   "generate to config"
