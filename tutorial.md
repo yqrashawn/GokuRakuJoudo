@@ -104,7 +104,7 @@ You can find all keycode definition in [this file](https://github.com/yqrashawn/
     ;; HHKB-BT keyboard.
 ```
 
-The only condition that Goku dose not support is [keyboard type](https://pqrs.org/osx/karabiner/json.html#condition-definition-keyboard-type).
+The only condition that Goku does not support is [keyboard type](https://pqrs.org/osx/karabiner/json.html#condition-definition-keyboard-type).
 
 
 <a id="basic4"></a>
@@ -188,9 +188,9 @@ You can set <to> to string to invoke shell command.
 
 When we use karabiner to run shell commands or applescripts, we write them as string. The problem is these strings are often similar and really long. So there's predefined templates.
 
-It's same with those string templates in some programming languages. In fact, it use the clojure's string templates, which is actually java's string templates implementation. eg.
+It's the same with those string templates in some programming languages. In fact, it uses the clojure's string templates, which is actually java's string templates implementation. eg.
 
-Goku support omitting the last n parameters after version 0.2.1.
+Goku supports omitting the last n parameters after version 0.2.1.
 
 ```clojure
     {:templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"%s\"'"}
@@ -225,7 +225,7 @@ Goku support omitting the last n parameters after version 0.2.1.
 
 ### Note
 
-Don't define conditions with the name of keycode. If you define a application condition like `{:a ["^com\\.google\\.Chrome$"]}`. It might work in rules but it may broke other things.
+Don't define conditions with the name of keycode. If you define an application condition like `{:a ["^com\\.google\\.Chrome$"]}`. It might work in rules but it may break other things.
 
 
 <a id="advanced"></a>
@@ -269,7 +269,7 @@ So in the karabiner.json spec, there're [from event definition](https://pqrs.org
 
 1.  froms definition
 
-    Since karabiner can send multiple to event triggerd by a single from event, we won't froms definition too much. There're two kinds of situation that we might want to use this.
+    Since karabiner can send multiple to event triggered by a single from event, we won't froms definition too much. There're two kinds of situation that we might want to use this.
     
 ```clojure
         ;; from any key_code, consumer_key_code or pointing_button
@@ -315,7 +315,7 @@ So in the karabiner.json spec, there're [from event definition](https://pqrs.org
 
 ### simlayers
 
-In karabiner, there's two kinds of layers implementation. I'll just call them the old layer and simlayer. I don't know if I can explain this clearly. You may really understand this after trying these two kinds of config. If you are familier with the karabiner.json configuration, you can compare [the old layer example](https://github.com/pqrs-org/KE-complex_modifications/blob/b944d9970aa256f7e86a191e6407a0f9685d511d/docs/json/vi_mode.json#L67) and the [new layer example](https://github.com/pqrs-org/KE-complex_modifications/blob/0417c1ead9455cb101af0cd52ab158a3bfb89b66/docs/json/vi_mode.json#L7).
+In karabiner, there's two kinds of layers implementation. I'll just call them the old layer and simlayer. I don't know if I can explain this clearly. You may really understand this after trying these two kinds of config. If you are familiar with the karabiner.json configuration, you can compare [the old layer example](https://github.com/pqrs-org/KE-complex_modifications/blob/b944d9970aa256f7e86a191e6407a0f9685d511d/docs/json/vi_mode.json#L67) and the [new layer example](https://github.com/pqrs-org/KE-complex_modifications/blob/0417c1ead9455cb101af0cd52ab158a3bfb89b66/docs/json/vi_mode.json#L7).
 
 1.  explanation
 
@@ -348,7 +348,7 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
                          --> w key begin to repeat, we get "wwwwwwwwwwwww"
 ```
     
-    This solves those two problems. But we need to trigger the second key fast, or the first key starts to repeat. We need must trigger a action the same time we enter a layer. We can't enter the layer in advance and think what we really want to do in that layer.
+    This solves those two problems. But we need to trigger the second key fast, or the first key starts to repeat. We need must trigger an action the same time we enter a layer. We can't enter the layer in advance and think what we really want to do in that layer.
 
 2.  layer and simlayer in Goku.
 
@@ -388,10 +388,10 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
         ;; ~parameters~. We already have <from> <to> <conditions>, and we can omit
         ;; ~type~ and ~description~.
         
-        ;; So <other options> includs ~to_if_alone~, ~to_if_held_down~,
+        ;; So <other options> includes ~to_if_alone~, ~to_if_held_down~,
         ;; ~to_after_key_up~, ~to_delayed_action~ and ~parameters~.
         
-        ;; The first 4 is same as tos definition, and we also have shotcusts for ~parameters~.
+        ;; The first 4 is same as tos definition, and we also have shortcuts for ~parameters~.
 ```
 
     
