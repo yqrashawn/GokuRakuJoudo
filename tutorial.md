@@ -306,7 +306,7 @@ So in the karabiner.json spec, there're [from event definition](https://pqrs.org
 
 2.  tos definition
 
-    Tos is used more often than froms. It's the same idea as froms definition. You can find the detailed [tos documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/tos.clj#L7) in the implementation file. There's shot cuts for tos in rules' <to>, like string to shell commands and multiple to definitions in vector.
+    Tos is used more often than froms. It's the same idea as froms definition. You can find the detailed [tos documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/tos.clj#L7) in the implementation file. There are shortcuts for tos in rules, like string to shell commands and multiple to definitions in vector.
     
     You only need to use to definition if you want to use or set `select_input_source`, `mouse_key`, `lazy`, `repeat`, `halt`, `hold_down_milliseconds`.
 
