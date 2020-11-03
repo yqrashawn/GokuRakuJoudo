@@ -1,11 +1,9 @@
 * Examples
-Examples for users to check as quick reference and source of inspiration. Most
-docs are comments (start with ;;) in code block.
+Examples for users to check as quick reference and source of inspiration. Most docs are comments (starting with ;;) in the code blocks.
 
 ** minimal configuration
 
-Below is the minimal configuration. It does nothing. Make sure you have a
-profile named "Default" in karabiner.json. 
+Below is the minimal configuration. It does nothing. Make sure you have a profile named "Default" in karabiner.json. 
 
 #+begin_src clojure
 {}
@@ -66,12 +64,12 @@ You can find all keycodes [[https://github.com/yqrashawn/GokuRakuJoudo/blob/mast
 #+end_src
 
 #+begin_quote
-Note: Other modifier keys works because of the "~##~" prefix. If you replace
+Note: Other modifier keys work because of the "~##~" prefix. If you replace
 ~##~ with ~#C~ (~C~ for ~left_command~), only 
 
 > left_command + right_command -> left_command + f16 will work.
 
-Others will be treated like
+Others combinations would simply act like
 
 > control + right_command -> control + right_command
 #+end_quote
@@ -90,7 +88,7 @@ Others will be treated like
          :rules [[[:h :j] :f16]]}]}
 #+end_src
 
-** regular key as modifer key
+** using a regular key as a modifier key
 
 simlayer, templates example
 #+begin_src clojure
@@ -158,7 +156,7 @@ below config works as well
                  ;; press h + l will trigger alfred and set "in-alfred" to 1
                  [[:h :j] [:f16 ["in-alfred" 1]]]
 
-                 :in-alfred ;;;; when "in-alfred" is 1
+                 :in-alfred ;; when "in-alfred" is 1
 
                  ;; press enter will select one alfred result and set "in-alfred" to 0
                  [:##return_or_enter [:return_or_enter ["in-alfred" 0]]]
@@ -252,19 +250,15 @@ Don't map a to b when there are three fingers on the trackpad.
 ** profiles
    Skip this section if you don't use profiles.
    
-   Since [[https://karabiner-elements.pqrs.org/docs/manual/misc/command-line-interface/][karabiner cli]] now supports set variables, profiles are mainly used for
-   multiple users using the same machine or between different usages like gaming
-   profile and working profile. Goku doesn't support that well for now.  
+   Since [[https://karabiner-elements.pqrs.org/docs/manual/misc/command-line-interface/][karabiner cli]] now supports set variables, profiles are mainly used for multiple users using the same machine or between different usages like gaming profiles and working profiles. Goku doesn't support that well for now.  
    
-   Basically, you can define your multiple profiles. Only one of them can be set
-   as the default profile (~:default true~). 
+   However, you can define your multiple profiles. Only one profile can be set as the default profile (~:default true~). 
 
    Then you can use profile keyword ~:Default~ as conditions or layers keyword.
-   You need to specify each rule to a profile or they will be considered in the
-   default profile.
+   You need to specify each rule to a profile, or they will be considered in the default profile.
 
-   If you want to have a empty profile for gaming. You can create one in
-   karabiner gui (no need to change anything in goku).  
+   If you want to have an empty profile for gaming, you can create one in
+   the karabiner GUI (no need to change anything in Goku).  
    
 #+begin_src clojure
 {:profiles {:Default {;; "default true means" rules default goes into this rule if no profiles specified
@@ -284,7 +278,7 @@ Don't map a to b when there are three fingers on the trackpad.
                       :alone   1000
                       ;; to_if_held_down_threshold_milliseconds
                       ;; check the doc, I don't know what does this mean.
-                      ;; maybe press this milliseconds counts a "held" ?
+                      ;; maybe press this many milliseconds counts a "held" ?
                       :held    500}}}
 #+end_src
 
