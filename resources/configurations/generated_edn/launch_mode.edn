@@ -18,9 +18,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchAlacritty\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchAlacritty\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "j"}],
                  :simultaneous_options
@@ -40,9 +40,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchEmacs\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchEmacs\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "k"}],
                  :simultaneous_options
@@ -62,9 +62,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchChrome\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchChrome\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "l"}],
                  :simultaneous_options
@@ -84,9 +84,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchMail\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchMail\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "m"}],
                  :simultaneous_options
@@ -106,9 +106,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchWeChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchWeChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "v"}],
                  :simultaneous_options
@@ -128,9 +128,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKE\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKE\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "q"}],
                  :simultaneous_options
@@ -150,9 +150,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPDFExpert\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPDFExpert\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "9"}],
                  :simultaneous_options
@@ -182,9 +182,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchSafari\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchSafari\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "comma"}],
                  :simultaneous_options
@@ -204,9 +204,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPaw\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchPaw\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "period"}],
                  :simultaneous_options
@@ -226,9 +226,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTextual\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTextual\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "equal_sign"}],
                  :simultaneous_options
@@ -248,9 +248,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKEEvents\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchKEEvents\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "8"}],
                  :simultaneous_options
@@ -270,9 +270,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "j"}],
                  :simultaneous_options
@@ -292,9 +292,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchBearyChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchBearyChat\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "b"}],
                  :simultaneous_options
@@ -314,9 +314,9 @@
                {:type "basic",
                 :parameters {:basic.simultaneous_threshold_milliseconds 250},
                 :to
-                [{:shell_command
-                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTG\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}
-                 {:set_variable {:name "launch-mode", :value 1}}],
+                [{:set_variable {:name "launch-mode", :value 1}}
+                 {:shell_command
+                  "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchTG\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}],
                 :from
                 {:simultaneous [{:key_code "w"} {:key_code "t"}],
                  :simultaneous_options

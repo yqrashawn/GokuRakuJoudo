@@ -3,7 +3,14 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.2...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.3...HEAD
+
+** 0.3.3 - 2020-11-03
+*** Fixed
+`simlayer` generate simultaneous keys in `to` section with the `set_variable`
+one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
+
+[commits in 0.3.3]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.2...0.3.3
 
 ** 0.3.2 - 2020-05-28
 *** Added
