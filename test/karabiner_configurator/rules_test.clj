@@ -216,7 +216,7 @@
                     :conditions [{:name "vi-mode", :value 1, :type "variable_if"}],
                     :type "basic"}
                    {:parameters {:basic.simultaneous_threshold_milliseconds 250},
-                    :to [{:key_code "4"} {:set_variable {:name "vi-mode", :value 1}}],
+                    :to [{:set_variable {:name "vi-mode", :value 1}} {:key_code "4"}],
                     :from
                     {:simultaneous [{:key_code "d"} {:key_code "g"}],
                      :simultaneous_options
@@ -253,7 +253,7 @@
                       :type "device_if"}],
                     :type "basic"}
                    {:parameters {:basic.simultaneous_threshold_milliseconds 250},
-                    :to [{:key_code "7"} {:set_variable {:name "vi-mode", :value 1}}],
+                    :to [{:set_variable {:name "vi-mode", :value 1}} {:key_code "7"}],
                     :from
                     {:simultaneous [{:key_code "d"} {:key_code "j"}],
                      :simultaneous_options
@@ -498,8 +498,8 @@
                     :type "basic"}
                    {:parameters {:basic.simultaneous_threshold_milliseconds 432},
                     :to
-                    [{:key_code "down_arrow"}
-                     {:set_variable {:name "vi-mode", :value 1}}],
+                    [{:set_variable {:name "vi-mode", :value 1}}
+                     {:key_code "down_arrow"}],
                     :from
                     {:simultaneous [{:key_code "d"} {:key_code "j"}],
                      :simultaneous_options
@@ -518,8 +518,8 @@
                     :type "basic"}
                    {:parameters {:basic.simultaneous_threshold_milliseconds 250},
                     :to
-                    [{:key_code "down_arrow"}
-                     {:set_variable {:name "vi-mode", :value 1}}],
+                    [{:set_variable {:name "vi-mode", :value 1}}
+                     {:key_code "down_arrow"}],
                     :from
                     {:simultaneous [{:key_code "d"} {:key_code "j"}],
                      :simultaneous_options
@@ -542,8 +542,8 @@
                     :type "basic"}
                    {:parameters {:basic.simultaneous_threshold_milliseconds 432},
                     :to
-                    [{:key_code "down_arrow"}
-                     {:set_variable {:name "vi-mode", :value 1}}],
+                    [{:set_variable {:name "vi-mode", :value 1}}
+                     {:key_code "down_arrow"}],
                     :from
                     {:simultaneous [{:key_code "d"} {:key_code "j"}],
                      :simultaneous_options

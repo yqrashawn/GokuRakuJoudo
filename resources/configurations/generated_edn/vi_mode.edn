@@ -16,8 +16,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "down_arrow"}
-         {:set_variable {:name "vi-mode", :value 1}}],
+        [{:set_variable {:name "vi-mode", :value 1}}
+         {:key_code "down_arrow"}],
         :from
         {:simultaneous [{:key_code "d"} {:key_code "j"}],
          :simultaneous_options
@@ -34,8 +34,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "up_arrow"}
-         {:set_variable {:name "vi-mode", :value 1}}],
+        [{:set_variable {:name "vi-mode", :value 1}}
+         {:key_code "up_arrow"}],
         :from
         {:simultaneous [{:key_code "d"} {:key_code "k"}],
          :simultaneous_options
@@ -52,8 +52,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "left_arrow"}
-         {:set_variable {:name "vi-mode", :value 1}}],
+        [{:set_variable {:name "vi-mode", :value 1}}
+         {:key_code "left_arrow"}],
         :from
         {:simultaneous [{:key_code "d"} {:key_code "h"}],
          :simultaneous_options
@@ -70,8 +70,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "right_arrow"}
-         {:set_variable {:name "vi-mode", :value 1}}],
+        [{:set_variable {:name "vi-mode", :value 1}}
+         {:key_code "right_arrow"}],
         :from
         {:simultaneous [{:key_code "d"} {:key_code "l"}],
          :simultaneous_options
@@ -88,8 +88,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "left_arrow", :modifiers ["left_option"]}
-         {:set_variable {:name "vi-mode", :value 1}}],
+        [{:set_variable {:name "vi-mode", :value 1}}
+         {:key_code "left_arrow", :modifiers ["left_option"]}],
         :from
         {:simultaneous [{:key_code "d"} {:key_code "b"}],
          :simultaneous_options
@@ -106,8 +106,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "right_arrow", :modifiers ["left_option"]}
-         {:set_variable {:name "vi-mode", :value 1}}],
+        [{:set_variable {:name "vi-mode", :value 1}}
+         {:key_code "right_arrow", :modifiers ["left_option"]}],
         :from
         {:simultaneous [{:key_code "d"} {:key_code "w"}],
          :simultaneous_options
@@ -124,8 +124,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "a", :modifiers ["left_control"]}
-         {:set_variable {:name "vi-mode", :value 1}}],
+        [{:set_variable {:name "vi-mode", :value 1}}
+         {:key_code "a", :modifiers ["left_control"]}],
         :from
         {:simultaneous [{:key_code "d"} {:key_code "0"}],
          :simultaneous_options
@@ -142,8 +142,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "e", :modifiers ["left_control"]}
-         {:set_variable {:name "vi-mode", :value 1}}],
+        [{:set_variable {:name "vi-mode", :value 1}}
+         {:key_code "e", :modifiers ["left_control"]}],
         :from
         {:simultaneous [{:key_code "d"} {:key_code "4"}],
          :simultaneous_options
@@ -163,8 +163,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "down_arrow", :modifiers ["left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "down_arrow", :modifiers ["left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "j"}],
          :simultaneous_options
@@ -193,8 +193,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "up_arrow", :modifiers ["left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "up_arrow", :modifiers ["left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "k"}],
          :simultaneous_options
@@ -223,8 +223,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "left_arrow", :modifiers ["left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "left_arrow", :modifiers ["left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "h"}],
          :simultaneous_options
@@ -253,8 +253,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "right_arrow", :modifiers ["left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "right_arrow", :modifiers ["left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "l"}],
          :simultaneous_options
@@ -285,9 +285,9 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "left_arrow",
-          :modifiers ["left_option" "left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "left_arrow",
+          :modifiers ["left_option" "left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "b"}],
          :simultaneous_options
@@ -318,9 +318,9 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "right_arrow",
-          :modifiers ["left_option" "left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "right_arrow",
+          :modifiers ["left_option" "left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "w"}],
          :simultaneous_options
@@ -351,9 +351,9 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "left_arrow",
-          :modifiers ["left_command" "left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "left_arrow",
+          :modifiers ["left_command" "left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "0"}],
          :simultaneous_options
@@ -384,9 +384,9 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "right_arrow",
-          :modifiers ["left_command" "left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "right_arrow",
+          :modifiers ["left_command" "left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "4"}],
          :simultaneous_options
@@ -418,8 +418,8 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "up_arrow", :modifiers ["left_option" "left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "up_arrow", :modifiers ["left_option" "left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "open_bracket"}],
          :simultaneous_options
@@ -451,9 +451,9 @@
        {:type "basic",
         :parameters {:basic.simultaneous_threshold_milliseconds 250},
         :to
-        [{:key_code "down_arrow",
-          :modifiers ["left_option" "left_shift"]}
-         {:set_variable {:name "vi-visual-mode", :value 1}}],
+        [{:set_variable {:name "vi-visual-mode", :value 1}}
+         {:key_code "down_arrow",
+          :modifiers ["left_option" "left_shift"]}],
         :from
         {:simultaneous [{:key_code "v"} {:key_code "close_bracket"}],
          :simultaneous_options
