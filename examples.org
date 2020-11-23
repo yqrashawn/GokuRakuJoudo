@@ -265,7 +265,7 @@ Don't map a to b when there are three fingers on the trackpad.
                       :default true
                       ;; simultaneous key press threshold
                       ;; simlayer is implemented with to_if_alone and simultaneous key press feature
-                      :sim     250
+                      :simlayer-threshold    250
                       ;; to_delayed_action_delay_milliseconds
                       ;; checkout karabiner's documentation
                       ;; https://pqrs.org/osx/karabiner/json.html
@@ -289,7 +289,7 @@ Don't map a to b when there are three fingers on the trackpad.
 #+begin_src clojure
   {:profiles
    {:Default {:default true
-              :sim     50
+              :simlayer-threshold    50
               :delay   80
               :alone   120
               :held    70}}
