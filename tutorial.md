@@ -142,7 +142,7 @@ The only condition that Goku does not support is [keyboard type](https://pqrs.or
     ;; !O#Sright_arrow | mandatory option optional any right_arrow
     
     ;; karabiner definition of mandatory and optional
-    ;; https://pqrs.org/osx/karabiner/json.html#from-event-definition-modifiers
+    ;; https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/modifiers/
     
     ;; rule [<from> <to>]
     ;; if simplified modifier is used in <to>, optional(#) definition will be
