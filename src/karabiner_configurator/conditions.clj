@@ -30,8 +30,16 @@
                               "frontmost_application_unless"
                               "frontmost_application_if")
                  result (if (and (keyword? condi) (nn? (condi (:applications conf-data))))
-                          {:bundle_identifiers (condi (:applications conf-data))
-                           :type condi-type}
+                          (let [this-condi (condi (:applications conf-data))
+                                this-condi (if (= (first this-condi) :identifiers) this-condi (into [:identifiers] (condi (:applications conf-data))))
+                                [identifiers paths] [(into [] (rest (take-while (complement #{:paths}) this-condi))) (into [] (rest (drop-while (complement #{:paths}) this-condi)))]
+                                [identifiers paths] [(or identifiers []) (or paths [])]
+                                identifiers? (not (empty? identifiers))
+                                paths? (not (empty? paths))
+                                rst {:type condi-type}
+                                rst (if identifiers? (assoc rst :bundle_identifiers identifiers) rst)
+                                rst (if paths? (assoc rst :file_paths paths) rst)]
+                            rst)
                           result)
                  condi-type (if condi!?
                               "device_unless"
