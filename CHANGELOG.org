@@ -1,13 +1,40 @@
 * Change Log
-All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
+All notable changes to this project will be documented in this file. This change log follows the conventions of [[http://keepachangelog.com/][keepachangelog.com]]
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.3...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.5...HEAD
+
+** 0.3.5 - 2020-12-25
+*** Added
+- upgrade clojure and graalvm version
+
+[commits in 0.3.5]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.4...0.3.5
+
+** 0.3.4 - 2020-12-25
+*** Added
+- ~:applications~ now supports ~file_paths~
+[[https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/conditions/frontmost-application/][karabiner-elements documentation about file_paths]]
+#+BEGIN_SRC clojure
+  {...
+   :applications
+   {:Chromes ["^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$" :paths "^/Applications/Google Chrome\\.app"]
+    ;; same as
+    :Chromes [:identifiers "^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$" :paths "^/Applications/Google Chrome\\.app"]
+
+    ;; can specify multiple :paths or :identifiers (can omit keyword :identifiers)
+    :Chromes [:identifiers "^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$"
+              :paths "^/Applications/Google Chrome\\.app" "^/Applications/Google Chrome Canary\\.app"]
+
+    ;; paths only (can't omit keyword :paths)
+    :Chromes [:paths "^/Applications/.*Chrom.*"]}}
+#+END_SRC
+
+[commits in 0.3.4]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.3...0.3.4
 
 ** 0.3.3 - 2020-11-03
 *** Fixed
-`simlayer` generate simultaneous keys in `to` section with the `set_variable`
+~simlayer~ generate simultaneous keys in ~to~ section with the ~set_variable~
 one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
 
 [commits in 0.3.3]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.2...0.3.3
@@ -45,7 +72,7 @@ one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
   https://github.com/yqrashawn/GokuRakuJoudo/issues/30 
 - More than 2 keys in simultaneous keys
   https://github.com/yqrashawn/GokuRakuJoudo/issues/52 
-- Throw error when there's missing `:des` key
+- Throw error when there's missing ~:des~ key
   https://github.com/yqrashawn/GokuRakuJoudo/issues/56
   
 [commits in 0.3.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.9...0.3.0

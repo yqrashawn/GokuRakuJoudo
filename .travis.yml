@@ -10,30 +10,30 @@ deploy:
     tags: true
     repo: yqrashawn/GokuRakuJoudo
 before_install:
-- sh scripts/travis.sh
-# - wget https://github.com/oracle/graal/releases/download/vm-1.0.0-rc13/graalvm-ce-1.0.0-rc13-macos-amd64.tar.gz
-- brew install candid82/brew/joker
-- curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
-- ~/.jabba/bin/jabba install graalvm@19.2.1
-# - tar xf graalvm-ce-1.0.0-rc13-macos-amd64.tar.gz
-- ~/.jabba/jdk/graalvm@19.2.1/Contents/Home/bin/gu install native-image
-- export PATH=$PATH:$HOME/.jabba/jdk/graalvm@19.2.1/Contents/Home/bin/
+  - sh scripts/travis.sh
+  # - wget https://github.com/oracle/graal/releases/download/vm-1.0.0-rc13/graalvm-ce-1.0.0-rc13-macos-amd64.tar.gz
+  - brew install candid82/brew/joker
+  - curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
+  - ~/.jabba/bin/jabba install graalvm@20.3.0
+  # - tar xf graalvm-ce-1.0.0-rc13-macos-amd64.tar.gz
+  - ~/.jabba/jdk/graalvm@20.3.0/Contents/Home/bin/gu install native-image
+  - export PATH=$PATH:$HOME/.jabba/jdk/graalvm@20.3.0/Contents/Home/bin/
 script:
-- lein test
-- make
-- make test-binary
-- touch gokuw
-- echo '#!/bin/sh' >> gokuw
-- echo 'watchexec -r -w `[[ -z $GOKU_EDN_CONFIG_FILE ]] && echo ~/.config/karabiner.edn || echo $GOKU_EDN_CONFIG_FILE` /usr/local/opt/goku/bin/goku' >> gokuw
-- "./goku"
-- chmod +x gokuw
-- tar czf goku.tar.gz goku gokuw
+  - lein test
+  - make
+  - make test-binary
+  - touch gokuw
+  - echo '#!/bin/sh' >> gokuw
+  - echo 'watchexec -r -w `[[ -z $GOKU_EDN_CONFIG_FILE ]] && echo ~/.config/karabiner.edn || echo $GOKU_EDN_CONFIG_FILE` /usr/local/opt/goku/bin/goku' >> gokuw
+  - "./goku"
+  - chmod +x gokuw
+  - tar czf goku.tar.gz goku gokuw
 cache:
   directories:
-  - "$HOME/.m2"
-  - "$HOME/Library/Caches/Homebrew"
-  - "/usr/local/Cellar/leiningen/"
-  - "/usr/local/Cellar/watchexec/"
+    - "$HOME/.m2"
+    - "$HOME/Library/Caches/Homebrew"
+    - "/usr/local/Cellar/leiningen/"
+    - "/usr/local/Cellar/watchexec/"
 after_success:
-- lein cloverage --no-html --coveralls
-- curl -F json_file=@./target/coverage/coveralls.json https://coveralls.io/api/v1/jobs
+  - lein cloverage --no-html --coveralls
+  - curl -F json_file=@./target/coverage/coveralls.json https://coveralls.io/api/v1/jobs
