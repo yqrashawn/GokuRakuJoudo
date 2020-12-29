@@ -332,9 +332,9 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
         release w key up --> out w layer ("w layer" is 0)
 ```
     
-    There're two problems in old layer. When we type "w1" really fast, we trigger the "1" in w layer rather than insert "w1". When we keep press w key down, the w key won't repeat. There won't be a "wwwwwwwwwwwwwwwwwwww".
+There're two problems in old layer. When we type "w1" really fast, we trigger the "1" in w layer rather than insert "w1". When we keep press w key down, the w key won't repeat. There won't be a "wwwwwwwwwwwwwwwwwwww".
     
-    The karabiner's simlayer is based on its [simultaneous](https://pqrs.org/osx/karabiner/json.html#simultaneous) functionality. It's like this. The `-->` is the symbol of time.
+The karabiner's simlayer is based on its [simultaneous](https://pqrs.org/osx/karabiner/json.html#simultaneous) functionality. It's like this. The `-->` is the symbol of time.
     
 ```
         press w key down --> if in threshold milliseconds
@@ -348,7 +348,7 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
                          --> w key begin to repeat, we get "wwwwwwwwwwwww"
 ```
     
-    This solves those two problems. But we need to trigger the second key fast, or the first key starts to repeat. We need must trigger an action the same time we enter a layer. We can't enter the layer in advance and think what we really want to do in that layer.
+This solves those two problems. But we need to trigger the second key fast, or the first key starts to repeat. We need must trigger an action the same time we enter a layer. We can't enter the layer in advance and think what we really want to do in that layer.
 
 2.  layer and simlayer in Goku.
 
