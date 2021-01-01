@@ -102,7 +102,7 @@ Read through the [Tutorial about how you can write the configuration in
 Goku](./tutorial.md). 
 
 If there's any question or advice, just [open an issue](../../issues/new) or
-join [Karabiner Telegram group](https://t.me/karabinermac) and ask your
+join [Karabiner Telegram group](https://t.me/joinchat/UDlL5H7VIwAVK0_7) and ask your
 questions there. 
 
 <a id="note"></a>
