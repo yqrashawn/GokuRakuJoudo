@@ -6,7 +6,7 @@
 
 [Examples](./examples.org) &mdash;
 [Tutorial](./tutorial.md) &mdash;
-[Telegram](https://t.me/karabinermac) &mdash;
+[Telegram](https://t.me/joinchat/UDlL5H7VIwAVK0_7) &mdash;
 [Goku in the wild](./in-the-wild.md)
 
 1.  [Intro](#intro)
