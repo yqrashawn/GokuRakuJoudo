@@ -22,7 +22,7 @@
 
 Goku supports (almost?) all the features that Karabiner Elements provides via its [JSON spec](<https://pqrs.org/osx/karabiner/json.html>). 
 
-If you have any question or advice on how to improve the tool, just open an issue or ask questions in the [Telegram group](https://t.me/karabinermac). 
+If you have any question or advice on how to improve the tool, just open an issue or ask questions in the [Telegram group](https://t.me/joinchat/UDlL5H7VIwAVK0_7). 
 
 Most docs are comments (after `;;`) in the code block.
 
