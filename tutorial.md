@@ -132,6 +132,7 @@ The only condition that Goku does not support is [keyboard type](https://pqrs.or
     ;; W  | right_control
     ;; E  | right_option
     ;; R  | right_shift
+    ;; P  | caps_lock
     ;; !! | mandatory command + control + optional + shift (hyper)
     ;; ## | optional any
     
