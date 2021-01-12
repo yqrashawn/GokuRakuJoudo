@@ -1,0 +1,56 @@
+version: 2.1
+
+workflows:
+  build_and_release:
+    jobs:
+      - build
+      - release:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - /^master$/
+
+jobs:
+  release:
+    macos:
+      xcode: 11.3.0
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: build gokuw
+          command: |
+            touch gukuw
+            echo '#!/bin/sh' >> gokuw
+            echo 'watchexec -r -w `[[ -z $GOKU_EDN_CONFIG_FILE ]] && echo ~/.config/karabiner.edn || echo $GOKU_EDN_CONFIG_FILE` /usr/local/opt/goku/bin/goku' >> gokuw
+            chmod +x gokuw
+      - run:
+          name: pack
+          command: tar czf goku.tar.gz goku gokuw
+  build:
+    macos:
+      xcode: 11.3.0
+
+    steps:
+      - run:
+          name: install jabba
+          command: curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
+      - run:
+          name: install grallvm
+          command: |
+            ~/.jabba/bin/jabba install graalvm@20.3.0
+            ~/.jabba/jdk/graalvm@20.3.0/Contents/Home/bin/gu install native-image
+            export PATH=$PATH:$HOME/.jabba/jdk/graalvm@20.3.0/Contents/Home/bin/
+      - checkout
+      - run:
+          name: compile
+          command: make
+      - run:
+          name: test binary
+          command: make test-binary
+      - persist_to_workspace:
+          root: .
+          paths:
+            - goku
