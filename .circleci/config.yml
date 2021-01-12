@@ -1,56 +1,42 @@
-version: 2.1
-
-workflows:
-  build_and_release:
-    jobs:
-      - build
-      - release:
-          requires:
-            - build
-          filters:
-            branches:
-              only:
-                - /^master$/
-
+# Clojure CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-clojure/ for more details
+#
+version: 2
 jobs:
-  release:
-    macos:
-      xcode: 11.3.0
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: build gokuw
-          command: |
-            touch gukuw
-            echo '#!/bin/sh' >> gokuw
-            echo 'watchexec -r -w `[[ -z $GOKU_EDN_CONFIG_FILE ]] && echo ~/.config/karabiner.edn || echo $GOKU_EDN_CONFIG_FILE` /usr/local/opt/goku/bin/goku' >> gokuw
-            chmod +x gokuw
-      - run:
-          name: pack
-          command: tar czf goku.tar.gz goku gokuw
   build:
-    macos:
-      xcode: 11.3.0
+    docker:
+      # specify the version you desire here
+      - image: circleci/clojure:lein-2.7.1
+
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+
+    working_directory: ~/repo
+
+    environment:
+      LEIN_ROOT: "true"
+      # Customize the JVM maximum heap limit
+      JVM_OPTS: -Xmx3200m
 
     steps:
-      - run:
-          name: install jabba
-          command: curl -sL https://github.com/shyiko/jabba/raw/master/install.sh | bash && . ~/.jabba/jabba.sh
-      - run:
-          name: install grallvm
-          command: |
-            ~/.jabba/bin/jabba install graalvm@20.3.0
-            ~/.jabba/jdk/graalvm@20.3.0/Contents/Home/bin/gu install native-image
-            export PATH=$PATH:$HOME/.jabba/jdk/graalvm@20.3.0/Contents/Home/bin/
       - checkout
-      - run:
-          name: compile
-          command: make
-      - run:
-          name: test binary
-          command: make test-binary
-      - persist_to_workspace:
-          root: .
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "project.clj" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: lein deps
+
+      - save_cache:
           paths:
-            - goku
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "project.clj" }}
+
+      # run tests!
+      - run: lein test
