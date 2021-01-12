@@ -77,33 +77,42 @@
              [{:description "Auto generated layer conditions",
                :manipulators
                [{:type "basic",
-                 :to [{:set_variable {:name "chunkwm-move-mode", :value 1}}],
+                 :to
+                 [{:set_variable {:name "chunkwm-move-mode", :value 1}}],
                  :from {:key_code "f"},
                  :to_after_key_up
                  [{:set_variable {:name "chunkwm-move-mode", :value 0}}],
                  :to_if_alone [{:key_code "f"}],
-                 :conditions [{:name "tab-mode", :value 1, :type "variable_if"}]}
+                 :conditions
+                 [{:name "tab-mode", :value 1, :type "variable_if"}]}
                 {:type "basic",
                  :to [{:set_variable {:name "tab-mode", :value 1}}],
                  :from {:key_code "tab"},
                  :to_after_key_up
                  [{:set_variable {:name "tab-mode", :value 0}}
                   {:set_variable {:name "chunkwm-move-mode", :value 0}}
-                  {:set_variable {:name "chunkwm-scale-mode", :value 0}}],
+                  {:set_variable
+                   {:name "chunkwm-scale-mode", :value 0}}],
                  :to_if_alone [{:key_code "tab"}]}
                 {:type "basic",
-                 :to [{:set_variable {:name "chunkwm-scale-mode", :value 1}}],
+                 :to
+                 [{:set_variable
+                   {:name "chunkwm-scale-mode", :value 1}}],
                  :from {:key_code "c"},
                  :to_after_key_up
-                 [{:set_variable {:name "chunkwm-scale-mode", :value 0}}],
+                 [{:set_variable
+                   {:name "chunkwm-scale-mode", :value 0}}],
                  :to_if_alone [{:key_code "c"}],
-                 :conditions [{:name "tab-mode", :value 1, :type "variable_if"}]}]}
+                 :conditions
+                 [{:name "tab-mode", :value 1, :type "variable_if"}]}]}
               {:description "a to 1",
                :manipulators
                [{:from {:key_code "a"},
                  :to [{:key_code "1"}],
                  :conditions
-                 [{:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
+                 [{:name "chunkwm-move-mode",
+                   :value 1,
+                   :type "variable_if"}],
                  :type "basic"}]}
               {:description "tab-mode",
                :manipulators
@@ -111,46 +120,60 @@
                  :to
                  [{:shell_command
                    "/usr/local/bin/chunkc tiling::window --focus west"}],
-                 :conditions [{:name "tab-mode", :value 1, :type "variable_if"}],
+                 :conditions
+                 [{:name "tab-mode", :value 1, :type "variable_if"}],
                  :type "basic"}
                 {:from {:key_code "l"},
                  :to
                  [{:shell_command
                    "/usr/local/bin/chunkc tiling::window --focus east"}],
                  :conditions
-                 [{:name "chunkwm-scale-mode", :value 1, :type "variable_if"}
-                  {:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
+                 [{:name "chunkwm-scale-mode",
+                   :value 1,
+                   :type "variable_if"}
+                  {:name "chunkwm-move-mode",
+                   :value 1,
+                   :type "variable_if"}],
                  :type "basic"}]}],
              :Default
              [{:description "Auto generated layer conditions",
                :manipulators
                [{:type "basic",
-                 :to [{:set_variable {:name "chunkwm-move-mode", :value 1}}],
+                 :to
+                 [{:set_variable {:name "chunkwm-move-mode", :value 1}}],
                  :from {:key_code "f"},
                  :to_after_key_up
                  [{:set_variable {:name "chunkwm-move-mode", :value 0}}],
                  :to_if_alone [{:key_code "f"}],
-                 :conditions [{:name "tab-mode", :value 1, :type "variable_if"}]}
+                 :conditions
+                 [{:name "tab-mode", :value 1, :type "variable_if"}]}
                 {:type "basic",
-                 :to [{:set_variable {:name "chunkwm-scale-mode", :value 1}}],
+                 :to
+                 [{:set_variable
+                   {:name "chunkwm-scale-mode", :value 1}}],
                  :from {:key_code "c"},
                  :to_after_key_up
-                 [{:set_variable {:name "chunkwm-scale-mode", :value 0}}],
+                 [{:set_variable
+                   {:name "chunkwm-scale-mode", :value 0}}],
                  :to_if_alone [{:key_code "c"}],
-                 :conditions [{:name "tab-mode", :value 1, :type "variable_if"}]}]}
+                 :conditions
+                 [{:name "tab-mode", :value 1, :type "variable_if"}]}]}
               {:description "a to 1",
                :manipulators
                [{:from {:key_code "a"},
                  :to [{:key_code "1"}],
                  :conditions
-                 [{:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
+                 [{:name "chunkwm-move-mode",
+                   :value 1,
+                   :type "variable_if"}],
                  :type "basic"}]}
               {:description "[left] command a to control 1",
                :manipulators
                [{:from
                  {:key_code "a",
                   :modifiers
-                  {:mandatory ["left_command"], :optional ["caps_lock"]}},
+                  {:mandatory ["left_command"],
+                   :optional ["caps_lock"]}},
                  :to [{:key_code "1", :modifiers ["left_control"]}],
                  :type "basic"}
                 {:from
@@ -162,7 +185,8 @@
                 {:from
                  {:key_code "a",
                   :modifiers
-                  {:mandatory ["command", "control", "option", "shift"], :optional ["caps_lock"]}},
+                  {:mandatory ["command" "control" "option" "shift"],
+                   :optional ["caps_lock"]}},
                  :to [{:key_code "1", :modifiers ["control"]}],
                  :type "basic"}]}
               {:description "right command a to control 1",
@@ -170,7 +194,8 @@
                [{:from
                  {:key_code "a",
                   :modifiers
-                  {:mandatory ["right_command"], :optional ["caps_lock"]}},
+                  {:mandatory ["right_command"],
+                   :optional ["caps_lock"]}},
                  :to [{:key_code "1", :modifiers ["left_control"]}],
                  :type "basic"}]}
               {:description "my spacebar to control 1",
@@ -213,10 +238,14 @@
                :manipulators
                [{:from {:key_code "g"},
                  :to [{:key_code "4"}],
-                 :conditions [{:name "vi-mode", :value 1, :type "variable_if"}],
+                 :conditions
+                 [{:name "vi-mode", :value 1, :type "variable_if"}],
                  :type "basic"}
-                {:parameters {:basic.simultaneous_threshold_milliseconds 250},
-                 :to [{:set_variable {:name "vi-mode", :value 1}} {:key_code "4"}],
+                {:parameters
+                 {:basic.simultaneous_threshold_milliseconds 250},
+                 :to
+                 [{:set_variable {:name "vi-mode", :value 1}}
+                  {:key_code "4"}],
                  :from
                  {:simultaneous [{:key_code "d"} {:key_code "g"}],
                   :simultaneous_options
@@ -243,7 +272,8 @@
                     {:vendor_id 2131, :product_id 256}],
                    :type "device_if"}],
                  :type "basic"}]}
-              {:description "j to 7 on hhkb-bt when variable vi-mode is 1",
+              {:description
+               "j to 7 on hhkb-bt when variable vi-mode is 1",
                :manipulators
                [{:from {:key_code "j"},
                  :to [{:key_code "7"}],
@@ -252,8 +282,11 @@
                   {:identifiers [{:vendor_id 1278, :product_id 51966}],
                    :type "device_if"}],
                  :type "basic"}
-                {:parameters {:basic.simultaneous_threshold_milliseconds 250},
-                 :to [{:set_variable {:name "vi-mode", :value 1}} {:key_code "7"}],
+                {:parameters
+                 {:basic.simultaneous_threshold_milliseconds 250},
+                 :to
+                 [{:set_variable {:name "vi-mode", :value 1}}
+                  {:key_code "7"}],
                  :from
                  {:simultaneous [{:key_code "d"} {:key_code "j"}],
                   :simultaneous_options
@@ -266,52 +299,65 @@
                  :conditions
                  [{:identifiers [{:vendor_id 1278, :product_id 51966}],
                    :type "device_if"}]}]}
-              {:description "press h insert 8 then set variable some-mode to 0",
+              {:description
+               "press h insert 8 then set variable some-mode to 0",
                :manipulators
                [{:from {:key_code "h"},
                  :to
-                 [{:key_code "8"} {:set_variable {:name "some-mode", :value 0}}],
+                 [{:key_code "8"}
+                  {:set_variable {:name "some-mode", :value 0}}],
                  :type "basic"}]}
               {:description
                "capslock to control as modifier to escape when press alone",
                :manipulators
                [{:to_if_alone [{:key_code "escape"}],
-                 :from {:key_code "caps_lock", :modifiers {:optional ["any"]}},
+                 :from
+                 {:key_code "caps_lock", :modifiers {:optional ["any"]}},
                  :to [{:key_code "left_control"}],
                  :type "basic"}]}
-              {:description "Quit application by pressing command-q twice",
+              {:description
+               "Quit application by pressing command-q twice",
                :manipulators
                [{:from
                  {:key_code "q",
                   :modifiers
-                  {:mandatory ["left_command"], :optional ["caps_lock"]}},
+                  {:mandatory ["left_command"],
+                   :optional ["caps_lock"]}},
                  :to [{:key_code "q", :modifiers ["left_command"]}],
-                 :conditions [{:name "command-q", :value 1, :type "variable_if"}],
+                 :conditions
+                 [{:name "command-q", :value 1, :type "variable_if"}],
                  :type "basic"}
                 {:to_delayed_action
-                 {:to_if_invoked [{:set_variable {:name "command-q", :value 0}}],
-                  :to_if_canceled [{:set_variable {:name "commandq", :value 0}}]},
+                 {:to_if_invoked
+                  [{:set_variable {:name "command-q", :value 0}}],
+                  :to_if_canceled
+                  [{:set_variable {:name "commandq", :value 0}}]},
                  :from
                  {:key_code "q",
                   :modifiers
-                  {:mandatory ["left_command"], :optional ["caps_lock"]}},
+                  {:mandatory ["left_command"],
+                   :optional ["caps_lock"]}},
                  :to [{:set_variable {:name "command-q", :value 1}}],
                  :type "basic"}]}
               {:description "Quit application by holding command-q",
                :manipulators
                [{:to_if_held_down
-                 [{:modifiers ["left_command"], :key_code "q", :repeat false}],
+                 [{:modifiers ["left_command"],
+                   :key_code "q",
+                   :repeat false}],
                  :from
                  {:key_code "q",
                   :modifiers
-                  {:mandatory ["left_command"], :optional ["caps_lock"]}},
+                  {:mandatory ["left_command"],
+                   :optional ["caps_lock"]}},
                  :type "basic"}]}
               {:description "Quit Safari by pressing command-q twice",
                :manipulators
                [{:from
                  {:key_code "q",
                   :modifiers
-                  {:mandatory ["left_command"], :optional ["caps_lock"]}},
+                  {:mandatory ["left_command"],
+                   :optional ["caps_lock"]}},
                  :to [{:key_code "q", :modifiers ["left_command"]}],
                  :conditions
                  [{:bundle_identifiers ["^com\\.apple\\.Safari$"],
@@ -319,12 +365,15 @@
                   {:name "command-q", :value 1, :type "variable_if"}],
                  :type "basic"}
                 {:to_delayed_action
-                 {:to_if_invoked [{:set_variable {:name "command-q", :value 0}}],
-                  :to_if_canceled [{:set_variable {:name "command-q", :value 0}}]},
+                 {:to_if_invoked
+                  [{:set_variable {:name "command-q", :value 0}}],
+                  :to_if_canceled
+                  [{:set_variable {:name "command-q", :value 0}}]},
                  :from
                  {:key_code "q",
                   :modifiers
-                  {:mandatory ["left_command"], :optional ["caps_lock"]}},
+                  {:mandatory ["left_command"],
+                   :optional ["caps_lock"]}},
                  :to [{:set_variable {:name "command-q", :value 1}}],
                  :conditions
                  [{:bundle_identifiers ["^com\\.apple\\.Safari$"],
@@ -341,15 +390,17 @@
                   {:pointing_button "button1"}
                   {:key_code "grave_accent_and_tilde",
                    :modifiers
-                   ["left_command" "left_control" "left_option" "left_shift"]}],
+                   ["left_command"
+                    "left_control"
+                    "left_option"
+                    "left_shift"]}],
                  :type "basic"}
                 {:from {:pointing_button "button4"},
                  :to
                  [{:pointing_button "button1"}
                   {:pointing_button "button1"}
                   {:key_code "grave_accent_and_tilde",
-                   :modifiers
-                   ["command" "control" "option" "shift"]}],
+                   :modifiers ["command" "control" "option" "shift"]}],
                  :type "basic"}]}
               {:description "Change input source",
                :manipulators
@@ -359,7 +410,8 @@
                    {:input_mode_id "",
                     :input_source_id "com.apple.keylayout.US",
                     :language "en"}}],
-                 :conditions [{:name "q-mode", :value 1, :type "variable_if"}],
+                 :conditions
+                 [{:name "q-mode", :value 1, :type "variable_if"}],
                  :type "basic"}
                 {:key :q,
                  :from
@@ -377,11 +429,13 @@
                 {:from {:key_code "o"},
                  :to
                  [{:select_input_source
-                   {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel",
+                   {:input_mode_id
+                    "com.googlecode.rimeime.inputmethod.Squirrel",
                     :input_source_id
                     "com.googlecode.rimeime.inputmethod.Squirrel.Rime",
                     :language "zh-Hans"}}],
-                 :conditions [{:name "q-mode", :value 1, :type "variable_if"}],
+                 :conditions
+                 [{:name "q-mode", :value 1, :type "variable_if"}],
                  :type "basic"}
                 {:key :q,
                  :from
@@ -393,7 +447,8 @@
                    :key_up_when "any"}},
                  :to
                  [{:select_input_source
-                   {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel",
+                   {:input_mode_id
+                    "com.googlecode.rimeime.inputmethod.Squirrel",
                     :input_source_id
                     "com.googlecode.rimeime.inputmethod.Squirrel.Rime",
                     :language "zh-Hans"}}]}]}
@@ -404,7 +459,9 @@
                  [{:shell_command
                    "/usr/local/bin/chunkc tiling::window --use-temporary-ratio 0.03 --adjust-window-edge west"}],
                  :conditions
-                 [{:name "chunkwm-scale-mode", :value 1, :type "variable_if"}],
+                 [{:name "chunkwm-scale-mode",
+                   :value 1,
+                   :type "variable_if"}],
                  :type "basic"}]}
               {:description "input source as condition",
                :manipulators
@@ -419,7 +476,9 @@
                  :type "basic"}]}
               {:description "any keycode",
                :manipulators
-               [{:from {:any "key_code"}, :to [{:key_code "a"}], :type "basic"}
+               [{:from {:any "key_code"},
+                 :to [{:key_code "a"}],
+                 :type "basic"}
                 {:from {:any "consumer_key_code"},
                  :to [{:key_code "a"}],
                  :type "basic"}
@@ -433,19 +492,25 @@
                  :to [{:shell_command "say 'j double press'"}],
                  :conditions
                  [{:name "q-mode", :value 1, :type "variable_if"}
-                  {:name "q-mode-j-dbpress-mode", :value 1, :type "variable_if"}],
+                  {:name "q-mode-j-dbpress-mode",
+                   :value 1,
+                   :type "variable_if"}],
                  :type "basic"}
                 {:to_if_held_down [{:shell_command "say 'j held down'"}],
                  :to_delayed_action
                  {:to_if_invoked
-                  [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}],
+                  [{:set_variable
+                    {:name "q-mode-j-dbpress-mode", :value 0}}],
                   :to_if_canceled
-                  [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}]},
+                  [{:set_variable
+                    {:name "q-mode-j-dbpress-mode", :value 0}}]},
                  :from {:key_code "j"},
                  :to
                  [{:shell_command "say 'j press down'"}
-                  {:set_variable {:name "q-mode-j-dbpress-mode", :value 1}}],
-                 :conditions [{:name "q-mode", :value 1, :type "variable_if"}],
+                  {:set_variable
+                   {:name "q-mode-j-dbpress-mode", :value 1}}],
+                 :conditions
+                 [{:name "q-mode", :value 1, :type "variable_if"}],
                  :type "basic"}
                 {:key :q,
                  :from
@@ -457,13 +522,16 @@
                    :key_up_when "any"}},
                  :to
                  [{:shell_command "say 'j press down'"}
-                  {:set_variable {:name "q-mode-j-dbpress-mode", :value 1}}],
+                  {:set_variable
+                   {:name "q-mode-j-dbpress-mode", :value 1}}],
                  :to_if_held_down [{:shell_command "say 'j held down'"}],
                  :to_delayed_action
                  {:to_if_invoked
-                  [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}],
+                  [{:set_variable
+                    {:name "q-mode-j-dbpress-mode", :value 0}}],
                   :to_if_canceled
-                  [{:set_variable {:name "q-mode-j-dbpress-mode", :value 0}}]}}]}
+                  [{:set_variable
+                    {:name "q-mode-j-dbpress-mode", :value 0}}]}}]}
               {:description "QWER in to right modifier keys",
                :manipulators
                [{:from
@@ -481,140 +549,136 @@
                [{:type :mouse_motion_to_scroll,
                  :from {:modifiers {:mandatory [:left_control]}}}
                 {:type :basic,
-                 :from {:key_code :h, :modifiers {:mandatory [:left_control]}},
+                 :from
+                 {:key_code :h, :modifiers {:mandatory [:left_control]}},
                  :to [{:key_code :delete_or_backspace}]}]}
               {:description "more than two sim keys",
                :manipulators
                [{:from {:key_code "a"},
                  :to [{:key_code "b"}],
-                 :conditions [{:name "c", :value 1, :type "variable_if"}],
+                 :conditions
+                 [{:name "c", :value 1, :type "variable_if"}],
                  :type "basic"}]}
-              {:description "redefine params or condis in simlayer issue #30"
-               , :manipulators
-               [{:parameters {:basic.simultaneous_threshold_milliseconds 432}
-                 , :from
-                 {:key_code "j"
-                  , :modifiers
-                  {:optional ["any"]}} ,
-                 :to [{:key_code "down_arrow"}]
-                 , :conditions
-                 [{:name "vi-mode"
-                   , :value
-                   1, :type
-                   "variable_if"}] ,
+              {:description
+               "redefine params or condis in simlayer issue #30",
+               :manipulators
+               [{:parameters
+                 {:basic.simultaneous_threshold_milliseconds 432},
+                 :from {:key_code "j", :modifiers {:optional ["any"]}},
+                 :to [{:key_code "down_arrow"}],
+                 :conditions
+                 [{:name "vi-mode", :value 1, :type "variable_if"}],
                  :type "basic"}
-                {:parameters {:basic.simultaneous_threshold_milliseconds 432}
-                 , :to
-                 [{:set_variable {:name "vi-mode" , :value 1}}
-                  {:key_code "down_arrow"}] ,
-                 :from {:simultaneous [{:key_code "d"}
-                                       {:key_code "j"}]
-                        , :simultaneous_options
-                        {:detect_key_down_uninterruptedly true,
-                         :key_down_order "strict"
-                         , :key_up_order
-                         "strict_inverse" ,
-                         :key_up_when "any"
-                         , :to_after_key_up
-                         [{:set_variable {:name "vi-mode" , :value 0}}]}}}
-                {:from {:key_code "j"
-                        , :modifiers
-                        {:optional ["any"]}}
-                 , :to
-                 [{:key_code "down_arrow"}] ,
-                 :conditions [{:name "vi-mode"
-                               , :value
-                               1, :type
-                               "variable_if"}
-                              {:file_paths ["^/System/Volumes/Data/Applications/Google Chrome\\.app$"]
-                               , :bundle_identifiers
-                               ["^com\\.google\\.Chrome$"] ,
-                               :type "frontmost_application_if"}]
-                 , :type
-                 "basic"}
-                {:parameters {:basic.simultaneous_threshold_milliseconds 250}
-                 , :to
-                 [{:set_variable {:name "vi-mode" , :value 1}}
-                  {:key_code "down_arrow"}] ,
-                 :from {:simultaneous [{:key_code "d"}
-                                       {:key_code "j"}]
-                        , :simultaneous_options
-                        {:detect_key_down_uninterruptedly true,
-                         :key_down_order "strict"
-                         , :key_up_order
-                         "strict_inverse" ,
-                         :key_up_when "any"
-                         , :to_after_key_up
-                         [{:set_variable {:name "vi-mode" , :value 0}}]}}
-                 , :conditions
-                 [{:file_paths ["^/System/Volumes/Data/Applications/Google Chrome\\.app$"]
-                   , :bundle_identifiers
-                   ["^com\\.google\\.Chrome$"] ,
+                {:parameters
+                 {:basic.simultaneous_threshold_milliseconds 432},
+                 :to
+                 [{:set_variable {:name "vi-mode", :value 1}}
+                  {:key_code "down_arrow"}],
+                 :from
+                 {:simultaneous [{:key_code "d"} {:key_code "j"}],
+                  :simultaneous_options
+                  {:detect_key_down_uninterruptedly true,
+                   :key_down_order "strict",
+                   :key_up_order "strict_inverse",
+                   :key_up_when "any",
+                   :to_after_key_up
+                   [{:set_variable {:name "vi-mode", :value 0}}]}}}
+                {:from {:key_code "j", :modifiers {:optional ["any"]}},
+                 :to [{:key_code "down_arrow"}],
+                 :conditions
+                 [{:name "vi-mode", :value 1, :type "variable_if"}
+                  {:file_paths
+                   ["^/System/Volumes/Data/Applications/Google Chrome\\.app$"],
+                   :bundle_identifiers ["^com\\.google\\.Chrome$"],
+                   :type "frontmost_application_if"}],
+                 :type "basic"}
+                {:parameters
+                 {:basic.simultaneous_threshold_milliseconds 250},
+                 :to
+                 [{:set_variable {:name "vi-mode", :value 1}}
+                  {:key_code "down_arrow"}],
+                 :from
+                 {:simultaneous [{:key_code "d"} {:key_code "j"}],
+                  :simultaneous_options
+                  {:detect_key_down_uninterruptedly true,
+                   :key_down_order "strict",
+                   :key_up_order "strict_inverse",
+                   :key_up_when "any",
+                   :to_after_key_up
+                   [{:set_variable {:name "vi-mode", :value 0}}]}},
+                 :conditions
+                 [{:file_paths
+                   ["^/System/Volumes/Data/Applications/Google Chrome\\.app$"],
+                   :bundle_identifiers ["^com\\.google\\.Chrome$"],
                    :type "frontmost_application_if"}]}
-                {:parameters {:basic.simultaneous_threshold_milliseconds 432}
-                 , :from
-                 {:key_code "j"
-                  , :modifiers
-                  {:optional ["any"]}} ,
-                 :to [{:key_code "down_arrow"}]
-                 , :conditions
-                 [{:name "vi-mode"
-                   , :value
-                   1, :type
-                   "variable_if"}
-                  {:file_paths ["^/System/Volumes/Data/Applications/Google Chrome\\.app$"
-                                "^/System/Volumes/Data/Applications/Google Chrome Canary\\.app$"]
-                   , :bundle_identifiers
+                {:parameters
+                 {:basic.simultaneous_threshold_milliseconds 432},
+                 :from {:key_code "j", :modifiers {:optional ["any"]}},
+                 :to [{:key_code "down_arrow"}],
+                 :conditions
+                 [{:name "vi-mode", :value 1, :type "variable_if"}
+                  {:file_paths
+                   ["^/System/Volumes/Data/Applications/Google Chrome\\.app$"
+                    "^/System/Volumes/Data/Applications/Google Chrome Canary\\.app$"],
+                   :bundle_identifiers
                    ["^com\\.google\\.Chrome$"
-                    "^com\\.google\\.Chrome\\.canary$"] ,
-                   :type "frontmost_application_if"}] ,
+                    "^com\\.google\\.Chrome\\.canary$"],
+                   :type "frontmost_application_if"}],
                  :type "basic"}
-                {:parameters {:basic.simultaneous_threshold_milliseconds 432}
-                 , :to
-                 [{:set_variable {:name "vi-mode" , :value 1}}
-                  {:key_code "down_arrow"}] ,
-                 :from {:simultaneous [{:key_code "d"}
-                                       {:key_code "j"}]
-                        , :simultaneous_options
-                        {:detect_key_down_uninterruptedly true,
-                         :key_down_order "strict"
-                         , :key_up_order
-                         "strict_inverse" ,
-                         :key_up_when "any"
-                         , :to_after_key_up
-                         [{:set_variable {:name "vi-mode" , :value 0}}]}}
-                 , :conditions
-                 [{:file_paths ["^/System/Volumes/Data/Applications/Google Chrome\\.app$"
-                                "^/System/Volumes/Data/Applications/Google Chrome Canary\\.app$"]
-                   , :bundle_identifiers
+                {:parameters
+                 {:basic.simultaneous_threshold_milliseconds 432},
+                 :to
+                 [{:set_variable {:name "vi-mode", :value 1}}
+                  {:key_code "down_arrow"}],
+                 :from
+                 {:simultaneous [{:key_code "d"} {:key_code "j"}],
+                  :simultaneous_options
+                  {:detect_key_down_uninterruptedly true,
+                   :key_down_order "strict",
+                   :key_up_order "strict_inverse",
+                   :key_up_when "any",
+                   :to_after_key_up
+                   [{:set_variable {:name "vi-mode", :value 0}}]}},
+                 :conditions
+                 [{:file_paths
+                   ["^/System/Volumes/Data/Applications/Google Chrome\\.app$"
+                    "^/System/Volumes/Data/Applications/Google Chrome Canary\\.app$"],
+                   :bundle_identifiers
                    ["^com\\.google\\.Chrome$"
-                    "^com\\.google\\.Chrome\\.canary$"] ,
+                    "^com\\.google\\.Chrome\\.canary$"],
                    :type "frontmost_application_if"}]}]}],
              :test-profile
              [{:description "Auto generated layer conditions",
                :manipulators
                [{:type "basic",
-                 :to [{:set_variable {:name "chunkwm-move-mode", :value 1}}],
+                 :to
+                 [{:set_variable {:name "chunkwm-move-mode", :value 1}}],
                  :from {:key_code "f"},
                  :to_after_key_up
                  [{:set_variable {:name "chunkwm-move-mode", :value 0}}],
                  :to_if_alone [{:key_code "f"}],
-                 :conditions [{:name "tab-mode", :value 1, :type "variable_if"}]}
+                 :conditions
+                 [{:name "tab-mode", :value 1, :type "variable_if"}]}
                 {:type "basic",
                  :to [{:set_variable {:name "tab-mode", :value 1}}],
                  :from {:key_code "tab"},
                  :to_after_key_up
                  [{:set_variable {:name "tab-mode", :value 0}}
                   {:set_variable {:name "chunkwm-move-mode", :value 0}}
-                  {:set_variable {:name "chunkwm-scale-mode", :value 0}}],
+                  {:set_variable
+                   {:name "chunkwm-scale-mode", :value 0}}],
                  :to_if_alone [{:key_code "tab"}]}
                 {:type "basic",
-                 :to [{:set_variable {:name "chunkwm-scale-mode", :value 1}}],
+                 :to
+                 [{:set_variable
+                   {:name "chunkwm-scale-mode", :value 1}}],
                  :from {:key_code "c"},
                  :to_after_key_up
-                 [{:set_variable {:name "chunkwm-scale-mode", :value 0}}],
+                 [{:set_variable
+                   {:name "chunkwm-scale-mode", :value 0}}],
                  :to_if_alone [{:key_code "c"}],
-                 :conditions [{:name "tab-mode", :value 1, :type "variable_if"}]}]}
+                 :conditions
+                 [{:name "tab-mode", :value 1, :type "variable_if"}]}]}
               {:description "tab-mode",
                :manipulators
                [{:from {:key_code "h"},
@@ -622,28 +686,36 @@
                  [{:shell_command
                    "/usr/local/bin/chunkc tiling::window --warp west"}],
                  :conditions
-                 [{:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
+                 [{:name "chunkwm-move-mode",
+                   :value 1,
+                   :type "variable_if"}],
                  :type "basic"}
                 {:from {:key_code "h"},
                  :to
                  [{:shell_command
                    "/usr/local/bin/chunkc tiling::window --focus west"}],
-                 :conditions [{:name "tab-mode", :value 1, :type "variable_if"}],
+                 :conditions
+                 [{:name "tab-mode", :value 1, :type "variable_if"}],
                  :type "basic"}
                 {:from {:key_code "l"},
                  :to
                  [{:shell_command
                    "/usr/local/bin/chunkc tiling::window --focus east"}],
                  :conditions
-                 [{:name "chunkwm-scale-mode", :value 1, :type "variable_if"}
-                  {:name "chunkwm-move-mode", :value 1, :type "variable_if"}],
+                 [{:name "chunkwm-scale-mode",
+                   :value 1,
+                   :type "variable_if"}
+                  {:name "chunkwm-move-mode",
+                   :value 1,
+                   :type "variable_if"}],
                  :type "basic"}]}
               {:description "raw rules test-profile",
                :manipulators
                [{:type :mouse_motion_to_scroll,
                  :from {:modifiers {:mandatory [:left_control]}}}
                 {:type :basic,
-                 :from {:key_code :h, :modifiers {:mandatory [:left_control]}},
+                 :from
+                 {:key_code :h, :modifiers {:mandatory [:left_control]}},
                  :to [{:key_code :delete_or_backspace}]}]}]})
 
 (t/deftest generate-mains
