@@ -8,3 +8,4 @@ Feel free to add your goku config!
 - [kaushikgopal](https://jkl.gg/) wrote an [article about using goku](https://blog.jkl.gg/hacking-your-keyboard/), and their [karabiner.edn](https://gist.github.com/kaushikgopal/ff7a92bbc887e59699c804b59074a126)
 - [alvaro-prieto](https://github.com/alvaro-prieto) wrote a [short description of his layout](https://github.com/alvaro-prieto/splitLayout), and his [dotfile](https://github.com/alvaro-prieto/splitLayout/blob/master/karabiner.edn). 
 - [nikolai-cc](http://nikolai.cc)'s (commented) [karabiner.edn](https://gist.github.com/nikolai-cc/02f6b070972840323ae355ef847e91a6)
+- [rgomezcasas](https://github.com/rgomezcasas "rgomezcasas")'s [dotfile](https://github.com/rgomezcasas/dotfiles/blob/master/os/mac/karabiner-goku/karabiner.edn)
