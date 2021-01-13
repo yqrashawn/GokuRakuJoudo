@@ -202,19 +202,19 @@
       {:action       "help"
        :ok?          true
        :exit-message (help-message summary)}
-      ;; run
-      (= (count arguments) 0)
-      {:action       "run"
-       :ok?          true
-       :dry-run-all (:dry-run-all options)
-       :dry-run (:dry-run options)
-       :config (:config options)
-       :exit-message "Done!"}
       ;; log
       (:log options)
       {:action       "log"
        :ok?          true
        :exit-message "open log file"}
+      ;; run
+      (= (count arguments) 0)
+      {:action       "run"
+       :ok?          true
+       :dry-run-all  (:dry-run-all options)
+       :dry-run      (:dry-run options)
+       :config       (:config options)
+       :exit-message "Done!"}
       :else
       {:action       "default"
        :ok?          true

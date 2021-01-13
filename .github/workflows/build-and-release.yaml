@@ -30,29 +30,60 @@ jobs:
         run: make
       - name: Test The Binary
         run: make test-binary
-      - uses: actions/upload-artifact@v2
-        with:
-          name: goku-binary
-          path: goku
-
-  release:
-    name: Release
-    needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: macos-latest
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: goku-binary
-      - run: ls -alt
       - name: Create gokuw
         run: |
           touch gokuw
           echo '#!/bin/sh' >> gokuw
-          echo 'watchexec -r -w `[[ -z $GOKU_EDN_CONFIG_FILE ]] && echo ~/.config/karabiner.edn || echo $GOKU_EDN_CONFIG_FILE` /usr/local/opt/goku/bin/goku' >> gokuw
+          echo 'watchexec -r -w `[[ -z $GOKU_EDN_CONFIG_FILE ]] && echo ~/.config/karabiner.edn || echo $GOKU_EDN_CONFIG_FILE` goku' >> gokuw
           chmod +x gokuw
       - name: Pack
         run: tar czf goku.tar.gz goku gokuw
+      - uses: actions/upload-artifact@v2
+        with:
+          name: goku-tar
+          path: goku.tar.gz
+
+  draft-release:
+    name: Draft Release
+    if: startsWith(github.ref, 'refs/head/')
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: goku-tar
+      - name: Create Draft Release
+        id: create_draft_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.sha }}
+          release_name: Release ${{ github.sha }}
+          body: |
+            goku.tar.gz sha256: ${{ steps.sha256.outputs.hashes }}
+          draft: true
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_draft_release.outputs.upload_url }}
+          asset_path: ./goku.tar.gz
+          asset_name: goku.tar.gz
+          asset_content_type: application/gzip
+
+  release:
+    name: Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: goku-tar
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -64,7 +95,7 @@ jobs:
           body: |
             Checkout the changelog at https://github.com/yqrashawn/GokuRakuJoudo/blob/master/CHANGELOG.org
             goku.tar.gz sha256: ${{ steps.sha256.outputs.hashes }}
-          draft: true
+          draft: false
           prerelease: false
       - name: Upload Release Asset
         id: upload-release-asset
@@ -75,4 +106,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./goku.tar.gz
           asset_name: goku.tar.gz
-          asset_content_type: application/zip
+          asset_content_type: application/gzip

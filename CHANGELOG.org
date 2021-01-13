@@ -3,7 +3,16 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.6...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.7...HEAD
+
+** 0.3.7 - 2021-01-14
+
+*** Fixed
+- use homebrew formula api to get the right path in brew service plist file
+- fix goku path in gokuw script
+- fix goku log command
+
+[commits in 0.3.7]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.6...v0.3.7
 
 ** 0.3.6 - 2021-01-13
 
@@ -76,29 +85,29 @@ one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
 ** 0.3.0 - 2020-03-29
 *** Fixed
 - Condi and parameter settings won't go into both generated simlayer rules
-  https://github.com/yqrashawn/GokuRakuJoudo/issues/30 
+  https://github.com/yqrashawn/GokuRakuJoudo/issues/30
 - More than 2 keys in simultaneous keys
-  https://github.com/yqrashawn/GokuRakuJoudo/issues/52 
+  https://github.com/yqrashawn/GokuRakuJoudo/issues/52
 - Throw error when there's missing ~:des~ key
   https://github.com/yqrashawn/GokuRakuJoudo/issues/56
-  
+
 [commits in 0.3.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.9...v0.3.0
 ** 0.2.9 - 2020-01-31
 *** Fixed
-- ~gokuw~ ~GOKU_EDN_CONFIG_FILE~ env support, [[https://github.com/yqrashawn/GokuRakuJoudo/issues/48][issue 48]] 
-- no need to have the ending ~/~ in env variable ~XDG_CONFIG_HOME~,[[https://github.com/yqrashawn/GokuRakuJoudo/pull/49][ PR 49]] 
+- ~gokuw~ ~GOKU_EDN_CONFIG_FILE~ env support, [[https://github.com/yqrashawn/GokuRakuJoudo/issues/48][issue 48]]
+- no need to have the ending ~/~ in env variable ~XDG_CONFIG_HOME~,[[https://github.com/yqrashawn/GokuRakuJoudo/pull/49][ PR 49]]
 
 [commits in 0.2.9]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.8...v0.2.9
 ** 0.2.8 - 2019-11-28
 *** Added
 - support mouse button up to ~:button32~
-  
+
 [commits in 0.2.8]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.7...v0.2.8
 ** 0.2.7 - 2019-11-20
 *** Added
 - support parsing raw karabiner rules (support ~mouse_motion_to_scroll~), [[https://github.com/yqrashawn/GokuRakuJoudo/blob/6a0f5de5c476ff6e6fcf372a3345232e33c8eba2/test/karabiner_configurator/rules_test.clj#L58][check
   the examples]]
-  
+
 [commits in 0.2.7]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.5...0.2.7
 ** 0.2.5 - 2019-04-26
 *** Added
@@ -130,7 +139,7 @@ one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
 *** Fixed
 - some macos functionaly keys are set as consumer key, make them can be used in
   to defination.
-  
+
 [commits in 0.2.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.16...v0.2.0
 
 ** 0.1.16 - 2019-01-16
