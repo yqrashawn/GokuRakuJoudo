@@ -45,13 +45,19 @@ jobs:
 
   draft-release:
     name: Draft Release
-    if: startsWith(github.ref, 'refs/head/')
+    if: startsWith(github.ref, 'refs/heads/')
     needs: build
     runs-on: macos-latest
     steps:
       - uses: actions/download-artifact@v2
         with:
           name: goku-tar
+
+      - name: Delete Other Draft Releases
+        uses: hugo19941994/delete-draft-releases@v0.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Draft Release
         id: create_draft_release
         uses: actions/create-release@v1
@@ -61,7 +67,7 @@ jobs:
           tag_name: ${{ github.sha }}
           release_name: Release ${{ github.sha }}
           body: |
-            goku.tar.gz sha256: ${{ steps.sha256.outputs.hashes }}
+            goku.tar.gz sha256: ${{ hashFiles('./goku.tar.gz') }}
           draft: true
           prerelease: false
       - name: Upload Release Asset
@@ -94,7 +100,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: |
             Checkout the changelog at https://github.com/yqrashawn/GokuRakuJoudo/blob/master/CHANGELOG.org
-            goku.tar.gz sha256: ${{ steps.sha256.outputs.hashes }}
+            goku.tar.gz sha256: ${{ hashFiles('./goku.tar.gz') }}
           draft: false
           prerelease: false
       - name: Upload Release Asset
