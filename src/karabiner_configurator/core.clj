@@ -27,18 +27,20 @@
 (defn check-edn-syntax
   "Call joker to check syntax of karabiner.edn"
   [path]
-  (let [;; intel mac
-        joker-bin1 "/usr/local/opt/joker/bin/joker"
-        ;; arm mac
-        joker-bin2 "/opt/homebrew/opt/joker/bin/joker"
-        ;; fallback to brew --prefix joker, it's really slow
-        joker-bin (cond (fs/exists? joker-bin1) joker-bin1
-                        (fs/exists? joker-bin2) joker-bin2
-                        :else (-> (shell/sh "brew" "--prefix" "joker")
-                                  :out
-                                  (string/trim-newline)
-                                  (str "/bin/joker")))]
-    (shell/sh joker-bin "--lint" path)))
+  (shell/sh "joker" "--lint" path)
+  ;; (let [;; intel mac
+  ;;       joker-bin1 "/usr/local/opt/joker/bin/joker"
+  ;;       ;; arm mac
+  ;;       joker-bin2 "/opt/homebrew/opt/joker/bin/joker"
+  ;;       ;; fallback to brew --prefix joker, it's really slow
+  ;;       joker-bin (cond (fs/exists? joker-bin1) joker-bin1
+  ;;                       (fs/exists? joker-bin2) joker-bin2
+  ;;                       :else (-> (shell/sh "brew" "--prefix" "joker")
+  ;;                                 :out
+  ;;                                 (string/trim-newline)
+  ;;                                 (str "/bin/joker")))]
+  ;;   (shell/sh joker-bin "--lint" path))
+  )
 
 (defn exit [status & [msg]]
   (if msg (println msg))

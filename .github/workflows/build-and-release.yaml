@@ -29,7 +29,9 @@ jobs:
       - name: Compile
         run: make
       - name: Test The Binary
-        run: make test-binary
+        run: |
+          export PATH=/usr/local/opt/joker/bin:$PATH
+          make test-binary
       - uses: actions/upload-artifact@v2
         with:
           name: goku-binary
@@ -38,7 +40,6 @@ jobs:
   release:
     name: Release
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: macos-latest
     steps:
       - uses: actions/download-artifact@v2
@@ -63,8 +64,8 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: |
             Checkout the changelog at https://github.com/yqrashawn/GokuRakuJoudo/blob/master/CHANGELOG.org
-            goku.tar.gz sha256: ${{ steps.sha256.outputs.hashes }}
-          draft: true
+            goku.tar.gz sha256: ${{ hashFiles('./goku.tar.gz') }}
+          draft: ${{ !startsWith(github.ref, 'refs/tags/v') }}
           prerelease: false
       - name: Upload Release Asset
         id: upload-release-asset
