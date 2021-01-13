@@ -3,13 +3,20 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.5...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.6...HEAD
+
+** 0.3.6 - 2021-01-13
+
+*** Fixed
+- support homebrew ~/opt/homebrew/opt~ on arm machine
+
+[commits in 0.3.6]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.5...v0.3.6
 
 ** 0.3.5 - 2020-12-25
 *** Added
 - upgrade clojure and graalvm version
 
-[commits in 0.3.5]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.4...0.3.5
+[commits in 0.3.5]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.4...v0.3.5
 
 ** 0.3.4 - 2020-12-25
 *** Added
@@ -37,7 +44,7 @@ All notable changes to this project will be documented in this file. This change
 ~simlayer~ generate simultaneous keys in ~to~ section with the ~set_variable~
 one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
 
-[commits in 0.3.3]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.2...0.3.3
+[commits in 0.3.3]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.2...v0.3.3
 
 ** 0.3.2 - 2020-05-28
 *** Added
@@ -58,13 +65,13 @@ one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
   - ~R~ to ~:right_shift~
   - ~SS~ to ~:shift~
 
-[commits in 0.3.2]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.1...0.3.2
+[commits in 0.3.2]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.1...v0.3.2
 
 ** 0.3.1 - 2020-05-10
 *** Fixed
 - insert simlayer :set-variable after user defined actions, resolve #60
 
-[commits in 0.3.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.0...0.3.1
+[commits in 0.3.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.0...v0.3.1
 
 ** 0.3.0 - 2020-03-29
 *** Fixed
@@ -75,18 +82,18 @@ one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
 - Throw error when there's missing ~:des~ key
   https://github.com/yqrashawn/GokuRakuJoudo/issues/56
   
-[commits in 0.3.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.9...0.3.0
+[commits in 0.3.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.9...v0.3.0
 ** 0.2.9 - 2020-01-31
 *** Fixed
 - ~gokuw~ ~GOKU_EDN_CONFIG_FILE~ env support, [[https://github.com/yqrashawn/GokuRakuJoudo/issues/48][issue 48]] 
 - no need to have the ending ~/~ in env variable ~XDG_CONFIG_HOME~,[[https://github.com/yqrashawn/GokuRakuJoudo/pull/49][ PR 49]] 
 
-[commits in 0.2.9]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.8...0.2.9
+[commits in 0.2.9]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.8...v0.2.9
 ** 0.2.8 - 2019-11-28
 *** Added
 - support mouse button up to ~:button32~
   
-[commits in 0.2.8]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.7...0.2.8
+[commits in 0.2.8]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.7...v0.2.8
 ** 0.2.7 - 2019-11-20
 *** Added
 - support parsing raw karabiner rules (support ~mouse_motion_to_scroll~), [[https://github.com/yqrashawn/GokuRakuJoudo/blob/6a0f5de5c476ff6e6fcf372a3345232e33c8eba2/test/karabiner_configurator/rules_test.clj#L58][check
@@ -100,20 +107,20 @@ one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
 *** Fixed
 - rewrite some functions the clojure way.
 
-[commits in 0.2.5]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.2...0.2.5
+[commits in 0.2.5]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.2...v0.2.5
 
 ** 0.2.2 - 2019-04-21
 *** Added
 - user can now specify ~.edn~ config file path with env variable
   ~GOKU_EDN_CONFIG_FILE~.
 
-[commits in 0.2.2]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.1...0.2.2
+[commits in 0.2.2]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.1...v0.2.2
 
 ** 0.2.1 - 2019-03-15
 *** Added
 - support optional arguments in tempaltes, user can now omit arguments from the tail
 
-[commits in 0.2.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.0...0.2.1
+[commits in 0.2.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.2.0...v0.2.1
 
 ** 0.2.0 - 2019-03-12
 *** Added
@@ -124,19 +131,19 @@ one first. Resolve https://github.com/yqrashawn/GokuRakuJoudo/issues/91.
 - some macos functionaly keys are set as consumer key, make them can be used in
   to defination.
   
-[commits in 0.2.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.16...0.2.0
+[commits in 0.2.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.16...v0.2.0
 
 ** 0.1.16 - 2019-01-16
 *** Added
 - user can now specify not already defined conditions using keyword
 
-[commits in 0.1.16]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.15...0.1.16
+[commits in 0.1.16]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.15...v0.1.16
 
 ** 0.1.15 - 2019-01-14
 *** Fixed
 - can't read already defined :layers in :layers pre-defination
 
-[commits in 0.1.15]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.14...0.1.15
+[commits in 0.1.15]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.1.14...v0.1.15
 
 ** 0.1.14 - 2018-12-22
 *** Added
