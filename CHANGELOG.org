@@ -3,7 +3,14 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.7...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.8...HEAD
+
+** 0.3.8 - 2021-02-20
+
+*** Fixed
+- use github action to release
+
+[commits in 0.3.8]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.7...v0.3.8
 
 ** 0.3.7 - 2021-01-14
 
