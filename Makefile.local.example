@@ -19,6 +19,7 @@ compile:
 bin:
 	$(GRAALVM) $(GRAALVM_ARG) -jar $(TARGET_JAR)
 	mv $(JAR_NAME) goku
+	chmod +x goku
 test-binary:
 	# mkdir -p ~/.config/
 	# cp ./resources/configurations/yqrashawn.edn ~/.config/karabiner.edn
