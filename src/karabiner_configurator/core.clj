@@ -164,7 +164,8 @@
         "-d, --dry-run, to spit the new config of modified profiles into stdout instead of update karabiner.json"
         "-A, --dry-run-all, to spit the new whole config into stdout instead of update karabiner.json"
         "-c, --config PATH, to specify edn config file from command line"
-        "-h, --help, to show this message"]
+        "-h, --help, to show this message"
+        "-V, --version, to show current version of goku"]
        (string/join \newline)))
 
 (defn error-msg [errors]
@@ -178,6 +179,7 @@
 
 (def cli-opts
   [["-h" "--help"]
+   ["-V" "--version"]
    ["-l" "--log"]
    ["-c" "--config PATH" "Config PATH"
     :parse-fn abs-path
@@ -199,9 +201,14 @@
        :exit-message (error-msg errors)}
       ;; help
       (:help options)
-      {:action       "help"
+      {:action       "exit-with-message"
        :ok?          true
        :exit-message (help-message summary)}
+      ;; version
+      (:version options)
+      {:action "exit-with-message"
+       :ok? true
+       :exit-message "0.3.9"}
       ;; log
       (:log options)
       {:action       "log"
@@ -230,7 +237,7 @@
                    (exit (if ok? 0 1) exit-message))
         "log" (do (open-log-file)
                   (exit 0))
-        "help" (exit (if ok? 0 1) exit-message)
+        "exit-with-message" (exit (if ok? 0 1) exit-message)
         "errors" (exit (if ok? 0 1) exit-message)
         "default" (exit (if ok? 0 1) exit-message)))))
 
@@ -238,12 +245,12 @@
   (-main)
   (-main "-h")
   (-main "--help")
-  (-main "help")
   (-main "-l")
   (-main "--log")
-  (-main "log")
   (-main "--config" "./")
   (-main "-c" "./")
   (-main "-dc" "./")
   (-main "-dc" "~/.config/karabiner.edn")
-  (-main "-d"))
+  (-main "-d")
+  (-main "-V")
+  (-main "--version"))
