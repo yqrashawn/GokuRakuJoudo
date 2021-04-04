@@ -86,7 +86,8 @@ You can find all keycode definition in [this file](https://github.com/yqrashawn/
 
 ```clojure
     {:devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]}
-
+     ;; you can also find bundle_identifiers using command line:
+     ;; osascript -e 'id of app "Google Chrome"'
      :applications {:chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}
 
      :input-sources {:us {:input_mode_id ""
