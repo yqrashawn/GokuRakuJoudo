@@ -3,13 +3,25 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.9...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.10...HEAD
+
+** 0.3.10 - 2021-04-05
+
+*** Added
+- support simultaneous pointing_button
+#+NAME: sim key in from
+#+BEGIN_SRC clojure
+  {:des "sim pkey in from"
+   :rules [[[{:pkey :button5} {:pkey :button2}] {:pkey :button1}]]}
+#+END_SRC
+
+[commits in 0.3.10]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.9...v0.3.10
 
 ** 0.3.9 - 2021-02-22
 
 *** Added
 - add `-V` or `--version`
--
+
 [commits in 0.3.9]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.8...v0.3.9
 
 ** 0.3.8 - 2021-02-20

@@ -233,8 +233,8 @@
   (let [{:keys [action options exit-message ok? config dry-run dry-run-all]} (validate-args args)]
     (if exit-message
       (case action
-        "run"  (do (parse (or config (edn-config-file-path)) dry-run dry-run-all)
-                   (exit (if ok? 0 1) exit-message))
+        "run" (do (parse (or config (edn-config-file-path)) dry-run dry-run-all)
+                  (exit (if ok? 0 1) exit-message))
         "log" (do (open-log-file)
                   (exit 0))
         "exit-with-message" (exit (if ok? 0 1) exit-message)

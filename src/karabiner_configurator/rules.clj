@@ -18,7 +18,7 @@
   "generate normal from key config"
   [des from]
   (let [result nil
-        validate-from (massert (or (and (vector? from) (>= (count from) 2) (not-any? #(not (k? %)) from))
+        validate-from (massert (or (and (vector? from) (>= (count from) 2) (not-any? #(not (or (pkey? %) (k? %))) from))
                                    (and (keyword? from) (or (k? from) (special-modi-k? from) (contains? (:froms conf-data) from)))
                                    (map? from))
                                (str "invalid <from> in main section's " des))

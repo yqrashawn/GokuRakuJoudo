@@ -21,59 +21,64 @@
                :afterup [{:set ["haha" 1]}]
                :dorder :insensitive}
         :modi :left_command}
-   :12 {:key :!CSd}})
+   :12 {:key :!CSd}
+   :13 [{:pkey :button5} {:pkey :button2}]})
 
 (def result
-     {:applications {},
-      :tos {},
-      :input-sources {},
-      :modifiers {:1 {:mandatory ["left_command" "right_shift"],
-                      :optional ["any"]}},
-      :simlayer-threshold 250,
-      :devices {},
-      :layers {},
-      :froms {:12 {:key_code "d",
-                   :modifiers {:mandatory ["left_command" "left_shift"]}},
-              :11 {:modifiers {:mandatory ["left_command"]},
-                   :simultaneous [{:key_code "a"}
-                                  {:key_code "b"}],
-                   :simultaneous_options {:detect_key_down_uninterruptedly true,
-                                          :key_down_order "insensitive",
-                                          :key_up_order "insensitive",
-                                          :key_up_when "any",
-                                          :to_after_key_up [{:set_variable {:name "haha", :value 1}}]}},
-              :10 {:modifiers {:mandatory ["left_command"]},
-                   :simultaneous [{:key_code "a"}
-                                  {:key_code "b"}],
-                   :simultaneous_options {:detect_key_down_uninterruptedly false,
-                                          :key_down_order "insensitive",
-                                          :key_up_order "insensitive",
-                                          :key_up_when "any"}},
-              :4 {:modifiers {:mandatory ["left_command" "right_shift"]},
-                  :key_code "d"},
-              :7 {:consumer_key_code "display_brightness_decrement"},
-              :1 {:key_code "d"},
-              :8 {:modifiers {:mandatory ["left_command"]},
-                  :consumer_key_code "display_brightness_decrement"},
-              :9 {:modifiers {:mandatory ["left_command"]},
-                  :pointing_button "button4"},
-              :2 {:modifiers {:mandatory ["left_command" "right_shift"],
-                              :optional ["any"]},
-                  :key_code "d"},
-              :5 {:modifiers {:mandatory ["left_command" "right_shift"]},
-                  :key_code "d"},
-              :3 {:modifiers {:mandatory ["left_command"]},
-                  :key_code "d"},
-              :6 {:modifiers {:mandatory ["left_command" "right_shift"],
-                              :optional ["caps_lock"]},
-                  :key_code "d"}},
-      :simlayers {}})
+  {:applications {}
+   :tos {}
+   :input-sources {}
+   :modifiers {:1 {:mandatory ["left_command" "right_shift"]
+                   :optional ["any"]}}
+   :simlayer-threshold 250
+   :devices {}
+   :layers {}
+   :froms {:12 {:key_code "d"
+                :modifiers {:mandatory ["left_command" "left_shift"]}}
+           :11 {:modifiers {:mandatory ["left_command"]}
+                :simultaneous [{:key_code "a"}
+                               {:key_code "b"}]
+                :simultaneous_options {:detect_key_down_uninterruptedly true
+                                       :key_down_order "insensitive"
+                                       :key_up_order "insensitive"
+                                       :key_up_when "any"
+                                       :to_after_key_up [{:set_variable {:name "haha" :value 1}}]}}
+           :10 {:modifiers {:mandatory ["left_command"]}
+                :simultaneous [{:key_code "a"}
+                               {:key_code "b"}]
+                :simultaneous_options {:detect_key_down_uninterruptedly false
+                                       :key_down_order "insensitive"
+                                       :key_up_order "insensitive"
+                                       :key_up_when "any"}}
+           :4 {:modifiers {:mandatory ["left_command" "right_shift"]}
+               :key_code "d"}
+           :7 {:consumer_key_code "display_brightness_decrement"}
+           :1 {:key_code "d"}
+           :8 {:modifiers {:mandatory ["left_command"]}
+               :consumer_key_code "display_brightness_decrement"}
+           :9 {:modifiers {:mandatory ["left_command"]}
+               :pointing_button "button4"}
+           :2 {:modifiers {:mandatory ["left_command" "right_shift"]
+                           :optional ["any"]}
+               :key_code "d"}
+           :5 {:modifiers {:mandatory ["left_command" "right_shift"]}
+               :key_code "d"}
+           :3 {:modifiers {:mandatory ["left_command"]}
+               :key_code "d"}
+           :6 {:modifiers {:mandatory ["left_command" "right_shift"]
+                           :optional ["caps_lock"]}
+               :key_code "d"}
+           :13 {:simultaneous [{:pointing_button "button5"}
+                               {:pointing_button "button2"}]
+                :simultaneous_options {:detect_key_down_uninterruptedly false
+                                       :key_down_order "insensitive"
+                                       :key_up_order "insensitive"
+                                       :key_up_when "any"}}}
+   :simlayers {}})
 
-
-;; (sut/generate example-froms)
 (t/deftest convert-froms
   (init-conf-data)
   (update-conf-data (assoc conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]
                                                      :optional ["any"]}}))
   (t/testing
-   (t/is (= (:froms (sut/generate example-froms) ) (:froms result)))))
+      (t/is (= (:froms (sut/generate example-froms)) (:froms result)))))

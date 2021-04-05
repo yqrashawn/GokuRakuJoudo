@@ -73,6 +73,21 @@
    (str "invalid profile name " profile-name ", profile name must be a keyword"))
   (def user-default-profile-name profile-name))
 
+(defn pkey?
+  [pkeymap]
+  (and (map? pkeymap)
+       (->> pkeymap
+            keys
+            first
+            (= :pkey))
+       (->> pkeymap
+            first
+            second
+            (get keys-info)
+            (:button)
+            true?)))
+
+
 (defn k?
   [k]
   (if (keyword? k)

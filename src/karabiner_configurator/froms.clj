@@ -74,11 +74,15 @@
                :json-values ["any" "all"]
                :name        :key_up_when}})
 
-(defn parse-keycode-vec
-  [vec]
+(defn parse-keycode-or-pkey-vec
+  [fname vec]
   (massert (vector? vec) (str "invalid vector " vec))
-  (mapv (fn [v] (massert (from-k? v) (str "keycode " v " can't be used as from keycode"))
-          {:key_code (name v)}) vec))
+  (mapv (fn [v] (massert (or (from-k? v) (pkey? v))
+                         (str "in " fname " keycode " v " can't be used as from keycode"))
+          (if (k? v)
+            {:key_code (name v)}
+            (parse-key fname v)))
+        vec))
 
 (defn parse-simo
   [sim simo simo-op-value simo-op-keyword result]
@@ -101,7 +105,7 @@
   [fname finfo prevresult]
   (let [result                                   prevresult
         {:keys [sim simo]}                       finfo
-        result                                   (if (nn? sim) (assoc result :simultaneous (parse-keycode-vec sim)) result)
+        result                                   (if (nn? sim) (assoc result :simultaneous (parse-keycode-or-pkey-vec fname sim)) result)
         {:keys [interrupt dorder uorder upwhen]} simo
         result                                   (parse-simo sim simo interrupt :interrupt result)
         result                                   (parse-simo sim simo dorder :dorder result)
@@ -117,7 +121,8 @@
 
 (defn parse-from
   [fname finfo]
-  (let [{:keys [sim simo]} finfo
+  (let [finfo (if (vector? finfo) {:sim finfo} finfo)
+        {:keys [sim simo]} finfo
         result             (parse-key fname finfo)
         result             (if (or sim simo) (parse-sim fname finfo result) result)]
     result))
@@ -126,10 +131,12 @@
   (assoc conf-data :froms
          (into
           {}
+          ;; fname is the name of the from
+          ;; finfo is the value of the from
           (for [[fname finfo] froms]
             {fname
              (do
-               (massert (map? finfo) (str "invalid from definition in " fname ", must be a map"))
+               (massert (or (map? finfo) (vector? finfo)) (str "invalid from definition in " fname ", must be a map or vector"))
                (parse-from fname finfo))}))))
 
 (defn parse-froms [froms]
