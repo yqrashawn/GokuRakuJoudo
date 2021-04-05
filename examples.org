@@ -319,3 +319,10 @@ Don't map a to b when there are three fingers on the trackpad.
                   [:a [:p :r :i :n :t :l :n :!S1 :!S9 :!S0 :left_arrow]] ; -> println!()
                   [:v [:r :u :s :t :spacebar]]]}]} ; -> rust
 #+end_src
+
+** disable all pointing buttons
+#+NAME: disable all pointing buttons 
+#+BEGIN_SRC clojure
+  {:des "disable all pointing buttons"
+   :rules [[{:any :pointing_button} :vk_none]]}
+#+END_SRC
