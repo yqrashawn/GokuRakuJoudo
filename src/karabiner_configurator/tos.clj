@@ -61,7 +61,7 @@
 (defn parse-to
   [tname tinfos]
   (mapv
-   (fn [{:keys [set input shell lazy repeat halt hold_down_ms] :as tinfo}]
+   (fn [{:keys [set input shell lazy repeat halt hold_down_ms select_input_source] :as tinfo}]
      (let [result (parse-key tname tinfo true true)
            validate-shell (massert (or (and (vector? shell) (contains? (:templates conf-data) (first shell))) (string? shell) (nil? shell))
                                    (str "invalid `shell` in to definition " tname " " shell ", should be string or keyword"))
@@ -100,7 +100,8 @@
                     result)
            result (if (true? lazy)
                     (assoc result :lazy true)
-                    result)]
+                    result)
+           result (if select_input_source tinfo result)]
        result))
    tinfos))
 

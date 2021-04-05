@@ -3,7 +3,8 @@
             [karabiner-configurator.data :refer :all]
             [clojure.test :as t]))
 
-(def example-mains [{:des "a to 1"                                            :rules [[:condi :chunkwm-move-mode]
+(def example-mains [
+                    {:des "a to 1"                                            :rules [[:condi :chunkwm-move-mode]
                                                                                       [:profiles :Default :test-profile-2]
                                                                                       [:a :1]]} ;; a to 1
                     {:des "[left] command a to control 1"                            :rules [[:!C#Pa :!T1]
@@ -65,7 +66,6 @@
                      :rules [:test-profile
                              {:type :mouse_motion_to_scroll :from {:modifiers {:mandatory [:left_control]}}}
                              {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}
-
                     {:des "more than two sim keys"
                      :rules [[[:a :b :c] :d]]}
                     {:des "redefine params or condis in simlayer issue #30"
@@ -73,9 +73,10 @@
                              [:##j :down_arrow nil {:params {:sim 432}}]
                              [:##j :down_arrow :chrome]
                              [:##j :down_arrow :chromes {:params {:sim 432}}]]}
-
                     {:des "sim pkey in from"
-                     :rules [[[{:pkey :button5} {:pkey :button2}] {:pkey :button1}]]}])
+                     :rules [[[{:pkey :button5} {:pkey :button2}] {:pkey :button1}]]}
+                    {:des "select input source in tos"
+                     :rules [[[:i :o] :select_abc]]}])
 
 (def
   result
@@ -552,6 +553,15 @@
                                                             :key_up_order "insensitive"
                                                             :key_up_when "any"}}
                               :to [{:pointing_button "button1"}]
+                              :type "basic"}]}
+             {:description "select input source in tos"
+              :manipulators [{:from {:simultaneous [{:key_code "i"}
+                                                    {:key_code "o"}]
+                                     :simultaneous_options {:detect_key_down_uninterruptedly false
+                                                            :key_down_order "insensitive"
+                                                            :key_up_order "insensitive"
+                                                            :key_up_when "any"}}
+                              :to [{:select_input_source {:input_source_id "^com\\.apple\\.keylayout\\.ABC$"}}]
                               :type "basic"}]}]
    :test-profile [{:description "Auto generated layer conditions"
                    :manipulators [{:type "basic"
@@ -647,7 +657,8 @@
     :templates {:example-template "osascript -e 'display dialog \"%s\" \"%s\"'"}
     :modifiers {}
     :froms {:my-spacebar {:key :spacebar}}
-    :tos {}
+    :tos {:select_abc      {:select_input_source
+                            {:input_source_id "^com\\.apple\\.keylayout\\.ABC$"}}}
     :layers
     {:tab-mode {:type "basic",
                 :to [{:set_variable {:name "tab-mode", :value 1}}],

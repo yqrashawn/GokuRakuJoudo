@@ -3,8 +3,14 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.10...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.11...HEAD
 
+** 0.3.11 - 2021-04-05
+
+*** Added
+- support raw ~:select_input_source~ in ~:tos~
+
+[commits in 0.3.11]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.10...v0.3.11
 ** 0.3.10 - 2021-04-05
 
 *** Added
