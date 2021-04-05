@@ -76,7 +76,13 @@
                     {:des "sim pkey in from"
                      :rules [[[{:pkey :button5} {:pkey :button2}] {:pkey :button1}]]}
                     {:des "select input source in tos"
-                     :rules [[[:i :o] :select_abc]]}])
+                     :rules [[[:i :o] :select_abc]]}
+                    {:des "sim key with modifier"
+                     :rules [[{:sim [:i :o] :modi [:left_command]} [:i :o]]
+                             [{:sim [:i :o] :modi {:mandatory [:left_command]
+                                                   :optional [:left_shift]}} [:!Ci :o]]
+                             [{:sim [:i :o] :modi {:optional [:left_command] }} [:i :o]]
+                             [{:sim [:i :o] :modi {:optional [:any] }} [:i :o]]]}])
 
 (def
   result
@@ -562,6 +568,49 @@
                                                             :key_up_order "insensitive"
                                                             :key_up_when "any"}}
                               :to [{:select_input_source {:input_source_id "^com\\.apple\\.keylayout\\.ABC$"}}]
+                              :type "basic"}]}
+             {:description "sim key with modifier"
+              :manipulators [{:from {:modifiers {:mandatory ["left_command"]}
+                                     :simultaneous [{:key_code "i"}
+                                                    {:key_code "o"}]
+                                     :simultaneous_options {:detect_key_down_uninterruptedly false
+                                                            :key_down_order "insensitive"
+                                                            :key_up_order "insensitive"
+                                                            :key_up_when "any"}}
+                              :to [{:key_code "i"}
+                                   {:key_code "o"}]
+                              :type "basic"}
+                             {:from {:modifiers {:mandatory ["left_command"]
+                                                 :optional ["left_shift"]}
+                                     :simultaneous [{:key_code "i"}
+                                                    {:key_code "o"}]
+                                     :simultaneous_options {:detect_key_down_uninterruptedly false
+                                                            :key_down_order "insensitive"
+                                                            :key_up_order "insensitive"
+                                                            :key_up_when "any"}}
+                              :to [{:key_code "i"
+                                    :modifiers ["left_command"]}
+                                   {:key_code "o"}]
+                              :type "basic"}
+                             {:from {:modifiers {:optional ["left_command"]}
+                                     :simultaneous [{:key_code "i"}
+                                                    {:key_code "o"}]
+                                     :simultaneous_options {:detect_key_down_uninterruptedly false
+                                                            :key_down_order "insensitive"
+                                                            :key_up_order "insensitive"
+                                                            :key_up_when "any"}}
+                              :to [{:key_code "i"}
+                                   {:key_code "o"}]
+                              :type "basic"}
+                             {:from {:modifiers {:optional ["any"]}
+                                     :simultaneous [{:key_code "i"}
+                                                    {:key_code "o"}]
+                                     :simultaneous_options {:detect_key_down_uninterruptedly false
+                                                            :key_down_order "insensitive"
+                                                            :key_up_order "insensitive"
+                                                            :key_up_when "any"}}
+                              :to [{:key_code "i"}
+                                   {:key_code "o"}]
                               :type "basic"}]}]
    :test-profile [{:description "Auto generated layer conditions"
                    :manipulators [{:type "basic"

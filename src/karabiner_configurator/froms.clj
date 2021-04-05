@@ -79,9 +79,8 @@
   (massert (vector? vec) (str "invalid vector " vec))
   (mapv (fn [v] (massert (or (from-k? v) (pkey? v))
                          (str "in " fname " keycode " v " can't be used as from keycode"))
-          (if (k? v)
-            {:key_code (name v)}
-            (parse-key fname v)))
+          (cond (k? v) {:key_code (name v)}
+                :else (parse-key fname v)))
         vec))
 
 (defn parse-simo

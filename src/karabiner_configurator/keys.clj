@@ -148,7 +148,7 @@
   [kname kinfo & [mandatory-only from-to]]
   (let [{:keys [key ckey pkey any modi mkey]} kinfo
         result {}
-        special-modi? (and (keyword? key) (or (= \! (first (name key))) (= \# (first (name key)))))
+        special-modi? (special-modi-k? key)
         both-special-modi-and-modi? (massert (not (and special-modi? (nn? modi))) (str "can't use special modi and modi togeher, check " kname))
         predefined-modi? (and (keyword? modi) (contains?? (:modifiers conf-data) modi))
         valid-modifier-definition? (massert (or (nil? modi) (map? modi)

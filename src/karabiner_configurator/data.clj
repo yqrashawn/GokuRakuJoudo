@@ -73,6 +73,10 @@
    (str "invalid profile name " profile-name ", profile name must be a keyword"))
   (def user-default-profile-name profile-name))
 
+(defn special-modi-k?
+  [k]
+  (and (keyword? k) (or (= \! (first (name k))) (= \# (first (name k))))))
+
 (defn pkey?
   [pkeymap]
   (and (map? pkeymap)
