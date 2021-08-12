@@ -98,8 +98,8 @@
            result (if (and (number? hold_down_ms) (not (= 0 hold_down_ms)))
                     (assoc result :hold_down_milliseconds hold_down_ms)
                     result)
-           result (if (true? lazy)
-                    (assoc result :lazy true)
+           result (if (boolean? lazy)
+                    (assoc result :lazy lazy)
                     result)
            result (if select_input_source tinfo result)]
        result))
