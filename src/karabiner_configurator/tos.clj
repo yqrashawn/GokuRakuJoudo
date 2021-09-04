@@ -56,52 +56,66 @@
 ;; :repeat            "repeat": true,
 ;; :halt              "halt": false,
 ;; :hold_down_ms      "hold_down_milliseconds": 0
+;; :noti              "set_notification_message" : {
+;;                        "id": "identifier of the message",
+;;                        "text": "message text"
 ;;                }
 
 (defn parse-to
   [tname tinfos]
   (mapv
-   (fn [{:keys [set input shell lazy repeat halt hold_down_ms select_input_source] :as tinfo}]
-     (let [result (parse-key tname tinfo true true)
+   (fn [{:keys [set input shell lazy repeat halt hold_down_ms select_input_source noti] :as tinfo}]
+     (let [result         (parse-key tname tinfo true true)
            validate-shell (massert (or (and (vector? shell) (contains? (:templates conf-data) (first shell))) (string? shell) (nil? shell))
                                    (str "invalid `shell` in to definition " tname " " shell ", should be string or keyword"))
            validate-input (massert (or (nil? input) (and (keyword? input) (contains? (:input-sources conf-data) input)))
                                    (str "invalid `input` in to definition " tname " " input ", should be a keyword"))
-           validate-set (massert (or (vector? set) (nil? set))
-                                 (str "invalid `set` in to definition " tname " " set ", should be a vector"))
-           result (if (keyword? input)
-                    (assoc result :select_input_source (input (:input-sources conf-data)))
-                    result)
-           result (if (string? shell)
-                    (assoc result :shell_command shell)
-                    result)
-           result (if (vector? shell)
-                    (assoc result
-                           :shell_command (apply
-                                           format
-                                           (flatten
-                                            [((first shell)
-                                              (:templates conf-data))
-                                             (rest shell)
+           validate-set   (massert (or (vector? set) (nil? set))
+                                   (str "invalid `set` in to definition " tname " " set ", should be a vector"))
+           validate-noti  (massert (or (nil? noti) (and (map? noti)
+                                                        (or (keyword? (get noti :id))
+                                                            (string? (get noti :id)))
+                                                        (or (nil? (get noti :text))
+                                                            (keyword? (get noti :text))
+                                                            (string? (get noti :text)))))
+                                   (str "invalid `noti`, must be a map with at least :id, :id must be string or keyword"))
+           result         (if (keyword? input)
+                            (assoc result :select_input_source (input (:input-sources conf-data)))
+                            result)
+           result         (if (string? shell)
+                            (assoc result :shell_command shell)
+                            result)
+           result         (if (vector? shell)
+                            (assoc result
+                                   :shell_command (apply
+                                                   format
+                                                   (flatten
+                                                    [((first shell)
+                                                      (:templates conf-data))
+                                                     (rest shell)
                                              ;; optional arguments
-                                             "" "" "" "" "" ""])))
-                    result)
-           result (if (vector? set)
-                    (assoc result :set_variable {:name (first set) :value (second set)})
-                    result)
-           result (if (false? repeat)
-                    (assoc result :repeat false)
-                    result)
-           result (if (true? halt)
-                    (assoc result :halt true)
-                    result)
-           result (if (and (number? hold_down_ms) (not (= 0 hold_down_ms)))
-                    (assoc result :hold_down_milliseconds hold_down_ms)
-                    result)
-           result (if (boolean? lazy)
-                    (assoc result :lazy lazy)
-                    result)
-           result (if select_input_source tinfo result)]
+                                                     "" "" "" "" "" ""])))
+                            result)
+           result         (if (vector? set)
+                            (assoc result :set_variable {:name (first set) :value (second set)})
+                            result)
+           result         (if (false? repeat)
+                            (assoc result :repeat false)
+                            result)
+           result         (if (true? halt)
+                            (assoc result :halt true)
+                            result)
+           result         (if (and (number? hold_down_ms) (not (= 0 hold_down_ms)))
+                            (assoc result :hold_down_milliseconds hold_down_ms)
+                            result)
+           result         (if (boolean? lazy)
+                            (assoc result :lazy lazy)
+                            result)
+           result         (if noti
+                            (let [{:keys [id text]} noti]
+                              (assoc result :set_notification_message {:id id :text (or text "")}))
+                            result)
+           result         (if select_input_source tinfo result)]
        result))
    tinfos))
 
@@ -113,7 +127,7 @@
             {tname
              (do
                (massert (or (vector? tinfo) (map? tinfo))
-                       (str "invalid to definition in " tname ", must be map or vector"))
+                        (str "invalid to definition in " tname ", must be map or vector"))
                (if (not (vector? tinfo))
                  (parse-to tname [tinfo])
                  (parse-to tname tinfo)))}))))

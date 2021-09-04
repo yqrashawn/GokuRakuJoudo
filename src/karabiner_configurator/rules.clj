@@ -56,29 +56,39 @@
                         des
                         ". Please check your data and contact the author, so that the author can improve the error message."))))
 
+(defn parse-noti-with-tos [des to]
+  (let [[_ id text] to]
+    (first (tos/parse-to des [{:noti {:id id :text text}}]))))
+
 (defn to-key-vector
   [des to prevresult]
-  (if (conditions/is-simple-set-variable? to)
-    [(parse-simple-set-variable des to)]
-    (vec
-     (flatten
-      (for [v to] ;; this for only return flatten vector
-        (do
-          (massert (or (contains? (:tos conf-data) v)
-                       (k? v)
-                       (special-modi-k? v)
-                       (vector? v)
-                       (string? v)
-                       (map? v))
-                   (str "invalid to definition in main section's " des))
-          (cond (keyword? v)
-                (rule-parse-keyword des v)
-                (and (vector? v) (conditions/is-simple-set-variable? v))
-                (parse-simple-set-variable des v)
-                (string? v)
-                (tos/parse-to des [{:shell v}])
-                (map? v)
-                (tos/parse-to des [v]))))))))
+  (cond (conditions/is-simple-set-variable? to)
+        [(parse-simple-set-variable des to)]
+        (noti? to)
+        [(parse-noti-with-tos des to)]
+        :else
+        (vec
+         (flatten
+          (for [v to] ;; this for only return flatten vector
+            (do
+              (massert (or (contains? (:tos conf-data) v)
+                           (k? v)
+                           (noti? v)
+                           (special-modi-k? v)
+                           (vector? v)
+                           (string? v)
+                           (map? v))
+                       (str "invalid to definition in main section's " des))
+              (cond (keyword? v)
+                    (rule-parse-keyword des v)
+                    (and (vector? v) (noti? v))
+                    (parse-noti-with-tos des v)
+                    (and (vector? v) (conditions/is-simple-set-variable? v))
+                    (parse-simple-set-variable des v)
+                    (string? v)
+                    (tos/parse-to des [{:shell v}])
+                    (map? v)
+                    (tos/parse-to des [v]))))))))
 
 (defn process-to-shell-template-vector [to]
   (vec
@@ -250,17 +260,17 @@
                                                    (:to_if_canceled (:to_delayed_action result)))
                                          insert-simlayer)
                        additional-condis (vec (filter
-                                           (fn [condi]
-                                             (not (meta condi)))
-                                           (or (:conditions result) [])))
+                                               (fn [condi]
+                                                 (not (meta condi)))
+                                               (or (:conditions result) [])))
                        insert-simlayer (if (not (= (count additional-condis) 0))
                                          (assoc insert-simlayer :conditions (vec (concat additional-condis
                                                                                          (or (:conditions insert-simlayer) []))))
                                          insert-simlayer)
                        insert-simlayer (if (:parameters result)
-                                           (assoc insert-simlayer :parameters (merge (or (:parameters insert-simlayer) {})
-                                                                                     (:parameters result)))
-                                           insert-simlayer)
+                                         (assoc insert-simlayer :parameters (merge (or (:parameters insert-simlayer) {})
+                                                                                   (:parameters result)))
+                                         insert-simlayer)
                        cleanup-used-simlayers-config (conditions/cleanup-used-simlayers-config)]
                    [(with-meta result {:profiles profiles}) (with-meta insert-simlayer {:profiles profiles})])
                  (with-meta result {:profiles profiles}))]
@@ -422,8 +432,7 @@
 (defn generate
   "parse mains and generate all rules for converting to json"
   [mains]
-  (let [
-        ;; user-result (do
+  (let [;; user-result (do
         ;;               (doseq [{:keys [des rules]} mains]
         ;;                 (generate-one-rules des rules))
         ;;               multi-profile-rules)

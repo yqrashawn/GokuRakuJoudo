@@ -3,8 +3,16 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.11...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.4.0...HEAD
 
+** 0.4.0 - 2021-09-05
+
+*** Added
+- support new `set_notification_message` feature
+  documentation at https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org#command-q-twice-to-quit-application
+
+[commits in 0.4.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.11...v0.4.0
+** 0.3.10 - 2021-04-05
 ** 0.3.11 - 2021-04-05
 
 *** Added

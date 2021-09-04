@@ -51,6 +51,15 @@
         (contains? (:templates conf-data) k-or-vec)
         (vector? k-or-vec)
         (contains? (:templates conf-data) (first k-or-vec))))
+(defn noti? [vec]
+  (and (vector? vec)
+       (let [[k id text] vec]
+         (and (= k :noti)
+              (or (keyword? id)
+                  (string? id))
+              (or (string? text)
+                  (keyword? text)
+                  (nil? text))))))
 (defn raw-rule? [rule]
   (and (map? rule)
        (or (= :basic (:type rule))
@@ -90,7 +99,6 @@
             (get keys-info)
             (:button)
             true?)))
-
 
 (defn k?
   [k]

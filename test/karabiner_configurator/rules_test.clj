@@ -3,8 +3,7 @@
             [karabiner-configurator.data :refer :all]
             [clojure.test :as t]))
 
-(def example-mains [
-                    {:des "a to 1"                                            :rules [[:condi :chunkwm-move-mode]
+(def example-mains [{:des "a to 1"                                            :rules [[:condi :chunkwm-move-mode]
                                                                                       [:profiles :Default :test-profile-2]
                                                                                       [:a :1]]} ;; a to 1
                     {:des "[left] command a to control 1"                            :rules [[:!C#Pa :!T1]
@@ -23,7 +22,10 @@
                     {:des "press h insert 8 then set variable some-mode to 0" :rules [[:h [:8 {:set ["some-mode" 0]}]]]}
                     {:des "capslock to control as modifier to escape when press alone" :rules [[:##caps_lock :left_control nil {:alone :escape}]]}
                     {:des "Quit application by pressing command-q twice" :rules [[:!C#Pq :!Cq ["command-q" 1]]
-                                                                                 [:!C#Pq ["command-q" 1] nil {:delayed {:invoked ["command-q" 0] :canceled ["commandq" 0]}}]]}
+                                                                                 [:!C#Pq
+                                                                                  [[:noti :cmdq "Press Cmd-Q to Quit"] ["command-q" 1]]
+                                                                                  nil
+                                                                                  {:delayed {:invoked [[:noti :cmdq] ["command-q" 0]] :canceled [[:noti :cmdq] ["commandq" 0]]}}]]}
                     {:des "Quit application by holding command-q" :rules [[:!C#Pq nil nil {:held {:key :q :modi :left_command :repeat false}}]]}
                     {:des "Quit Safari by pressing command-q twice" :rules [[:!C#Pq :!Cq [:safari ["command-q" 1]]]
                                                                             [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :canceled ["command-q" 0]}}]]}
@@ -81,8 +83,8 @@
                      :rules [[{:sim [:i :o] :modi [:left_command]} [:i :o]]
                              [{:sim [:i :o] :modi {:mandatory [:left_command]
                                                    :optional [:left_shift]}} [:!Ci :o]]
-                             [{:sim [:i :o] :modi {:optional [:left_command] }} [:i :o]]
-                             [{:sim [:i :o] :modi {:optional [:any] }} [:i :o]]]}])
+                             [{:sim [:i :o] :modi {:optional [:left_command]}} [:i :o]]
+                             [{:sim [:i :o] :modi {:optional [:any]}} [:i :o]]]}])
 
 (def
   result
@@ -301,12 +303,13 @@
                                             :value 1
                                             :type "variable_if"}]
                               :type "basic"}
-                             {:to_delayed_action {:to_if_invoked [{:set_variable {:name "command-q" :value 0}}]
-                                                  :to_if_canceled [{:set_variable {:name "commandq" :value 0}}]}
+                             {:to_delayed_action {:to_if_invoked [{:set_notification_message {:id :cmdq :text ""}} {:set_variable {:name "command-q" :value 0}}]
+                                                  :to_if_canceled [{:set_notification_message {:id :cmdq :text ""}} {:set_variable {:name "commandq" :value 0}}]}
                               :from {:key_code "q"
                                      :modifiers {:mandatory ["left_command"]
                                                  :optional ["caps_lock"]}}
-                              :to [{:set_variable {:name "command-q" :value 1}}]
+                              :to [{:set_notification_message {:id :cmdq :text "Press Cmd-Q to Quit"}}
+                                   {:set_variable {:name "command-q" :value 1}}]
                               :type "basic"}]}
              {:description "Quit application by holding command-q"
               :manipulators [{:to_if_held_down [{:modifiers ["left_command"]
@@ -758,6 +761,3 @@
   (t/testing
    (t/is (= (sut/parse-mains example-mains)
             result))))
-
-
-

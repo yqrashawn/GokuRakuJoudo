@@ -326,3 +326,46 @@ Don't map a to b when there are three fingers on the trackpad.
   {:des "disable all pointing buttons"
    :rules [[{:any :pointing_button} :vk_none]]}
 #+END_SRC
+
+** command-q twice to quit application
+#+begin_src clojure
+{:des   "Quit application by pressing command-q twice"
+ :rules [[
+          ;; <from> second cmd-q (when variable "command-q" is 1)
+          :!C#Pq
+          ;; <to>, 3 to action
+          ;; 1. call cmd-q
+          ;; 2. set variable "command-q" to 0
+          ;; 3. cleanup the :cmdq notification (omit the thrid item to cleanup notification)
+          [:!Cq ["command-q" 0] [:noti :cmdq]]
+          ;; <condition> when variable "command-q" is 1
+          ["command-q" 1]]
+
+
+         [
+          ;; <from> first cmd-q (when variable "command-q" is 0)
+          :!C#Pq
+
+          ;; <to>, 2 to action
+          ;; 1. show notification with :id :cmdq, :text "Press Again to QUIT"
+          ;; 2. set variable "command-q" to 1 (for the second press)
+          [[:noti :cmdq "Press Again to QUIT"] ["command-q" 1]]
+
+          ;; <condition> nil means no required condition
+          nil
+
+          ;; <additional-option>
+          {
+           ;; to_delayed_action documentation
+           ;; https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to-delayed-action/
+           :delayed {
+                     ;; run 2 actions when no other key presses after basic.to_delayed_action_delay_milliseconds
+                     ;; 1. set variable "command-q" to 0
+                     ;; 2. cleanup notification :id :cmdq
+                     :invoked  [["command-q" 0] [:noti :cmdq]]
+
+                     ;; run 2 actions when another key presses within basic.to_delayed_action_delay_milliseconds
+                     ;; 1. set variable "command-q" to 0
+                     ;; 2. cleanup notification :id :cmdq
+                     :canceled [["command-q" 0] [:noti :cmdq]]}}]]}
+#+end_src
