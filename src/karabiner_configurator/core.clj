@@ -31,9 +31,12 @@
         joker-bin1 "/usr/local/opt/joker/bin/joker"
         ;; arm mac
         joker-bin2 "/opt/homebrew/opt/joker/bin/joker"
+        ;; nix
+        joker-bin3 (str (System/getenv "HOME") "/.nix-profile/bin/joker")
         ;; fallback to brew --prefix joker, it's really slow
         joker-bin (cond (fs/exists? joker-bin1) joker-bin1
                         (fs/exists? joker-bin2) joker-bin2
+                        (fs/exists? joker-bin3) joker-bin3
                         :else (-> (shell/sh "brew" "--prefix" "joker")
                                   :out
                                   (string/trim-newline)

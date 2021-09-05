@@ -3,12 +3,18 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.4.0...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.4.1...HEAD
 
+** 0.4.1 - 2021-09-06
+
+*** Added
+- use ~$HOME/.nix-profile/bin/joker~ if it exits
+
+[commits in 0.4.1]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.4.0...v0.4.1
 ** 0.4.0 - 2021-09-05
 
 *** Added
-- support new `set_notification_message` feature
+- support new ~set_notification_message~ feature
   documentation at https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org#command-q-twice-to-quit-application
 
 [commits in 0.4.0]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.11...v0.4.0
