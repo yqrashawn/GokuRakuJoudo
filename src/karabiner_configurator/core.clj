@@ -111,32 +111,32 @@
           "Can't find profile named \"%s\" in karabiner.json, please create a profile named \"%s\" using the Karabiner-Elements.app."
           profile-name-str
           profile-name-str))))
-    (when dry-run
-      (doseq [[profile-k profile-v] user-profiles]
-        (when-let [customized-profile (profile-k customized-profiles)]
-          (println (json/generate-string
-                    (assoc profile-v :complex_modifications (:complex_modifications customized-profile))
-                    {:pretty true}))))
-      (exit 1))
-    (let [result-config (assoc
-                         karabiner-config
-                         :profiles
-                         (mapv
-                          (fn [[profile-k profile-v]]
-                            (if-let [customized-profile (profile-k customized-profiles)]
-                              (assoc profile-v :complex_modifications (:complex_modifications customized-profile))
-                              profile-v))
-                          user-profiles))]
-      (when dry-run-all
-        (println (json/generate-string
-                  result-config
-                  {:pretty true}))
-        (exit 1))
-      (spit
-       (json-config-file-path)
-       (json/generate-string
-        result-config
-        {:pretty true})))))
+    (if dry-run
+      (do (doseq [[profile-k profile-v] user-profiles]
+            (when-let [customized-profile (profile-k customized-profiles)]
+              (println (json/generate-string
+                        (assoc profile-v :complex_modifications (:complex_modifications customized-profile))
+                        {:pretty true}))))
+          (exit 1))
+      (let [result-config (assoc
+                           karabiner-config
+                           :profiles
+                           (mapv
+                            (fn [[profile-k profile-v]]
+                              (if-let [customized-profile (profile-k customized-profiles)]
+                                (assoc profile-v :complex_modifications (:complex_modifications customized-profile))
+                                profile-v))
+                            user-profiles))]
+        (if dry-run-all
+          (do (println (json/generate-string
+                        result-config
+                        {:pretty true}))
+              (exit 1))
+          (spit
+           (json-config-file-path)
+           (json/generate-string
+            result-config
+            {:pretty true})))))))
 
 ;; actions
 (defn parse
@@ -254,6 +254,7 @@
   (-main "-c" "./")
   (-main "-dc" "./")
   (-main "-dc" "~/.config/karabiner.edn")
+  (-main "-dc" "~/.config/karabiner.test.edn")
   (-main "-d")
   (-main "-V")
   (-main "--version"))

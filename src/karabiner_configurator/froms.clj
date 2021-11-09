@@ -40,6 +40,22 @@
 ;;             |         },
 ;;             |         ...
 ;;             |     ],
+;;             |
+;; :modi       |     "modifiers": {
+;;   :mandatory|         "mandatory": [
+;;             |             {
+;;             |                 "modifier_key or any"
+;;             |             },
+;;             |             ...
+;;             |         ],
+;;   :optional |         "optional": [
+;;             |             {
+;;             |                 "modifier_key or any"
+;;             |             },
+;;             |             ...
+;;             |         ]
+;;             |     },
+;;             |
 ;; :simo       |     "simultaneous_options": {                                       default
 ;; :interrupt  |         "detect_key_down_uninterruptedly": false,                 |  false
 ;; :dorder     |         "key_down_order": "A restriction of input events order",  |  :insensitive
@@ -120,7 +136,7 @@
 
 (defn parse-from
   [fname finfo]
-  (let [finfo (if (vector? finfo) {:sim finfo} finfo)
+  (let [finfo              (if (vector? finfo) {:sim finfo} finfo)
         {:keys [sim simo]} finfo
         result             (parse-key fname finfo)
         result             (if (or sim simo) (parse-sim fname finfo result) result)]
