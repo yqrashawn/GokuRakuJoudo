@@ -148,6 +148,30 @@ below config works as well
                       [:x [:alf "killProcess" "com.ngreenstein.alfred-process-killer"]]]}]}
 #+end_src
 
+use ~left_control+w~ as simlayer key
+#+begin_src clojure
+{:templates {:open   "open \"%s\""
+             :alfred "osascript -e 'tell application \"Alfred 3\" to run trigger \"%s\" in workflow \"%s\" with argument \"%s\"'"}
+ :layers    {:alfred-layer {:key :z}}
+ :simlayers {:launch-mode {:key :w
+                           ;; can omit the vector if only one modifier is used
+                           ;; :modi {:mandatory :left_control}
+
+                           ;; more examples
+                           ;; :modi {:optional :any}
+                           ;; :modi {:optional [:left_shift :left_command]
+                           ;;        :mandatory :left_control}
+                           :modi {:mandatory [:left_control]}}}
+ :main      [{:des   "character key as modifier key rules"
+              :rules [:launch-mode
+                      ;; lctrl down and w+k run shell script "open /Applications/Emacs.app"
+                      [:k [:open "/Applications/Emacs.app"]]
+                      [:l [:open "/Applications/Google Chrome.app"]]
+                      :alfred-mode ;; all conditions works this way
+                      [:h [:alf "search repos" "me.lachlan.githubjump"]]
+                      [:x [:alf "killProcess" "com.ngreenstein.alfred-process-killer"]]]}]}
+#+end_src
+
 ** custom variable
 
 #+begin_src clojure
