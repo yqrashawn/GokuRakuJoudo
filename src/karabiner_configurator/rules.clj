@@ -120,14 +120,14 @@
   "generate to config"
   [des to]
   (let [result nil
-        validate-to (massert (or (and (keyword? to) (or (k? to)
-                                                        (special-modi-k? to)
-                                                        (contains? (:input-sources conf-data) to)
-                                                        (contains? (:tos conf-data) to)))
-                                 (string? to)
-                                 (vector? to)
-                                 (map? to))
-                             (str "invalid <to> in main section's " des))
+        _validate-to (massert (or (and (keyword? to) (or (k? to)
+                                                         (special-modi-k? to)
+                                                         (contains? (:input-sources conf-data) to)
+                                                         (contains? (:tos conf-data) to)))
+                                  (string? to)
+                                  (vector? to)
+                                  (map? to))
+                              (str "invalid <to> in main section's " des))
         result (if (contains? (:input-sources conf-data) to)
                  (vec (tos/parse-to des [{:input to}]))
                  result)

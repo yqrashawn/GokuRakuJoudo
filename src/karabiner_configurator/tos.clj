@@ -5,7 +5,7 @@
             [karabiner-configurator.modifiers :as kmodifier]))
 
 ;; parse tos definition
-;; spec https://pqrs.org/osx/karabiner/json.html#to-event-definition
+;; spec https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to/
 
 ;;                {
 ;; :key               "key_code": "The name of key_code",

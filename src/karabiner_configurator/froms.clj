@@ -7,7 +7,7 @@
    [karabiner-configurator.modifiers :as kmodifier]))
 
 ;; this file parse from event definition
-;; spec: https://pqrs.org/osx/karabiner/json.html#from-event-definition
+;; spec: https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/
 
 ;; user can define froms in advance and use it in `layers` or `rules`
 ;; edn_keyword | json_spec
