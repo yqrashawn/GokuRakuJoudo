@@ -15,31 +15,41 @@
                     (nn? (:key v))
                     (k? (:key v)))
                    (str "invalid simlayer definition " k))
-          condi (:condi v)
-          condi (if (or (keyword? condi) (map? condi)) [condi] condi)
+          modi           (:modi v)
+          modi-mandatory (:mandatory modi)
+          modi-optional  (:optional modi)
+          _              (when modi (massert (or modi-mandatory modi-optional) "expect :mandatory or :optional to be defined"))
+          modi-mandatory (cond (nil? modi-mandatory) nil (vector? modi-mandatory) modi-mandatory :else [modi-mandatory])
+          modi-optional  (cond (nil? modi-optional) nil (vector? modi-optional) modi-optional :else [modi-optional])
+          _              (when modi (massert (or (and modi-mandatory (every? modifier-k? modi-mandatory))
+                                                 (and modi-optional (every? modifier-k? modi-optional)))
+                                             "expect modifier keys in :mandatory or :optional"))
+          condi          (:condi v)
+          condi          (if (or (keyword? condi) (map? condi)) [condi] condi)
           validate-condition
           (massert (or (nil? condi)
                        (and (nn? condi) (vector? condi)))
                    (str "invalid condition definition in simlayer " k ", condition must be a vector or map or keyword"))
-          afterup (:afterup v)
-          key (:key v)
-          result (:simlayers conf-data)
-          result (assoc result k {:type "basic"
-                                  :parameters {:basic.simultaneous_threshold_milliseconds (:simlayer-threshold conf-data)}
-                                  :to [{:set [(name k) 1]}]
-                                  :from {:sim [key]
-                                         :simo {:interrupt true
-                                                :dorder :strict
-                                                :uorder :strict_inverse
-                                                :afterup {:set [(name k) 0]}}}})
-          result (if afterup
-                   (assoc-in result [k :from :simo :afterup] (into [] (flatten [(get-in result [k :from :simo :afterup]) afterup])))
-                   result)
-          result (if (nn? condi)
-                   (if (is-simple-set-variable? condi)
-                     (assoc-in result [k :conditions] (parse-conditions [condi]))
-                     (assoc-in result [k :conditions] (parse-conditions condi)))
-                   result)]
+          afterup        (:afterup v)
+          key            (:key v)
+          result         (:simlayers conf-data)
+          result         (assoc result k {:type       "basic"
+                                          :parameters {:basic.simultaneous_threshold_milliseconds (:simlayer-threshold conf-data)}
+                                          :to         [{:set [(name k) 1]}]
+                                          :from       {:sim  [key]
+                                                       :simo {:interrupt true
+                                                              :dorder    :strict
+                                                              :uorder    :strict_inverse
+                                                              :afterup   {:set [(name k) 0]}}}})
+          result         (if modi (assoc-in result [k :from :modi] modi) result)
+          result         (if afterup
+                           (assoc-in result [k :from :simo :afterup] (into [] (flatten [(get-in result [k :from :simo :afterup]) afterup])))
+                           result)
+          result         (if (nn? condi)
+                           (if (is-simple-set-variable? condi)
+                             (assoc-in result [k :conditions] (parse-conditions [condi]))
+                             (assoc-in result [k :conditions] (parse-conditions condi)))
+                           result)]
       (update-conf-data (assoc conf-data :simlayers result)))))
 
 (defn generate-layers

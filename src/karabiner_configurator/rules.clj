@@ -271,7 +271,10 @@
                                          (assoc insert-simlayer :parameters (merge (or (:parameters insert-simlayer) {})
                                                                                    (:parameters result)))
                                          insert-simlayer)
-                       cleanup-used-simlayers-config (conditions/cleanup-used-simlayers-config)]
+                       result (if-let [simlayer-modi (-> insert-simlayer :from :modifiers)]
+                                (assoc-in result [:from :modifiers] simlayer-modi)
+                                result)
+                       _cleanup-used-simlayers-config (conditions/cleanup-used-simlayers-config)]
                    [(with-meta result {:profiles profiles}) (with-meta insert-simlayer {:profiles profiles})])
                  (with-meta result {:profiles profiles}))]
     result))
@@ -394,7 +397,7 @@
                                                     (= (first rule) :profile)))))
                     (add-current-in-rule-conditions rule)
                     rule)))))
-           cleanup-circ (define-current-in-rule-conditions nil)
+           _cleanup-circ (define-current-in-rule-conditions nil)
            result-rules
            (vec
             (for [rule result-rules
@@ -406,7 +409,7 @@
                 (if (nn? current-in-rules-profiles)
                   (add-current-in-rule-profiles rule)
                   rule))))
-           cleanup-cirp (define-current-in-rule-profiles nil)]
+           _cleanup-cirp (define-current-in-rule-profiles nil)]
 
        ;; parse rule
        (for [rule result-rules
@@ -416,13 +419,13 @@
                ;; a rule must have a from event defination and to event defination
                ;; from event defination is defined in <from> section
                ;; to event defination can be defined in <to> section or <other-options> section (as :alone :delayed :afterup)
-               validate-rule (massert
-                              (and (nn? from)
-                                   (or
-                                    (nn? (:type from))
-                                    (nn? other-options)
-                                    (nn? to)))
-                              (str "invalid rule: " des ", <from> or <to>/<other-options> is nil" from "\n" to "\n" other-options))]
+               _validate-rule (massert
+                               (and (nn? from)
+                                    (or
+                                     (nn? (:type from))
+                                     (nn? other-options)
+                                     (nn? to)))
+                               (str "invalid rule: " des ", <from> or <to>/<other-options> is nil" from "\n" to "\n" other-options))]
            (cond
              (nn? (:type from)) (parse-raw-rule from profiles)
              (and (nil? other-options) (nil? condition)) (parse-rule des from to nil nil profiles)
@@ -436,27 +439,27 @@
         ;;               (doseq [{:keys [des rules]} mains]
         ;;                 (generate-one-rules des rules))
         ;;               multi-profile-rules)
-        update-multi-profile-rules
+        _update-multi-profile-rules
         (doseq [{:keys [des rules]} mains]
           (massert (nn? des) "missing description key :des in one rule, please check your config file")
           (generate-one-rules des rules))
-        update-profile-layer-condis
+        _update-profile-layer-condis
         (doseq [[profile condis] profile-layer-condis]
           ;; TODO: change it to the clojure way (don't use mutable data)
           (def profile-layer-condis (assoc profile-layer-condis profile (vec (for [condi condis]  (condi (:layers conf-data)))))))
 
-        add-layer-result (doseq [[profile condis] profile-layer-condis]
-                           (when (profile multi-profile-rules)
-                             ;; TODO: change it to the clojure way (don't use mutable data)
-                             (def multi-profile-rules
-                               (assoc multi-profile-rules
-                                      profile
-                                      (vec (cons
-                                            {:description "Auto generated layer conditions"
-                                             :manipulators (into
-                                                            condis
-                                                            (:manipulators (profile multi-profile-rules)))}
-                                            (profile multi-profile-rules)))))))]
+        _add-layer-result (doseq [[profile condis] profile-layer-condis]
+                            (when (profile multi-profile-rules)
+                              ;; TODO: change it to the clojure way (don't use mutable data)
+                              (def multi-profile-rules
+                                (assoc multi-profile-rules
+                                       profile
+                                       (vec (cons
+                                             {:description  "Auto generated layer conditions"
+                                              :manipulators (into
+                                                             condis
+                                                             (:manipulators (profile multi-profile-rules)))}
+                                             (profile multi-profile-rules)))))))]
     multi-profile-rules))
 
 (defn parse-mains
