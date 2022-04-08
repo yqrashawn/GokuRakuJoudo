@@ -72,12 +72,13 @@ You can find all keycode definition in [this file](https://github.com/yqrashawn/
     ;; and we can use multiple conditions
     {:applications {:chrome ["^com\\.google\\.Chrome$"]
                     :safari ["^com\\.apple\\.Safari$"]}
-     :main [{:des "a to 1 only in chrome, safari" :rules [[:a :1 [:chrome :safari]]]}]}
+     :main [{:des "a to 1 only in chrome and safari" :rules [[:a :1 [:chrome]]
+                                                             [:a :1 [:safari]]]}]}
 
     ;; we can also prefix use the opposite condition
     {:applications {:chrome ["^com\\.google\\.Chrome$"]
                     :safari ["^com\\.apple\\.Safari$"]}
-     :main [{:des "a to 1 only outside chrome, safari" :rules [[:a :1 [:!chrome :!safari]]]}]}
+     :main [{:des "a to 1 only outside chrome and safari" :rules [[:a :1 [:!chrome :!safari]]]}]}
 ```
 
 <a id="basic3"></a>
