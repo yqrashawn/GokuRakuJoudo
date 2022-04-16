@@ -23,7 +23,7 @@ jobs:
           mkdir -p /usr/local/opt/joker/bin/
           unzip joker-0.15.7-mac-amd64.zip -d /usr/local/opt/joker/bin/
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3.0.1
       - name: Install dependencies
         run: lein deps
       - name: Compile
@@ -38,7 +38,7 @@ jobs:
           chmod +x gokuw
       - name: Pack
         run: zip -r goku.zip goku.zip goku gokuw # https://github.com/actions/virtual-environments/issues/2619#issuecomment-778827140
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: goku-zip
           path: goku.zip
@@ -49,13 +49,17 @@ jobs:
     needs: build
     runs-on: macos-latest
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: goku-zip
       - name: Delete Other Draft Releases
-        uses: hugo19941994/delete-draft-releases@v0.1.0
+        uses: hugo19941994/delete-draft-releases@v1.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get sha256
+        id: sha256
+        run: echo "::set-output name=checksum::$(shasum -a 256 goku.zip)"
 
       - name: Create Draft Release
         id: create_draft_release
@@ -65,8 +69,8 @@ jobs:
         with:
           tag_name: ${{ github.sha }}
           release_name: Release ${{ github.sha }}
-          # body: |
-          #   goku.zip sha256: ${{ hashFiles('goku.zip') }}
+          body: |
+            - sha256 `${{ steps.sha256.outputs.checksum }}`
           draft: true
           prerelease: false
       - name: Upload Release Asset
@@ -86,9 +90,12 @@ jobs:
     needs: build
     runs-on: macos-latest
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: goku-zip
+      - name: Get sha256
+        id: sha256
+        run: echo "::set-output name=checksum::$(shasum -a 256 goku.zip)"
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -99,6 +106,7 @@ jobs:
           release_name: Release ${{ github.ref }}
           body: |
             Checkout the changelog at https://github.com/yqrashawn/GokuRakuJoudo/blob/master/CHANGELOG.org
+            - sha256 `${{ steps.sha256.outputs.checksum }}`
           draft: false
           prerelease: false
       - name: Upload Release Asset
