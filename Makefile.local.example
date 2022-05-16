@@ -3,7 +3,7 @@
 MAKE=make -f Makefile.local
 # change below path to graalvm native-image binary file
 GRAALVM=/path/to/graalvm-ce-xxxxx-xxx/Contents/Home/bin/native-image
-GRAALVM_ARG=-H:+ReportUnsupportedElementsAtRuntime --no-server
+GRAALVM_ARG=-H:+ReportUnsupportedElementsAtRuntime --no-server -J-Dclojure.compiler.elide-meta=[:doc :file :line :added] -J-Dclojure.spec.skip-macros=true -Djdk.internal.lambda.eagerlyInitialize=false
 JAR_NAME=karabiner-configurator-0.1.0-standalone
 TARGET_JAR=target/$(JAR_NAME).jar
 all:

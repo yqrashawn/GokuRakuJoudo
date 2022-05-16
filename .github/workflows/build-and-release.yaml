@@ -10,7 +10,14 @@ jobs:
       - name: Setup GraalVM environment
         uses: DeLaGuardo/setup-graalvm@master
         with:
-          graalvm-version: "20.3.0.java8"
+          graalvm-version: "22.1.0.java17"
+      - uses: actions/cache@v3
+        id: maven-cache # use this to check for `cache-hit` (`steps.yarn-and-maven-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ~/.m2/
+          key: ${{ runner.os }}-maven-${{ hashFiles('./deps.edn') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Install native image
         run: gu install native-image
       - name: Setup Clojure
@@ -19,9 +26,7 @@ jobs:
           lein: latest
       - name: Install joker
         run: |
-          wget -q https://github.com/candid82/joker/releases/download/v0.15.7/joker-0.15.7-mac-amd64.zip
-          mkdir -p /usr/local/opt/joker/bin/
-          unzip joker-0.15.7-mac-amd64.zip -d /usr/local/opt/joker/bin/
+          brew install candid82/brew/joker
       - name: Checkout Code
         uses: actions/checkout@v3.0.1
       - name: Install dependencies

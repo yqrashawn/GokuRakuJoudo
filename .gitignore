@@ -18,3 +18,5 @@ pom.xml.asc
 *~
 /.lsp/
 /.clj-kondo/.cache/
+/.cpcache/
+/karabiner-configurator-0.1.0-standalone.build_artifacts.txt

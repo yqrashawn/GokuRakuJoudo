@@ -3,7 +3,14 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.5.2...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.5.3...HEAD
+
+** 0.5.3 - 2022-05-16
+
+*** Added
+- Use graalvm-22.1.0+java17 and clojure 1.11.1. This enables user to build arm binary on their own (#172)
+
+[commits in 0.5.3]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.5.2...v0.5.3
 
 ** 0.5.2 - 2022-04-25
 

@@ -211,7 +211,7 @@
       (:version options)
       {:action "exit-with-message"
        :ok? true
-       :exit-message "0.5.2"}
+       :exit-message "0.5.3"}
       ;; log
       (:log options)
       {:action       "log"
