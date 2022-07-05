@@ -3,7 +3,7 @@ Examples for users to check as quick reference and source of inspiration. Most d
 
 ** minimal configuration
 
-Below is the minimal configuration. It does nothing. Make sure you have a profile named "Default" in karabiner.json. 
+Below is the minimal configuration. It does nothing. Make sure you have a profile named "Default" in karabiner.json.
 
 #+begin_src clojure
 {}
@@ -65,7 +65,7 @@ You can find all keycodes [[https://github.com/yqrashawn/GokuRakuJoudo/blob/mast
 
 #+begin_quote
 Note: Other modifier keys work because of the "~##~" prefix. If you replace
-~##~ with ~#C~ (~C~ for ~left_command~), only 
+~##~ with ~#C~ (~C~ for ~left_command~), only
 
 > left_command + right_command -> left_command + f16 will work.
 
@@ -273,17 +273,17 @@ Don't map a to b when there are three fingers on the trackpad.
 
 ** profiles
    Skip this section if you don't use profiles.
-   
-   Since [[https://karabiner-elements.pqrs.org/docs/manual/misc/command-line-interface/][karabiner cli]] now supports set variables, profiles are mainly used for multiple users using the same machine or between different usages like gaming profiles and working profiles. Goku doesn't support that well for now.  
-   
-   However, you can define your multiple profiles. Only one profile can be set as the default profile (~:default true~). 
+
+   Since [[https://karabiner-elements.pqrs.org/docs/manual/misc/command-line-interface/][karabiner cli]] now supports set variables, profiles are mainly used for multiple users using the same machine or between different usages like gaming profiles and working profiles. Goku doesn't support that well for now.
+
+   However, you can define your multiple profiles. Only one profile can be set as the default profile (~:default true~).
 
    Then you can use profile keyword ~:Default~ as conditions or layers keyword.
    You need to specify each rule to a profile, or they will be considered in the default profile.
 
    If you want to have an empty profile for gaming, you can create one in
-   the karabiner GUI (no need to change anything in Goku).  
-   
+   the karabiner GUI (no need to change anything in Goku).
+
 #+begin_src clojure
 {:profiles {:Default {;; "default true means" rules default goes into this rule if no profiles specified
                       :default true
@@ -309,7 +309,7 @@ Don't map a to b when there are three fingers on the trackpad.
 ** same key in different mode, from @nikitavoloboev's [[https://github.com/nikitavoloboev/dotfiles/blob/6e2a96e1db1c85b393aa3898f88fdf93fa8fadd6/karabiner/karabiner.edn#L717][config]]
    You can use [[https://karabiner-elements.pqrs.org/docs/manual/misc/command-line-interface/][karabiner command-line interface]] to set variables when you open specifc
    type of files in your editor. See [[https://github.com/yqrashawn/GokuRakuJoudo/issues/79][ISSUE #79]].
-   
+
 #+begin_src clojure
   {:profiles
    {:Default {:default true
@@ -345,7 +345,7 @@ Don't map a to b when there are three fingers on the trackpad.
 #+end_src
 
 ** disable all pointing buttons
-#+NAME: disable all pointing buttons 
+#+NAME: disable all pointing buttons
 #+BEGIN_SRC clojure
   {:des "disable all pointing buttons"
    :rules [[{:any :pointing_button} :vk_none]]}
