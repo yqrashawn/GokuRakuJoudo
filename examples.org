@@ -85,7 +85,7 @@ Others combinations would simply act like
 
 #+begin_src clojure
 {:main [{:des   "press j and l simultaneously to f16"
-         :rules [[[:h :j] :f16]]}]}
+         :rules [[[:j :l] :f16]]}]}
 #+end_src
 
 ** using a regular key as a modifier key
