@@ -393,5 +393,5 @@ This solves those two problems. But we need to trigger the second key fast, or t
         ;; The first 4 is same as tos definition, and we also have shortcuts for ~parameters~.
 ```
 
-You can checkout [the documentation for &lt;other options&gt;](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L170).  
+You can checkout [the documentation for &lt;other options&gt;](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L170).
 And there're also [&lt;to&gt; documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L90), [&lt;from&gt; documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L11), [&lt;conditions&gt; documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/a9f2551e1961aab3549fd9e7622b40fd6304b27b/src/karabiner_configurator/rules.clj#L157).
