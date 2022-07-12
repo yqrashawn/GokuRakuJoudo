@@ -1,51 +1,45 @@
 (ns karabiner-configurator.core
   (:require
    [cheshire.core :as json]
-   [clojure.string :as string]
    [clojure.java.shell :as shell]
-   [karabiner-configurator.modifiers :as modifiers]
-   [karabiner-configurator.misc :refer :all]
-   [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.layers :as layers]
-   [karabiner-configurator.froms :as froms]
-   [karabiner-configurator.tos :as tos]
-   [karabiner-configurator.rules :as rules]
-   [karabiner-configurator.profiles :as profiles]
-   [clojure.edn :as edn]
-   [me.raynes.fs :as fs]
+   [clojure.string :as string]
    [clojure.tools.cli :as cli]
-   [environ.core :refer [env]])
+   [environ.core :refer [env]]
+   [karabiner-configurator.data :as d]
+   [karabiner-configurator.froms :as froms]
+   [karabiner-configurator.layers :as layers]
+   [karabiner-configurator.misc :refer [load-edn load-json massert]]
+   [karabiner-configurator.modifiers :as modifiers]
+   [karabiner-configurator.profiles :as profiles]
+   [karabiner-configurator.rules :as rules]
+   [karabiner-configurator.tos :as tos]
+   [me.raynes.fs :as fs])
   (:gen-class))
 
 ;; helper function
 (defn update-static-conf
   "Helper function to update conf-data from reading rules"
   [key conf]
-  (if (nn? conf)
-    (assoc-conf-data key conf)))
+  (when (some? conf)
+    (d/assoc-conf-data key conf)))
 
 (defn check-edn-syntax
   "Call joker to check syntax of karabiner.edn"
   [path]
-  (let [;; intel mac
-        joker-bin1 "/usr/local/opt/joker/bin/joker"
-        ;; arm mac
-        joker-bin2 "/opt/homebrew/opt/joker/bin/joker"
-        ;; nix
-        joker-bin3 (str (System/getenv "HOME") "/.nix-profile/bin/joker")
-        ;; fallback to which joker
-        joker-bin (cond (fs/exists? joker-bin1) joker-bin1
-                        (fs/exists? joker-bin2) joker-bin2
-                        (fs/exists? joker-bin3) joker-bin3
-                        :else (-> (shell/sh "which" "joker")
-                                  :out
-                                  (string/trim-newline)
-                                  (str "/bin/joker")))]
-    (shell/sh joker-bin "--lint" path)))
+  (let [sys-env (into {} (System/getenv))]
+    (shell/sh "joker" "--lint" path
+              :env (merge
+                    sys-env
+                    {"PATH"
+                     (str "/etc/profiles/per-user/" (System/getenv "USER") "/bin:" ;; nix profile
+                          "/run/current-system/sw/bin:" ;; nix darwin multiuser
+                          "/opt/homebrew/bin:"          ;; arm homebrew
+                          "/usr/local/bin:"             ;; homebrew
+                          (get sys-env "PATH"))}))))
 
 (defn exit [status & [msg]]
-  (if msg (println msg))
-  (if (not (env :is-dev)) (System/exit status)))
+  (when msg (println msg))
+  (when-not (env :is-dev) (System/exit status)))
 
 ;; paths
 (defn json-config-file-path
@@ -73,17 +67,18 @@
 (defn parse-edn
   "Init conf data and return new rules based on karabiner.edn (main section in edn file)"
   [conf]
-  (init-conf-data)
-  (let [{:keys [applications devices keyboard-type input-sources tos froms modifiers layers simlayers raws main simlayer-threshold templates profiles]} conf]
+  (d/init-conf-data)
+  (let [{:keys [applications devices keyboard-type input-sources tos froms modifiers layers simlayers ;; raws
+                main simlayer-threshold templates profiles]} conf]
     (if (nil? profiles)
-      (profiles/parse-profiles (:profiles conf-data))
+      (profiles/parse-profiles (:profiles d/conf-data))
       (profiles/parse-profiles profiles))
     (update-static-conf :applications applications)
     (update-static-conf :devices devices)
     (update-static-conf :keyboard-type keyboard-type)
     (update-static-conf :input-sources input-sources)
     (update-static-conf :templates templates)
-    (if (number? simlayer-threshold)
+    (when (number? simlayer-threshold)
       (update-static-conf :simlayer-threshold simlayer-threshold))
     (modifiers/parse-modifiers modifiers)
     (layers/parse-layers layers)
@@ -103,10 +98,10 @@
                                 (:profiles karabiner-config)]
                             {(keyword (:name json-profile))
                              json-profile}))]
-    (doseq [[profile-k profile-v] customized-profiles]
+    (doseq [[profile-k _] customized-profiles]
       (let [profile-name-str (name profile-k)]
         (massert
-         (nn? (profile-k user-profiles))
+         (some? (profile-k user-profiles))
          (format
           "Can't find profile named \"%s\" in karabiner.json, please create a profile named \"%s\" using the Karabiner-Elements.app."
           profile-name-str
@@ -143,17 +138,17 @@
   "Root function to parse karabiner.edn and update karabiner.json."
   [path & [dry-run dry-run-all]]
   (let [edn-syntax-err (:err (check-edn-syntax path))]
-    (if (> (count edn-syntax-err) 0)
-      (do (println "Syntax error in config:")
-          (println edn-syntax-err)
-          (exit 1))))
+    (when (> (count edn-syntax-err) 0)
+      (println "Syntax error in config:")
+      (println edn-syntax-err)
+      (exit 1)))
   (update-to-karabiner-json (parse-edn (load-edn path)) dry-run dry-run-all))
 
 (defn open-log-file []
   (shell/sh "open" (log-file)))
 ;; cli stuff
 
-(defn help-message [options-summary]
+(defn help-message [_]
   (->> ["GokuRakuJoudo -- karabiner configurator"
         ""
         "goku will read config file and update `Goku` profile in karabiner.json"
@@ -233,8 +228,9 @@
 ;; main
 (defn -main
   [& args]
-  (let [{:keys [action options exit-message ok? config dry-run dry-run-all]} (validate-args args)]
-    (if exit-message
+  (let [{:keys [action ;; options
+                exit-message ok? config dry-run dry-run-all]} (validate-args args)]
+    (when exit-message
       (case action
         "run" (do (parse (or config (edn-config-file-path)) dry-run dry-run-all)
                   (exit (if ok? 0 1) exit-message))

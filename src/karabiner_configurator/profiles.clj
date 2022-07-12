@@ -1,7 +1,7 @@
 (ns karabiner-configurator.profiles
   (:require
-   [karabiner-configurator.misc :refer :all]
-   [karabiner-configurator.data :refer :all]))
+   [karabiner-configurator.data :as d]
+   [karabiner-configurator.misc :refer [massert]]))
 
 (defn parse-profiles
   "Parse profiles and save it in conf data for later use."
@@ -9,16 +9,18 @@
   (massert (map? profiles) "Invalid profiles. Must be a map")
   (massert (= (count (filter #(:default (second %)) profiles)) 1)
            "There should be one and only one default profile")
-  (let [user-default-profile (update-user-default-profile-name
-                              (first (first (filter #(:default (second %)) profiles))))]
+  (let [_user-default-profile (d/update-user-default-profile-name
+                               (first (first (filter #(:default (second %)) profiles))))]
     (doseq [profile profiles
-            :let [[name {:keys [held sim delay alone default]}] profile]]
-      (assoc-in-conf-data [:profiles name] {:complex_modifications
-                                            {:parameters
-                                             {:basic.simultaneous_threshold_milliseconds sim
-                                              :basic.to_delayed_action_delay_milliseconds delay
-                                              :basic.to_if_alone_timeout_milliseconds alone
-                                              :basic.to_if_held_down_threshold_milliseconds held}}}))))
+            :let [[name {:keys [held sim delay alone]}] profile]]
+      (d/assoc-in-conf-data
+       [:profiles name]
+       {:complex_modifications
+        {:parameters
+         {:basic.simultaneous_threshold_milliseconds sim
+          :basic.to_delayed_action_delay_milliseconds delay
+          :basic.to_if_alone_timeout_milliseconds alone
+          :basic.to_if_held_down_threshold_milliseconds held}}}))))
 (defn parse-rules
   "Parse generated rules into profiles"
   [rules]
@@ -27,6 +29,6 @@
    (for [[profile-name profile-complex-modification] rules]
      {profile-name
       (assoc-in (profile-name
-                 (:profiles conf-data))
+                 (:profiles @d/conf-data))
                 [:complex_modifications :rules]
                 profile-complex-modification)})))

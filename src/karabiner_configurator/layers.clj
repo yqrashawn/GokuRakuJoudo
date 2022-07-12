@@ -1,19 +1,19 @@
 (ns karabiner-configurator.layers
   (:require
-   [karabiner-configurator.conditions :refer :all]
+   [karabiner-configurator.conditions :refer [is-simple-set-variable? parse-conditions]]
+   [karabiner-configurator.data :as d]
    [karabiner-configurator.froms :as froms]
-   [karabiner-configurator.tos :as tos]
-   [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.misc :refer :all]))
+   [karabiner-configurator.misc :refer [dissoc-in massert]]
+   [karabiner-configurator.tos :as tos]))
 
 (defn generate-simlayers
   [simlayers]
   (doseq [[k v] simlayers]
-    (let [validate-simlayer
+    (let [_validate-simlayer
           (massert (and
-                    (nn? v)
-                    (nn? (:key v))
-                    (k? (:key v)))
+                    (some? v)
+                    (some? (:key v))
+                    (d/k? (:key v)))
                    (str "invalid simlayer definition " k))
           modi           (:modi v)
           modi-mandatory (:mandatory modi)
@@ -21,20 +21,20 @@
           _              (when modi (massert (or modi-mandatory modi-optional) "expect :mandatory or :optional to be defined"))
           modi-mandatory (cond (nil? modi-mandatory) nil (vector? modi-mandatory) modi-mandatory :else [modi-mandatory])
           modi-optional  (cond (nil? modi-optional) nil (vector? modi-optional) modi-optional :else [modi-optional])
-          _              (when modi (massert (or (and modi-mandatory (every? modifier-k? modi-mandatory))
-                                                 (and modi-optional (every? modifier-k? modi-optional)))
+          _              (when modi (massert (or (and modi-mandatory (every? d/modifier-k? modi-mandatory))
+                                                 (and modi-optional (every? d/modifier-k? modi-optional)))
                                              "expect modifier keys in :mandatory or :optional"))
           condi          (:condi v)
           condi          (if (or (keyword? condi) (map? condi)) [condi] condi)
-          validate-condition
+          _validate-condition
           (massert (or (nil? condi)
-                       (and (nn? condi) (vector? condi)))
+                       (and (some? condi) (vector? condi)))
                    (str "invalid condition definition in simlayer " k ", condition must be a vector or map or keyword"))
           afterup        (:afterup v)
           key            (:key v)
-          result         (:simlayers conf-data)
+          result         (:simlayers @d/conf-data)
           result         (assoc result k {:type       "basic"
-                                          :parameters {:basic.simultaneous_threshold_milliseconds (:simlayer-threshold conf-data)}
+                                          :parameters {:basic.simultaneous_threshold_milliseconds (:simlayer-threshold @d/conf-data)}
                                           :to         [{:set [(name k) 1]}]
                                           :from       {:sim  [key]
                                                        :simo {:interrupt true
@@ -45,32 +45,32 @@
           result         (if afterup
                            (assoc-in result [k :from :simo :afterup] (into [] (flatten [(get-in result [k :from :simo :afterup]) afterup])))
                            result)
-          result         (if (nn? condi)
+          result         (if (some? condi)
                            (if (is-simple-set-variable? condi)
                              (assoc-in result [k :conditions] (parse-conditions [condi]))
                              (assoc-in result [k :conditions] (parse-conditions condi)))
                            result)]
-      (update-conf-data (assoc conf-data :simlayers result)))))
+      (d/update-conf-data (assoc @d/conf-data :simlayers result)))))
 
 (defn generate-layers
   [layers]
   (doseq [[k v] layers]
-    (let [validate-layer
+    (let [_validate-layer
           (massert (and
-                    (nn? v)
-                    (nn? (:key v))
-                    (k? (:key v)))
+                    (some? v)
+                    (some? (:key v))
+                    (d/k? (:key v)))
                    (str "invalid layer definition " k))
           condi (:condi v)
           condi (if (or (keyword? condi) (map? condi)) [condi] condi)
-          validate-condition
+          _validate-condition
           (massert (or (nil? condi)
-                       (and (nn? condi) (vector? condi)))
+                       (and (some? condi) (vector? condi)))
                    (str "invalid condition definition in layer " k ", condition must be a vector or map or keyword"))
           afterup (:afterup v)
           alone (:alone v)
           key (:key v)
-          result (:layers conf-data)
+          result (:layers @d/conf-data)
           result (assoc result k {:type "basic"
                                   :to [{:set [(name k) 1]}]
                                   :alone [{:key key}]
@@ -91,17 +91,17 @@
           result (assoc-in result [k :from] (froms/parse-from (str "auto insert definition of layer" (name k)) (:from (k result))))
           result (dissoc-in result [k :afterup])
           result (dissoc-in result [k :alone])
-          result (if (nn? condi)
+          result (if (some? condi)
                    (if (is-simple-set-variable? condi)
                      (assoc-in result [k :conditions] (parse-conditions [condi] nil nil layers))
                      (assoc-in result [k :conditions] (parse-conditions condi nil nil layers)))
                    result)]
-      (update-conf-data (assoc conf-data :layers result)))))
+      (d/update-conf-data (assoc @d/conf-data :layers result)))))
 
 (defn parse-simlayers [simlayers]
-  (if (nn? simlayers)
+  (if (some? simlayers)
     (generate-simlayers simlayers)))
 
 (defn parse-layers [layers]
-  (if (nn? layers)
+  (if (some? layers)
     (generate-layers layers)))

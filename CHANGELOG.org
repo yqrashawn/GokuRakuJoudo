@@ -3,7 +3,14 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.5.3...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.5.4...HEAD
+** 0.5.4 - 2022-07-12
+*** Changed 
+- use ~/bin/zsh~ instead of ~/bin/sh~ in launch agent https://github.com/yqrashawn/homebrew-goku/blob/9a4f6cd23f51535e046a33fe260876630fc20292/Formula/goku.rb#L28
+- fix joker PATH
+- run through clj-kondo
+
+[commits in 0.5.4]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.5.3...v0.5.4
 
 ** 0.5.3 - 2022-05-16
 
@@ -61,8 +68,8 @@ All notable changes to this project will be documented in this file. This change
 - support simultaneous pointing_button
 #+NAME: sim key in from
 #+BEGIN_SRC clojure
-  {:des "sim pkey in from"
-   :rules [[[{:pkey :button5} {:pkey :button2}] {:pkey :button1}]]}
+{:des "sim pkey in from"
+ :rules [[[{:pkey :button5} {:pkey :button2}] {:pkey :button1}]]}
 #+END_SRC
 
 [commits in 0.3.10]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.9...v0.3.10
@@ -108,18 +115,18 @@ All notable changes to this project will be documented in this file. This change
 - ~:applications~ now supports ~file_paths~
 [[https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/conditions/frontmost-application/][karabiner-elements documentation about file_paths]]
 #+BEGIN_SRC clojure
-  {...
-   :applications
-   {:Chromes ["^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$" :paths "^/Applications/Google Chrome\\.app"]
-    ;; same as
-    :Chromes [:identifiers "^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$" :paths "^/Applications/Google Chrome\\.app"]
+{...
+ :applications
+ {:Chromes ["^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$" :paths "^/Applications/Google Chrome\\.app"]
+  ;; same as
+  :Chromes [:identifiers "^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$" :paths "^/Applications/Google Chrome\\.app"]
 
-    ;; can specify multiple :paths or :identifiers (can omit keyword :identifiers)
-    :Chromes [:identifiers "^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$"
-              :paths "^/Applications/Google Chrome\\.app" "^/Applications/Google Chrome Canary\\.app"]
+  ;; can specify multiple :paths or :identifiers (can omit keyword :identifiers)
+  :Chromes [:identifiers "^org\\.chromium\\.Chromium$" "^com\\.google\\.Chrome\\.canary$"
+            :paths "^/Applications/Google Chrome\\.app" "^/Applications/Google Chrome Canary\\.app"]
 
-    ;; paths only (can't omit keyword :paths)
-    :Chromes [:paths "^/Applications/.*Chrom.*"]}}
+  ;; paths only (can't omit keyword :paths)
+  :Chromes [:paths "^/Applications/.*Chrom.*"]}}
 #+END_SRC
 
 [commits in 0.3.4]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.3.3...0.3.4
@@ -292,9 +299,9 @@ both stderr and stdout.
 
 ;; now we can do it with predefined layer
 {:layers {:wlayer {:key :w}}
-  :main [{:des "w layer"
-          :rules [[:e "open -a Emacs.app" :wlayer]
-                  [:s "open -a Safari.app" :wlayer]]}]}
+ :main [{:des "w layer"
+         :rules [[:e "open -a Emacs.app" :wlayer]
+                 [:s "open -a Safari.app" :wlayer]]}]}
 #+end_src
 
 - group rules by conditions

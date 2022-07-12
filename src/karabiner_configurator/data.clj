@@ -1,56 +1,57 @@
 (ns karabiner-configurator.data
   (:require
-   [karabiner-configurator.keys-info :refer :all]
-   [karabiner-configurator.misc :refer :all]))
+   [karabiner-configurator.keys-info :refer [keys-info]]
+   [karabiner-configurator.misc :refer [contains?? massert]]))
 
-(declare rule-id)
+(def rule-id (atom nil))
 
 (defn init-rule-id []
-  (def rule-id -1))
+  (reset! rule-id -1))
 
-(defn next-rule-id
-  "return the next rule id
+;; (defn next-rule-id
+;;   "return the next rule id
 
-   store each rule in a vector and use the index as their id
-   the data structure will also store conditions used in the rule
-   so that we know what condition used in each profile"
-  []
-  (def rule-id (inc rule-id))
-  rule-id)
+;;    store each rule in a vector and use the index as their id
+;;    the data structure will also store conditions used in the rule
+;;    so that we know what condition used in each profile"
+;;   []
+;;   (swap! rule-id inc)
+;;   @rule-id)
 
-(declare conf-data)
+(def conf-data (atom {}))
+(def user-default-profile-name (atom :Default))
 
 (defn init-conf-data
   []
   (init-rule-id)
-  (def user-default-profile-name :Default)
-  (def conf-data {:profiles {:Default {:sim 50 ;; basic.simultaneous_threshold_milliseconds
-                                       :delay 500 ;; basic.to_delayed_action_delay_milliseconds
-                                       :alone 1000 ;; basic.to_if_alone_timeout_milliseconds
-                                       :held 500 ;; basic.to_if_held_down_threshold_milliseconds
-                                       :default true}}
-                  :applications {}
-                  :devices {}
-                  :input-sources {}
-                  :modifiers {}
-                  :froms {}
-                  :tos {}
-                  :layers {}
-                  :simlayers {}
-                  :simlayer-threshold 250}))
+  (reset! user-default-profile-name :Default)
+  (reset! conf-data {:profiles {:Default {:sim 50 ;; basic.simultaneous_threshold_milliseconds
+                                          :delay 500 ;; basic.to_delayed_action_delay_milliseconds
+                                          :alone 1000 ;; basic.to_if_alone_timeout_milliseconds
+                                          :held 500 ;; basic.to_if_held_down_threshold_milliseconds
+                                          :default true}}
+                     :applications {}
+                     :devices {}
+                     :input-sources {}
+                     :modifiers {}
+                     :froms {}
+                     :tos {}
+                     :layers {}
+                     :simlayers {}
+                     :simlayer-threshold 250}))
 
-(defn applications? [k] (nn? (k (:applications conf-data))))
-(defn devices? [k] (nn? (k (:devices conf-data))))
-(defn input-sources? [k] (nn? (k (:input-sources conf-data))))
-(defn modifiers? [k] (nn? (k (:modifiers conf-data))))
-(defn froms? [k] (nn? (k (:froms conf-data))))
-(defn layers? [k] (nn? (k (:layers conf-data))))
-(defn simlayers? [k] (nn? (k (:simlayers conf-data))))
+;; (defn applications? [k] (some? (k (:applications @conf-data))))
+(defn devices? [k] (some? (k (:devices @conf-data))))
+(defn input-sources? [k] (some? (k (:input-sources @conf-data))))
+;; (defn modifiers? [k] (some? (k (:modifiers @conf-data))))
+;; (defn froms? [k] (some? (k (:froms @conf-data))))
+;; (defn layers? [k] (some? (k (:layers @conf-data))))
+(defn simlayers? [k] (some? (k (:simlayers @conf-data))))
 (defn templates? [k-or-vec]
   (cond (keyword? k-or-vec)
-        (contains? (:templates conf-data) k-or-vec)
+        (contains? (:templates @conf-data) k-or-vec)
         (vector? k-or-vec)
-        (contains? (:templates conf-data) (first k-or-vec))))
+        (contains? (:templates @conf-data) (first k-or-vec))))
 (defn noti? [vec]
   (and (vector? vec)
        (let [[k id text] vec]
@@ -66,25 +67,19 @@
            (= :mouse_motion_to_scroll (:type rule)))))
 
 (defn profile? [k]
-  (and (keyword? k) (k (:profiles conf-data))))
+  (and (keyword? k) (k (:profiles @conf-data))))
 
-(def default-profile {:Default {:sim 50 ;; basic.simultaneous_threshold_milliseconds
-                                :delay 500 ;; basic.to_delayed_action_delay_milliseconds
-                                :alone 1000 ;; basic.to_if_alone_timeout_milliseconds
-                                :held 500 ;; basic.to_if_held_down_threshold_milliseconds
-                                :default true}})
-
-(def user-default-profile-name :Default)
+;; (def default-profile {:Default {:sim 50 ;; basic.simultaneous_threshold_milliseconds
+;;                                 :delay 500 ;; basic.to_delayed_action_delay_milliseconds
+;;                                 :alone 1000 ;; basic.to_if_alone_timeout_milliseconds
+;;                                 :held 500 ;; basic.to_if_held_down_threshold_milliseconds
+;;                                 :default true}})
 
 (defn update-user-default-profile-name [profile-name]
   (massert
    (keyword? profile-name)
    (str "invalid profile name " profile-name ", profile name must be a keyword"))
-  (def user-default-profile-name profile-name))
-
-(defn special-modi-k?
-  [k]
-  (and (keyword? k) (or (= \! (first (name k))) (= \# (first (name k))))))
+  (reset! user-default-profile-name profile-name))
 
 (defn pkey?
   [pkeymap]
@@ -102,8 +97,8 @@
 
 (defn k?
   [k]
-  (if (keyword? k)
-    (nn? (k keys-info))))
+  (when (keyword? k)
+    (some? (k keys-info))))
 
 (defn modifier-k?
   [k]
@@ -138,43 +133,42 @@
 
 (defn mouse-keyword?
   [k]
-  (nn? (k mkey-keyword)))
+  (some? (k mkey-keyword)))
 
 (defn mouse-key-name
   [k]
   (massert (mouse-keyword? k) (str "invalid mouse key keyword " k))
   (:name (k mkey-keyword)))
 
-(defn special-modi-k?
-  [k]
-  (if (keyword? k)
+(defn special-modi-k? [k]
+  (when (keyword? k)
     (contains?? [\! \#] (first (name k)))))
 
-(defn find-condition-keyword
-  [kw]
-  (cond (contains? (:applications conf-data))
-        {:name :application
-         :value (kw (:applications conf-data))}
-        (contains? (:devices conf-data))
-        {:name :devices
-         :value (kw (:devices conf-data))}
-        (contains? (:input-sources conf-data))
-        {:name :input-sources
-         :value (kw (:input-sources conf-data))}
-        (contains? (:simlayers conf-data))
-        {:name :simlayers
-         :value (kw (:simlayers conf-data))}))
+;; (defn find-condition-keyword
+;;   [kw]
+;;   (cond (contains? @conf-data :applications)
+;;         {:name :application
+;;          :value (kw (:applications @conf-data))}
+;;         (contains? @conf-data :devices)
+;;         {:name :devices
+;;          :value (kw (:devices @conf-data))}
+;;         (contains? @conf-data :input-sources)
+;;         {:name :input-sources
+;;          :value (kw (:input-sources @conf-data))}
+;;         (contains? @conf-data :simlayers)
+;;         {:name :simlayers
+;;          :value (kw (:simlayers @conf-data))}))
 
 (defn update-conf-data
   [data]
-  (def conf-data data))
+  (reset! conf-data data))
 
 (defn assoc-conf-data
   [key data]
-  (def conf-data (assoc conf-data key data)))
+  (swap! conf-data assoc key data))
 
 (defn assoc-in-conf-data
   [keys-vector data]
-  (def conf-data (assoc-in conf-data keys-vector data)))
+  (swap! conf-data assoc-in keys-vector data))
 
-(def output "output data that will convert into json string" [])
+;; (def output "output data that will convert into json string" [])

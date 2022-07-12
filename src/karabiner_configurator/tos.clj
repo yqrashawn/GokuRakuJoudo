@@ -1,8 +1,7 @@
 (ns karabiner-configurator.tos
-  (:require [karabiner-configurator.misc :refer :all]
-            [karabiner-configurator.data :refer :all]
-            [karabiner-configurator.keys :refer :all]
-            [karabiner-configurator.modifiers :as kmodifier]))
+  (:require [karabiner-configurator.data :refer [conf-data update-conf-data]]
+            [karabiner-configurator.keys :refer [parse-key]]
+            [karabiner-configurator.misc :refer [massert]]))
 
 ;; parse tos definition
 ;; spec https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to/
@@ -66,21 +65,21 @@
   (mapv
    (fn [{:keys [set input shell lazy repeat halt hold_down_ms select_input_source noti] :as tinfo}]
      (let [result         (parse-key tname tinfo true true)
-           validate-shell (massert (or (and (vector? shell) (contains? (:templates conf-data) (first shell))) (string? shell) (nil? shell))
-                                   (str "invalid `shell` in to definition " tname " " shell ", should be string or keyword"))
-           validate-input (massert (or (nil? input) (and (keyword? input) (contains? (:input-sources conf-data) input)))
-                                   (str "invalid `input` in to definition " tname " " input ", should be a keyword"))
-           validate-set   (massert (or (vector? set) (nil? set))
-                                   (str "invalid `set` in to definition " tname " " set ", should be a vector"))
-           validate-noti  (massert (or (nil? noti) (and (map? noti)
-                                                        (or (keyword? (get noti :id))
-                                                            (string? (get noti :id)))
-                                                        (or (nil? (get noti :text))
-                                                            (keyword? (get noti :text))
-                                                            (string? (get noti :text)))))
-                                   (str "invalid `noti`, must be a map with at least :id, :id must be string or keyword"))
+           _validate-shell (massert (or (and (vector? shell) (contains? (:templates @conf-data) (first shell))) (string? shell) (nil? shell))
+                                    (str "invalid `shell` in to definition " tname " " shell ", should be string or keyword"))
+           _validate-input (massert (or (nil? input) (and (keyword? input) (contains? (:input-sources @conf-data) input)))
+                                    (str "invalid `input` in to definition " tname " " input ", should be a keyword"))
+           _validate-set   (massert (or (vector? set) (nil? set))
+                                    (str "invalid `set` in to definition " tname " " set ", should be a vector"))
+           _validate-noti  (massert (or (nil? noti) (and (map? noti)
+                                                         (or (keyword? (get noti :id))
+                                                             (string? (get noti :id)))
+                                                         (or (nil? (get noti :text))
+                                                             (keyword? (get noti :text))
+                                                             (string? (get noti :text)))))
+                                    (str "invalid `noti`, must be a map with at least :id, :id must be string or keyword"))
            result         (if (keyword? input)
-                            (assoc result :select_input_source (input (:input-sources conf-data)))
+                            (assoc result :select_input_source (input (:input-sources @conf-data)))
                             result)
            result         (if (string? shell)
                             (assoc result :shell_command shell)
@@ -91,7 +90,7 @@
                                                    format
                                                    (flatten
                                                     [((first shell)
-                                                      (:templates conf-data))
+                                                      (:templates @conf-data))
                                                      (rest shell)
                                              ;; optional arguments
                                                      "" "" "" "" "" ""])))
@@ -120,7 +119,7 @@
    tinfos))
 
 (defn generate [tos]
-  (assoc conf-data :tos
+  (assoc @conf-data :tos
          (into
           {}
           (for [[tname tinfo] tos]
@@ -133,5 +132,5 @@
                  (parse-to tname tinfo)))}))))
 
 (defn parse-tos [tos]
-  (if (nn? tos)
+  (when (some? tos)
     (update-conf-data (generate tos))))

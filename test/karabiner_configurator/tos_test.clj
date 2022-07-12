@@ -1,11 +1,10 @@
 (ns karabiner-configurator.tos-test
-  (:require [karabiner-configurator.tos :as sut]
-            [karabiner-configurator.data :refer :all]
-            [clojure.test :as t]))
+  (:require [clojure.test :as t]
+            [karabiner-configurator.data :refer [init-conf-data assoc-conf-data]]
+            [karabiner-configurator.tos :as sut]))
 
 (def tos-example
-  {
-   :1 {:key :d}
+  {:1 {:key :d}
    :2 {:key :d :modi :1}
    :3 {:key :d :modi :left_command}
    :4 {:key :d :modi [:left_command :right_shift]}
@@ -81,7 +80,7 @@
                         :key_code "d"}]
                    :6 [{:modifiers ["left_command" "right_shift"]
                         :key_code "d"}]
-                   :19 [{ :select_input_source { :input_source_id "^com\\.apple\\.keylayout\\.ABC$" } }]}
+                   :19 [{:select_input_source {:input_source_id "^com\\.apple\\.keylayout\\.ABC$"}}]}
              :input-sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
                                         :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
                                         :language "zh-Hans"}
@@ -99,15 +98,15 @@
 
 (t/deftest convert-tos
   (init-conf-data)
-  (update-conf-data (assoc conf-data :templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}))
-  (update-conf-data (assoc conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]}}))
-  (update-conf-data (assoc conf-data :input-sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
-                                                                :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
-                                                                :language "zh-Hans"}
-                                                     :us {:input_mode_id ""
-                                                          :input_source_id "com.apple.keylayout.US"
-                                                          :language "en"}}))
+  (assoc-conf-data :templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"})
+  (assoc-conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]}})
+  (assoc-conf-data :input-sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
+                                              :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
+                                              :language "zh-Hans"}
+                                   :us {:input_mode_id ""
+                                        :input_source_id "com.apple.keylayout.US"
+                                        :language "en"}})
   (t/testing
-      (t/is (= (:tos (sut/generate tos-example)) (:tos result)))))
+   (t/is (= (:tos (sut/generate tos-example)) (:tos result)))))
 
 ;; (sut/generate tos-example)

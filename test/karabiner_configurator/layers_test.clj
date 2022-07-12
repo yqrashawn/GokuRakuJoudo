@@ -1,7 +1,7 @@
 (ns karabiner-configurator.layers-test
-  (:require [karabiner-configurator.layers :as sut]
-            [karabiner-configurator.data :refer :all]
-            [clojure.test :as t]))
+  (:require [clojure.test :as t]
+            [karabiner-configurator.data :refer [conf-data init-conf-data update-conf-data]]
+            [karabiner-configurator.layers :as sut]))
 
 (def layers-example {:tab-mode {:key :tab :afterup [{:set ["chunkwm-move-mode" 0]}
                                                     {:set ["chunkwm-scale-mode" 0]}]}
@@ -144,25 +144,25 @@
 
 (t/deftest convert-simlayers
   (init-conf-data)
-  (update-conf-data (assoc conf-data :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
-                                               :hhkb [{:vendor_id 2131 :product_id 256}]}))
-  (update-conf-data (assoc conf-data :applications {:chrome ["^com\\.google\\.Chrome$"]
-                                                    :chrom-canary ["^com\\.google\\.Chrome\\.canary$"]
-                                                    :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}))
+  (update-conf-data (assoc @conf-data :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
+                                                :hhkb [{:vendor_id 2131 :product_id 256}]}))
+  (update-conf-data (assoc @conf-data :applications {:chrome ["^com\\.google\\.Chrome$"]
+                                                     :chrom-canary ["^com\\.google\\.Chrome\\.canary$"]
+                                                     :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}))
   ;; (t/testing
   ;;   (t/is (= (sut/generate-layers layers-example) layer-result))
   ;;   (t/is (= (sut/generate-simlayers simlayers-example) simlayer-result)))
   (t/testing "testing simlayers"
     (sut/generate-simlayers simlayers-example)
-    (t/is (= conf-data simlayer-result))))
+    (t/is (= @conf-data simlayer-result))))
 
 (t/deftest convert-layers
   (init-conf-data)
-  (update-conf-data (assoc conf-data :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
-                                               :hhkb [{:vendor_id 2131 :product_id 256}]}))
-  (update-conf-data (assoc conf-data :applications {:chrome ["^com\\.google\\.Chrome$"]
-                                                    :chrom-canary ["^com\\.google\\.Chrome\\.canary$"]
-                                                    :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}))
+  (update-conf-data (assoc @conf-data :devices {:hhkb-bt [{:vendor_id 1278 :product_id 51966}]
+                                                :hhkb [{:vendor_id 2131 :product_id 256}]}))
+  (update-conf-data (assoc @conf-data :applications {:chrome ["^com\\.google\\.Chrome$"]
+                                                     :chrom-canary ["^com\\.google\\.Chrome\\.canary$"]
+                                                     :chromes ["^com\\.google\\.Chrome$" "^com\\.google\\.Chrome\\.canary$"]}))
   (t/testing "testing layers"
     (sut/generate-layers layers-example)
-    (t/is (= conf-data layer-result))))
+    (t/is (= @conf-data layer-result))))

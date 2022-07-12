@@ -1,7 +1,7 @@
 (ns karabiner-configurator.froms-test
   (:require
    [clojure.test :as t]
-   [karabiner-configurator.data :refer :all]
+   [karabiner-configurator.data :refer [conf-data init-conf-data update-conf-data]]
    [karabiner-configurator.froms :as sut]))
 
 (def example-froms
@@ -78,7 +78,7 @@
 
 (t/deftest convert-froms
   (init-conf-data)
-  (update-conf-data (assoc conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]
-                                                     :optional ["any"]}}))
+  (update-conf-data (assoc @conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]
+                                                      :optional ["any"]}}))
   (t/testing
-      (t/is (= (:froms (sut/generate example-froms)) (:froms result)))))
+   (t/is (= (:froms (sut/generate example-froms)) (:froms result)))))

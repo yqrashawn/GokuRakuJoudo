@@ -1,8 +1,8 @@
 (ns karabiner-configurator.core-test
   (:require [clojure.test :as t]
             [karabiner-configurator.core :as sut]
-            [karabiner-configurator.data :refer :all]
-            [karabiner-configurator.misc :refer :all]))
+            [karabiner-configurator.data :refer [init-conf-data]]
+            [karabiner-configurator.misc :refer [load-edn load-result-edn]]))
 
 (def vi-mode-example (load-edn "resources/configurations/edn/vi_mode.edn"))
 (def launch-mode-example (load-edn "resources/configurations/edn/launch_mode.edn"))

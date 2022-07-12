@@ -1,7 +1,7 @@
 (ns karabiner-configurator.misc
-  (:require [clojure.java.io :as io]
-            [cheshire.core :as json]
+  (:require [cheshire.core :as json]
             [clojure.edn :as edn]
+            [clojure.java.io :as io]
             [environ.core :refer [env]]))
 
 (defn massert
@@ -12,13 +12,11 @@
       (assert exp error-str)
       (try
         (assert exp error-str)
-        (catch AssertionError e
+        (catch AssertionError _
           (binding [*out* *err*]
             (println error-str)
             (println "Failed!"))
           (System/exit 1))))))
-
-(def nn? "not nil" (complement nil?))
 
 (defn which?
   "Checks if any of elements is included in coll and says which one
@@ -30,7 +28,7 @@
                              ncoll))) nil rest)))
 (defn contains??
   [coll rest]
-  (nn? (which? coll rest)))
+  (some? (which? coll rest)))
 
 (defn load-edn
   "Load edn from an io/reader source (filename or io/resource)."
@@ -66,19 +64,19 @@
       (catch RuntimeException e
         (printf "Error parsing edn file '%s': %s\n" source (.getMessage e)))))
 
-(defmacro when-let*
-  "Multiple binding version of when-let"
-  [bindings & body]
-  (if (seq bindings)
-    `(when-let [~(first bindings) ~(second bindings)]
-       (when-let* ~(vec (drop 2 bindings)) ~@body))
-    `(do ~@body)))
+;; (defmacro when-let*
+;;   "Multiple binding version of when-let"
+;;   [bindings & body]
+;;   (if (seq bindings)
+;;     `(when-let [~(first bindings) ~(second bindings)]
+;;        (when-let* ~(vec (drop 2 bindings)) ~@body))
+;;     `(do ~@body)))
 
 (defn dissoc-in
   "Dissociates an entry from a nested associative structure returning a new
   nested structure. keys is a sequence of keys. Any empty maps that result
   will not be present in the new structure."
-  [m [k & ks :as keys]]
+  [m [k & ks]]
   (if ks
     (if-let [nextmap (get m k)]
       (let [newmap (dissoc-in nextmap ks)]

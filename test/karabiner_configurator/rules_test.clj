@@ -1,7 +1,7 @@
 (ns karabiner-configurator.rules-test
-  (:require [karabiner-configurator.rules :as sut]
-            [karabiner-configurator.data :refer :all]
-            [clojure.test :as t]))
+  (:require [clojure.test :as t]
+            [karabiner-configurator.data :refer [init-conf-data update-conf-data]]
+            [karabiner-configurator.rules :as sut]))
 
 (def example-mains [{:des "a to 1"                                            :rules [[:condi :chunkwm-move-mode]
                                                                                       [:profiles :Default :test-profile-2]

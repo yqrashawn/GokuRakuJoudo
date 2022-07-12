@@ -1,7 +1,7 @@
 (ns karabiner-configurator.modifiers-test
-  (:require [karabiner-configurator.modifiers :as sut]
-            [karabiner-configurator.data :refer :all]
-            [clojure.test :refer :all]))
+  (:require [clojure.test :refer [deftest is testing]]
+            [karabiner-configurator.data :refer [init-conf-data]]
+            [karabiner-configurator.modifiers :as sut]))
 
 (def example-modifers {:modifiers {:111 [:left_command :left_control]
                                    :222 {:mandatory [:left_command :left_shift]}

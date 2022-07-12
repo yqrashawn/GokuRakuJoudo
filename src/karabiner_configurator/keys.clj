@@ -1,9 +1,9 @@
 (ns karabiner-configurator.keys
   (:require
-   [karabiner-configurator.misc :refer :all]
-   [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.modifiers :as kmodifier]
-   [clojure.string :refer [includes? join]]))
+   [clojure.string :refer [includes? join]]
+   [karabiner-configurator.data :as d]
+   [karabiner-configurator.misc :refer [contains?? massert]]
+   [karabiner-configurator.modifiers :as kmodifier]))
 
 (def any-key-keywords {:consumer_key_code {}
                        :pointing_button {}
@@ -11,21 +11,21 @@
 
 (defn parse-keycode [keycode & [from-to]]
   (if from-to
-    (massert (to-k? keycode) (str "invalid key code " keycode " can't be used in from"))
-    (massert (from-k? keycode) (str "invalid key code " keycode " can't be used in from")))
+    (massert (d/to-k? keycode) (str "invalid key code " keycode " can't be used in from"))
+    (massert (d/from-k? keycode) (str "invalid key code " keycode " can't be used in from")))
   keycode)
 
 (defn parse-ckey [ckey]
-  (massert (consumer-k? ckey) (str "invalid consumer key code " ckey))
+  (massert (d/consumer-k? ckey) (str "invalid consumer key code " ckey))
   ckey)
 
 (defn parse-pkey [pkey]
-  (massert (pointing-k? pkey) (str "invalid pointing key code " pkey))
+  (massert (d/pointing-k? pkey) (str "invalid pointing key code " pkey))
   pkey)
 
 (defn update-mouse-map
   [[k v]]
-  [(mouse-key-name k) v])
+  [(d/mouse-key-name k) v])
 
 (defn parse-mkey
   [mkey]
@@ -36,26 +36,26 @@
 (def special-modi-optional-re #"(^#[#CSTOQWERFP]+)")
 (def special-modi-optional-both-re #"(#[#CSTOQWERFP]+)")
 
-(defn special-modi-realkey [smodi]
-  (let [keystr (name smodi)
-        both (re-find special-modi-re keystr)
-        mandatory (if both
-                    (re-find special-modi-mandatory-re (first both))
-                    (re-find special-modi-mandatory-re keystr))
-        optional (if both
-                   (re-find special-modi-optional-both-re (first both))
-                   (re-find special-modi-optional-re keystr))
-        validate (massert (or both mandatory optional)
-                          (str "invalid special modifier keyword " smodi))
-        mandatory (if mandatory (first mandatory) nil)
-        optional (if optional (first optional) nil)
-        realkey (cond both
-                      (keyword (subs keystr (count (first both))))
-                      (and mandatory (not both))
-                      (keyword (subs keystr (count mandatory)))
-                      (and optional (not both))
-                      (keyword (subs keystr (count optional))))]
-    realkey))
+;; (defn special-modi-realkey [smodi]
+;;   (let [keystr (name smodi)
+;;         both (re-find special-modi-re keystr)
+;;         mandatory (if both
+;;                     (re-find special-modi-mandatory-re (first both))
+;;                     (re-find special-modi-mandatory-re keystr))
+;;         optional (if both
+;;                    (re-find special-modi-optional-both-re (first both))
+;;                    (re-find special-modi-optional-re keystr))
+;;         validate (massert (or both mandatory optional)
+;;                           (str "invalid special modifier keyword " smodi))
+;;         mandatory (if mandatory (first mandatory) nil)
+;;         optional (if optional (first optional) nil)
+;;         realkey (cond both
+;;                       (keyword (subs keystr (count (first both))))
+;;                       (and mandatory (not both))
+;;                       (keyword (subs keystr (count mandatory)))
+;;                       (and optional (not both))
+;;                       (keyword (subs keystr (count optional))))]
+;;     realkey))
 
 (defn special-modi-vector-to-modifiers
   [vec]
@@ -123,8 +123,8 @@
         optional (if both
                    (re-find special-modi-optional-both-re (first both))
                    (re-find special-modi-optional-re keystr))
-        validate (massert (or both mandatory optional)
-                          (str "invalid special modifier keyword " smodi))
+        _validate (massert (or both mandatory optional)
+                           (str "invalid special modifier keyword " smodi))
         mandatory (if mandatory (first mandatory) nil)
         optional (if optional (first optional) nil)
         realkey (cond both
@@ -133,8 +133,8 @@
                       (keyword (subs keystr (count mandatory)))
                       (and optional (not both))
                       (keyword (subs keystr (count optional))))
-        validate-realkey (massert (k? realkey)
-                                  (str "invalid special key keyword " smodi ", no key " realkey))
+        _validate-realkey (massert (d/k? realkey)
+                                   (str "invalid special key keyword " smodi ", no key " realkey))
         result (assoc result :key_code (name realkey))
         mandatory (if mandatory (into [] (subs mandatory 1)) nil)
         optional (if optional (into [] (subs optional 1)) nil)
@@ -148,28 +148,28 @@
   [kname kinfo & [mandatory-only from-to]]
   (let [{:keys [key ckey pkey any modi mkey]} kinfo
         result {}
-        special-modi? (special-modi-k? key)
-        _both-special-modi-and-modi? (massert (not (and special-modi? (nn? modi))) (str "can't use special modi and modi togeher, check " kname))
-        predefined-modi? (and (keyword? modi) (contains?? (:modifiers conf-data) modi))
+        special-modi? (d/special-modi-k? key)
+        _both-special-modi-and-modi? (massert (not (and special-modi? (some? modi))) (str "can't use special modi and modi togeher, check " kname))
+        predefined-modi? (and (keyword? modi) (contains?? (:modifiers @d/conf-data) modi))
         _valid-modifier-definition? (massert (or (nil? modi) (map? modi)
-                                                 (vector? modi) (modifier-k? modi)
+                                                 (vector? modi) (d/modifier-k? modi)
                                                  predefined-modi?)
                                              (str "invalid modifier definition " modi " in " kname))
-        _valid-any-keyword? (if any (massert (any any-key-keywords) (str "invalid :any keyword " (name any) " in " kname)))
+        _valid-any-keyword? (when any (massert (any any-key-keywords) (str "invalid :any keyword " (name any) " in " kname)))
         mandatory-only? (true? mandatory-only)
         result (if special-modi? (parse-special-modi key result mandatory-only) result)
-        result (if (and (not special-modi?) (nn? modi))
+        result (if (and (not special-modi?) (some? modi))
                  (if (not predefined-modi?)
                    (if mandatory-only?
                      (assoc result :modifiers (:mandatory (kmodifier/parse-single-modifier-definition modi kname)))
                      (assoc result :modifiers (kmodifier/parse-single-modifier-definition modi kname)))
                    (if mandatory-only?
-                     (assoc result :modifiers (:mandatory (modi (:modifiers conf-data))))
-                     (assoc result :modifiers (modi (:modifiers conf-data)))))
+                     (assoc result :modifiers (:mandatory (modi (:modifiers @d/conf-data))))
+                     (assoc result :modifiers (modi (:modifiers @d/conf-data)))))
                  result)
-        result (if (and (not (:key_code result)) (nn? key)) (assoc result :key_code (name (parse-keycode key from-to))) result)
-        result (if (nn? ckey) (assoc result :consumer_key_code (name (parse-ckey ckey))) result)
-        result (if (nn? pkey) (assoc result :pointing_button (name (parse-pkey pkey))) result)
-        result (if (and (nn? any) (any any-key-keywords)) (assoc result :any (name any)) result)
-        result (if (nn? mkey) (assoc result :mouse_key (parse-mkey mkey)) result)]
+        result (if (and (not (:key_code result)) (some? key)) (assoc result :key_code (name (parse-keycode key from-to))) result)
+        result (if (some? ckey) (assoc result :consumer_key_code (name (parse-ckey ckey))) result)
+        result (if (some? pkey) (assoc result :pointing_button (name (parse-pkey pkey))) result)
+        result (if (and (some? any) (any any-key-keywords)) (assoc result :any (name any)) result)
+        result (if (some? mkey) (assoc result :mouse_key (parse-mkey mkey)) result)]
     result))

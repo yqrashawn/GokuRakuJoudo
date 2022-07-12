@@ -39,7 +39,7 @@ jobs:
         run: |
           touch gokuw
           echo '#!/bin/sh' >> gokuw
-          echo 'watchexec -r -w `[[ -z $GOKU_EDN_CONFIG_FILE ]] && echo ~/.config/karabiner.edn || echo $GOKU_EDN_CONFIG_FILE` goku' >> gokuw
+          echo 'watchexec -r -e edn -w `[[ -z $GOKU_EDN_CONFIG_FILE ]] && echo ~/.config/karabiner.edn || echo $GOKU_EDN_CONFIG_FILE` goku' >> gokuw
           chmod +x gokuw
       - name: Pack
         run: zip -r goku.zip goku.zip goku gokuw # https://github.com/actions/virtual-environments/issues/2619#issuecomment-778827140

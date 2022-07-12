@@ -1,10 +1,9 @@
 (ns karabiner-configurator.froms
   (:require
-   [karabiner-configurator.misc :refer :all]
-   [karabiner-configurator.data :refer :all]
-   [karabiner-configurator.keys :refer :all]
-   [karabiner-configurator.tos :as tos]
-   [karabiner-configurator.modifiers :as kmodifier]))
+   [karabiner-configurator.data :refer [conf-data from-k? k? pkey? update-conf-data]]
+   [karabiner-configurator.keys :refer [parse-key]]
+   [karabiner-configurator.misc :refer [contains?? massert]]
+   [karabiner-configurator.tos :as tos]))
 
 ;; this file parse from event definition
 ;; spec: https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/
@@ -100,8 +99,8 @@
         vec))
 
 (defn parse-simo
-  [sim simo simo-op-value simo-op-keyword result]
-  (if (and (nn? sim) (nn? simo-op-value))
+  [sim _simo simo-op-value simo-op-keyword result]
+  (if (and (some? sim) (some? simo-op-value))
     (do (massert (or (contains?? [true false] simo-op-value)
                      (and (keyword? simo-op-value)
                           (contains?? (:values (simo-op-keyword simo-keywords)) simo-op-value)))
@@ -109,7 +108,7 @@
         (if (keyword? simo-op-value) ;; there're true false
           (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] (name simo-op-value))
           (assoc-in result [:simultaneous_options (:name (simo-op-keyword simo-keywords))] simo-op-value)))
-    (if (nn? sim)
+    (if (some? sim)
       (assoc-in
        result
        [:simultaneous_options (:name (simo-op-keyword simo-keywords))]
@@ -120,7 +119,7 @@
   [fname finfo prevresult]
   (let [result                                   prevresult
         {:keys [sim simo]}                       finfo
-        result                                   (if (nn? sim) (assoc result :simultaneous (parse-keycode-or-pkey-vec fname sim)) result)
+        result                                   (if (some? sim) (assoc result :simultaneous (parse-keycode-or-pkey-vec fname sim)) result)
         {:keys [interrupt dorder uorder upwhen]} simo
         result                                   (parse-simo sim simo interrupt :interrupt result)
         result                                   (parse-simo sim simo dorder :dorder result)
@@ -143,7 +142,7 @@
     result))
 
 (defn generate [froms]
-  (assoc conf-data :froms
+  (assoc @conf-data :froms
          (into
           {}
           ;; fname is the name of the from
@@ -155,5 +154,5 @@
                (parse-from fname finfo))}))))
 
 (defn parse-froms [froms]
-  (if (nn? froms)
+  (when (some? froms)
     (update-conf-data (generate froms))))
