@@ -54,9 +54,9 @@
   []
   (cond
     (System/getenv "GOKU_EDN_CONFIG_FILE")
-    (System/getenv "GOKU_EDN_CONFIG_FILE")
+    (fs/expand-home (System/getenv "GOKU_EDN_CONFIG_FILE"))
     (System/getenv "XDG_CONFIG_HOME")
-    (str (System/getenv "XDG_CONFIG_HOME") "/karabiner.edn")
+    (fs/expand-home (str (System/getenv "XDG_CONFIG_HOME") "/karabiner.edn"))
     :else
     (str (System/getenv "HOME") "/.config/karabiner.edn")))
 
@@ -171,9 +171,7 @@
        (string/join \newline errors)))
 
 (defn abs-path [path]
-  (if (= (first path) \~)
-    (.getPath (fs/expand-home path))
-    path))
+  (.getPath (fs/expand-home path)))
 
 (def cli-opts
   [["-h" "--help"]
@@ -185,7 +183,8 @@
                  (let [path (abs-path path)]
                    (and (fs/exists? path)
                         (fs/file? path)
-                        (fs/readable? path)))) "Make sure the file is exits and readable"]]
+                        (fs/readable? path))))
+               "Make sure the file is exits and readable"]]
    ["-d" "--dry-run"]
    ["-A" "--dry-run-all"]])
 

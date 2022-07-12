@@ -3,7 +3,14 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.5.4...HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.5.5...HEAD
+
+** 0.5.5 - 2022-07-12
+*** Fixed
+- fix https://github.com/yqrashawn/GokuRakuJoudo/issues/164
+
+[commits in 0.5.5]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.5.4...v0.5.5
+
 ** 0.5.4 - 2022-07-12
 *** Changed 
 - use ~/bin/zsh~ instead of ~/bin/sh~ in launch agent https://github.com/yqrashawn/homebrew-goku/blob/9a4f6cd23f51535e046a33fe260876630fc20292/Formula/goku.rb#L28
