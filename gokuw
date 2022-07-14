@@ -1,0 +1,25 @@
+#!/usr/bin/env bb
+
+(ns gokuw
+  (:require
+   [babashka.classpath :as cp]
+   [babashka.fs :as fs]
+   [babashka.pods :as pods]))
+
+(def ^:dynamic *goku-watching* true)
+
+(cp/add-classpath (.toString (-> *file* fs/file fs/parent (fs/file "src"))))
+(require '[karabiner-configurator.core])
+
+(pods/load-pod 'org.babashka/fswatcher "0.0.3")
+(require '[pod.babashka.fswatcher :as fw])
+
+(def path (karabiner-configurator.core/edn-config-file-path))
+(defn on-change [e]
+  (when (-> e :type (= :write))
+    (karabiner-configurator.core/-main "-c" path)))
+
+(karabiner-configurator.core/-main "-c" path)
+
+(fw/watch path on-change)
+(deref (promise))

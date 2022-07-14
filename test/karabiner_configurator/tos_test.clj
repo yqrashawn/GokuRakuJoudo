@@ -100,12 +100,12 @@
   (init-conf-data)
   (assoc-conf-data :templates {:launch "osascript -e 'tell application \"Alfred 3\" to run trigger \"launch%s\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"})
   (assoc-conf-data :modifiers {:1 {:mandatory ["left_command", "right_shift"]}})
-  (assoc-conf-data :input-sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
+  (assoc-conf-data :input-sources {:squirrel {:input_mode_id   "com.googlecode.rimeime.inputmethod.Squirrel"
                                               :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
-                                              :language "zh-Hans"}
-                                   :us {:input_mode_id ""
-                                        :input_source_id "com.apple.keylayout.US"
-                                        :language "en"}})
+                                              :language        "zh-Hans"}
+                                   :us       {:input_mode_id   ""
+                                              :input_source_id "com.apple.keylayout.US"
+                                              :language        "en"}})
   (t/testing
    (t/is (= (:tos (sut/generate tos-example)) (:tos result)))))
 

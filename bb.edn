@@ -1,0 +1,6 @@
+{:deps  {djblue/portal {:mvn/version "0.28.0"}}
+ :paths ["src" "dev" "test"]
+
+ :tasks
+ {nrepl {:doc  "start bb nrepl"
+         :task nrepl/run}}}

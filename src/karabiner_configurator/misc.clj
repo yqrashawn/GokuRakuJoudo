@@ -1,14 +1,27 @@
 (ns karabiner-configurator.misc
   (:require [cheshire.core :as json]
             [clojure.edn :as edn]
-            [clojure.java.io :as io]
-            [environ.core :refer [env]]))
+            [clojure.java.io :as io]))
+
+(def dev? (= (System/getenv "IS_DEV") "true"))
+
+(def goku-watching?
+  (boolean
+   (try
+     (resolve 'gokuw/*goku-watching*)
+     (catch Exception _
+       false))))
+
+(defn exit [status]
+  (when (and (not dev?) (not goku-watching?))
+    (System/exit status)))
 
 (defn massert
   "Assert without stacktrace"
   [exp error-str]
   (let [error-str (str "ERROR: " error-str)]
-    (if (env :is-dev)
+    (assert exp error-str)
+    (if dev?
       (assert exp error-str)
       (try
         (assert exp error-str)
@@ -16,7 +29,7 @@
           (binding [*out* *err*]
             (println error-str)
             (println "Failed!"))
-          (System/exit 1))))))
+          (exit 1))))))
 
 (defn which?
   "Checks if any of elements is included in coll and says which one

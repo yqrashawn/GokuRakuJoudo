@@ -1,6 +1,0 @@
-{:deps {org.clojure/clojure                  {:mvn/version "1.11.1"}
-        org.clojure/tools.cli                {:mvn/version "1.0.206"}
-        me.raynes/fs                         {:mvn/version "1.4.6"}
-        cheshire/cheshire                    {:mvn/version "5.10.2"}
-        environ/environ                      {:mvn/version "1.2.0"}
-        com.github.clj-easy/graal-build-time {:mvn/version "0.1.4"}}}

@@ -1,20 +1,31 @@
+#!/usr/bin/env bb
+
 (ns karabiner-configurator.core
   (:require
+   [babashka.fs :as fs]
    [cheshire.core :as json]
    [clojure.java.shell :as shell]
    [clojure.string :as string]
    [clojure.tools.cli :as cli]
-   [environ.core :refer [env]]
    [karabiner-configurator.data :as d]
    [karabiner-configurator.froms :as froms]
    [karabiner-configurator.layers :as layers]
-   [karabiner-configurator.misc :refer [load-edn load-json massert]]
+   [karabiner-configurator.misc :refer [load-edn load-json massert dev?] :as misc]
    [karabiner-configurator.modifiers :as modifiers]
    [karabiner-configurator.profiles :as profiles]
    [karabiner-configurator.rules :as rules]
-   [karabiner-configurator.tos :as tos]
-   [me.raynes.fs :as fs])
-  (:gen-class))
+   [karabiner-configurator.tos :as tos]))
+
+(comment
+  (when dev?
+    (defonce portal (atom nil))
+    (require '[taoensso.timbre :as log])
+    (require '[portal.api])
+    (when-not @portal
+      #_{:clj-kondo/ignore [:unresolved-namespace]}
+      (reset! portal (portal.api/open))
+      #_{:clj-kondo/ignore [:unresolved-namespace]}
+      (add-tap #'portal.api/submit))))
 
 ;; helper function
 (defn update-static-conf
@@ -39,7 +50,7 @@
 
 (defn exit [status & [msg]]
   (when msg (println msg))
-  (when-not (env :is-dev) (System/exit status)))
+  (when-not dev? (misc/exit status)))
 
 ;; paths
 (defn json-config-file-path
@@ -54,9 +65,9 @@
   []
   (cond
     (System/getenv "GOKU_EDN_CONFIG_FILE")
-    (fs/expand-home (System/getenv "GOKU_EDN_CONFIG_FILE"))
+    (.getPath (fs/file (fs/expand-home (System/getenv "GOKU_EDN_CONFIG_FILE"))))
     (System/getenv "XDG_CONFIG_HOME")
-    (fs/expand-home (str (System/getenv "XDG_CONFIG_HOME") "/karabiner.edn"))
+    (.getPath (fs/file (fs/expand-home (str (System/getenv "XDG_CONFIG_HOME") "/karabiner.edn"))))
     :else
     (str (System/getenv "HOME") "/.config/karabiner.edn")))
 
@@ -170,20 +181,17 @@
   (str "The following errors occurred while parsing your command:\n"
        (string/join \newline errors)))
 
-(defn abs-path [path]
-  (.getPath (fs/expand-home path)))
-
 (def cli-opts
   [["-h" "--help"]
    ["-V" "--version"]
    ["-l" "--log"]
    ["-c" "--config PATH" "Config PATH"
-    :parse-fn abs-path
+    :parse-fn (comp fs/file fs/expand-home)
     :validate [(fn [path]
-                 (let [path (abs-path path)]
-                   (and (fs/exists? path)
-                        (fs/file? path)
-                        (fs/readable? path))))
+                 (and (fs/exists? path)
+                      (fs/regular-file? path)
+                      (fs/readable? path)
+                      path))
                "Make sure the file is exits and readable"]]
    ["-d" "--dry-run"]
    ["-A" "--dry-run-all"]])
@@ -205,7 +213,7 @@
       (:version options)
       {:action "exit-with-message"
        :ok? true
-       :exit-message "0.5.3"}
+       :exit-message "0.6.0"}
       ;; log
       (:log options)
       {:action       "log"
@@ -231,13 +239,15 @@
                 exit-message ok? config dry-run dry-run-all]} (validate-args args)]
     (when exit-message
       (case action
-        "run" (do (parse (or config (edn-config-file-path)) dry-run dry-run-all)
-                  (exit (if ok? 0 1) exit-message))
-        "log" (do (open-log-file)
-                  (exit 0))
+        "run"               (do (parse (or (and config (-> config fs/expand-home fs/file .getPath)) (edn-config-file-path)) dry-run dry-run-all)
+                                (exit (if ok? 0 1) exit-message))
+        "log"               (do (open-log-file)
+                                (exit 0))
         "exit-with-message" (exit (if ok? 0 1) exit-message)
-        "errors" (exit (if ok? 0 1) exit-message)
-        "default" (exit (if ok? 0 1) exit-message)))))
+        "errors"            (exit (if ok? 0 1) exit-message)
+        "default"           (exit (if ok? 0 1) exit-message)))))
+
+;; (when-not dev? (apply -main *command-line-args*))
 
 (comment
   (-main)
