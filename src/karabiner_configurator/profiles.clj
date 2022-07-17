@@ -21,6 +21,7 @@
           :basic.to_delayed_action_delay_milliseconds delay
           :basic.to_if_alone_timeout_milliseconds alone
           :basic.to_if_held_down_threshold_milliseconds held}}}))))
+
 (defn parse-rules
   "Parse generated rules into profiles"
   [rules]
