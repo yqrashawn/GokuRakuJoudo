@@ -48,9 +48,11 @@
                           "/usr/local/bin:"             ;; homebrew
                           (get sys-env "PATH"))}))))
 
-(defn exit [status & [msg]]
-  (when msg (println msg))
-  (when-not dev? (misc/exit status)))
+(defn exit
+  ([status] (exit [status nil]))
+  ([status msg]
+   (when msg (println msg))
+   (when-not (env :is-dev) (System/exit status))))
 
 ;; paths
 (defn json-config-file-path
@@ -82,7 +84,7 @@
   (let [{:keys [applications devices keyboard-type input-sources tos froms modifiers layers simlayers ;; raws
                 main simlayer-threshold templates profiles]} conf]
     (if (nil? profiles)
-      (profiles/parse-profiles (:profiles d/conf-data))
+      (profiles/parse-profiles (:profiles @d/conf-data))
       (profiles/parse-profiles profiles))
     (update-static-conf :applications applications)
     (update-static-conf :devices devices)
@@ -185,6 +187,7 @@
   [["-h" "--help"]
    ["-V" "--version"]
    ["-l" "--log"]
+   [nil "--where-is-my-config"]
    ["-c" "--config PATH" "Config PATH"
     :parse-fn (comp fs/file fs/expand-home)
     :validate [(fn [path]
@@ -209,6 +212,9 @@
       {:action       "exit-with-message"
        :ok?          true
        :exit-message (help-message summary)}
+      (:where-is-my-config options)
+      {:action "show-config-path"
+       :ok?    true}
       ;; version
       (:version options)
       {:action "exit-with-message"
@@ -237,17 +243,16 @@
   [& args]
   (let [{:keys [action ;; options
                 exit-message ok? config dry-run dry-run-all]} (validate-args args)]
-    (when exit-message
-      (case action
-        "run"               (do (parse (or (and config (-> config fs/expand-home fs/file .getPath)) (edn-config-file-path)) dry-run dry-run-all)
-                                (exit (if ok? 0 1) exit-message))
-        "log"               (do (open-log-file)
-                                (exit 0))
-        "exit-with-message" (exit (if ok? 0 1) exit-message)
-        "errors"            (exit (if ok? 0 1) exit-message)
-        "default"           (exit (if ok? 0 1) exit-message)))))
+    (case action
+      "run"               (do (parse (or config (edn-config-file-path)) dry-run dry-run-all)
+                              (exit (if ok? 0 1) exit-message))
+      "show-config-path"  (exit 0 (or config (edn-config-file-path)))
+      "log"               (do (open-log-file) (exit 0))
+      "exit-with-message" (exit (if ok? 0 1) exit-message)
+      "errors"            (exit (if ok? 0 1) exit-message)
+      "default"           (exit (if ok? 0 1) exit-message))))
 
-;; (when-not dev? (apply -main *command-line-args*))
+(when-not dev? (apply -main *command-line-args*))
 
 (comment
   (-main)
@@ -256,10 +261,12 @@
   (-main "-l")
   (-main "--log")
   (-main "--config" "./")
+  (-main "--where-is-my-config")
   (-main "-c" "./")
   (-main "-dc" "./")
   (-main "-dc" "~/.config/karabiner.edn")
   (-main "-dc" "~/.config/karabiner.test.edn")
+  (-main "-c" "~/.nixpkgs/modules/yqrashawn/home-manager/dotfiles/karabiner.edn")
   (-main "-d")
   (-main "-V")
   (-main "--version"))

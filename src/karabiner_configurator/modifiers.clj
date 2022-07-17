@@ -67,12 +67,13 @@
 
 (defn generate
   [modifiers]
-  (assoc @d/conf-data :modifiers
-         (into
-          {}
-          (for [[modifier-name modifier-info] modifiers]
-            {modifier-name
-             (parse-single-modifier-definition modifier-info modifier-name)}))))
+  (d/assoc-conf-data
+   :modifiers
+   (into
+    {}
+    (for [[modifier-name modifier-info] modifiers]
+      {modifier-name
+       (parse-single-modifier-definition modifier-info modifier-name)}))))
 
 (defn parse-modifiers
   "parse modifires to string"
