@@ -1,14 +1,13 @@
 (ns karabiner-configurator.misc
   (:require [cheshire.core :as json]
             [clojure.edn :as edn]
-            [clojure.java.io :as io]
-            [environ.core :refer [env]]))
+            [clojure.java.io :as io]))
 
 (defn massert
   "Assert without stacktrace"
   [exp error-str]
   (let [error-str (str "ERROR: " error-str)]
-    (if (env :is-dev)
+    (if (= (System/getenv "GOKU_IS_DEV") "1")
       (assert exp error-str)
       (try
         (assert exp error-str)

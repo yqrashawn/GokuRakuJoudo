@@ -1,10 +1,9 @@
 (ns karabiner-configurator.core
   (:require
+   [babashka.process :as p]
    [cheshire.core :as json]
-   [clojure.java.shell :as shell]
    [clojure.string :as string]
    [clojure.tools.cli :as cli]
-   [environ.core :refer [env]]
    [karabiner-configurator.data :as d]
    [karabiner-configurator.froms :as froms]
    [karabiner-configurator.layers :as layers]
@@ -26,22 +25,14 @@
 (defn check-edn-syntax
   "Call joker to check syntax of karabiner.edn"
   [path]
-  (let [sys-env (into {} (System/getenv))]
-    (shell/sh "joker" "--lint" path
-              :env (merge
-                    sys-env
-                    {"PATH"
-                     (str "/etc/profiles/per-user/" (System/getenv "USER") "/bin:" ;; nix profile
-                          "/run/current-system/sw/bin:" ;; nix darwin multiuser
-                          "/opt/homebrew/bin:"          ;; arm homebrew
-                          "/usr/local/bin:"             ;; homebrew
-                          (get sys-env "PATH"))}))))
+  (-> @(p/process [(System/getenv "SHELL") "-i" "-c" (format "joker --lint %s" path)])
+      :err))
 
 (defn exit
   ([status] (exit [status nil]))
   ([status msg]
    (when msg (println msg))
-   (when-not (env :is-dev) (System/exit status))))
+   (when-not (= (System/getenv "GOKU_IS_DEV") "1") (System/exit status))))
 
 ;; paths
 (defn json-config-file-path
@@ -147,9 +138,9 @@
   (update-to-karabiner-json (parse-edn (load-edn path)) dry-run dry-run-all))
 
 (defn open-log-file []
-  (shell/sh "open" (log-file)))
-;; cli stuff
+  @(p/process "open" (log-file)))
 
+;; cli stuff
 (defn help-message [_]
   (->> ["GokuRakuJoudo -- karabiner configurator"
         ""
@@ -210,7 +201,7 @@
       (:version options)
       {:action       "exit-with-message"
        :ok?          true
-       :exit-message "0.5.6"}
+       :exit-message "0.5.7"}
       ;; log
       (:log options)
       {:action       "log"
