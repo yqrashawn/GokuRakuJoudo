@@ -168,15 +168,11 @@ Karabiner also has this functionality that can map simultaneous key presses to o
 ### to shell command
 
 You can set <to> to string to invoke shell command.
+Note: Don't put multiple shell commands in one rule, check the discussion [here](https://github.com/pqrs-org/Karabiner-Elements/issues/2833#issuecomment).
 
 ```clojure
     {:main [{:des "hyper 1 to cleanup personal folder"
              :rules [[:!!1 "rm -r ~/personal && mkdir ~/personal"]]}]}
-
-    ;; or we can break it into two <to>
-
-    {:main [{:des "hyper 1 to cleanup personal folder"
-             :rules [[:!!1 ["rm -r ~/personal" "mkdir ~/personal"]]]}]}
 ```
 
 <a id="basic7"></a>
