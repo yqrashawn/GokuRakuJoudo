@@ -393,3 +393,22 @@ Don't map a to b when there are three fingers on the trackpad.
                      ;; 2. cleanup notification :id :cmdq
                      :canceled [["command-q" 0] [:noti :cmdq]]}}]]}
 #+end_src
+
+** Two-Stroke Keybindings (Emacs C-x Mode)
+
+This setup can be used for keybindings where you press one key, then quickly another key to execute a to action. The order is important: all the conditional bindings must come _before_ the line with the delayed declaration
+
+#+NAME: two-stroke keybindings 
+#+BEGIN_SRC clojure
+{:des "tap right shift then keys"
+ :rules [
+         ; If right-shift-mode is on, run this command when a is pressed. Anything that depends
+         ; on the mode being set must come _before_ the delayed declaration.
+         [:a "open https://github.com/yqrashawn/GokuRakuJoudo" [:right-shift-mode]]
+         ; Send right_shift unconditionally (so it still works as a modifier key)
+         [:right_shift :right_shift nil
+          ; and if pressed alone, trigger right-shift-mode
+          {:alone [:right_shift ["right-shift-mode" 1]]
+           ; when another key is invoked, or after a timeout, set the mode back to zero
+           :delayed {:invoked ["right-shift-mode" 0] :canceled ["right-shift-mode" 0]}}]]}
+#+END_SRC
