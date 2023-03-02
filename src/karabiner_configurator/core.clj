@@ -29,7 +29,7 @@
       :err))
 
 (defn exit
-  ([status] (exit [status nil]))
+  ([status] (exit status nil))
   ([status msg]
    (when msg (println msg))
    (when-not (= (System/getenv "GOKU_IS_DEV") "1") (System/exit status))))
