@@ -59,3 +59,19 @@
   ))                modi-sym))
 )
 (def keys-symbols (merge keys-symbols-generated keys-symbols-other))
+
+
+(defn replace-map-h "input string + hash-map ⇒ string with all map-keys → map-values in input"
+  [s_in m_in]
+  (def keys_in     	(keys m_in))                                          	;{"⎇""A","⎈""C"} → "⎇""⎈"
+  (def keys_in_q   	(map #(java.util.regex.Pattern/quote %) keys_in))     	;"\\Q⎇\\E"   "\\Q⎈\\E"
+  (def keys_in_q_or	(interpose "|"                          keys_in_q))   	;"\\Q⎇\\E""|""\\Q⎈\\E"
+  (def keys_in_q_s 	(apply str                              keys_in_q_or))	;"\\Q⎇\\E|\\Q⎈\\E"
+  (def keys_in_re  	(re-pattern                             keys_in_q_s)) 	;#"\Q⎇\E|\Q⎈\E"
+  (string/replace s_in keys_in_re m_in))
+
+(defn key-name-sub-or-self [k]
+  (if (keyword? k)
+    (keyword (string/replace (replace-map-h k keys-symbols) #"^:" ""))
+    k
+  ))
