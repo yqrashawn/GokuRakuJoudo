@@ -11,6 +11,7 @@
                  [babashka/process "0.1.7"]
                  [cheshire "5.10.2"]
                  [com.github.clj-easy/graal-build-time "0.1.4"]]
-  :plugins [[lein-cloverage "1.2.3"]])
+  :plugins [[lein-cloverage "1.2.3"]]
+  :profiles {:socket {:jvm-opts ["-Dclojure.server.repl={:port 5555 :accept clojure.core.server/repl :server-daemon false}"]}})
 
 
