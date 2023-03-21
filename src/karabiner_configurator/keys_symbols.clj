@@ -58,8 +58,17 @@
          )) (concat ‹key '(nil))
   ))                modi-sym))
 )
-(def keys-symbols (merge keys-symbols-generated keys-symbols-other))
-
+(def keys-symbols-unordered (merge keys-symbols-generated keys-symbols-other))
+; Sort by key length (BB > A) to match ⇧› before ⇧
+(defn sort-map-key-len
+  ([m    ] (sort-map-key-len m "asc"))
+  ([m ord] (into
+  (sorted-map-by (fn [key1 key2] (
+    compare
+      (if (or (= ord "asc") (= ord "↑")) [(count (str key1)) key1] [(count (str key2)) key2])
+      (if (or (= ord "asc") (= ord "↑")) [(count (str key2)) key2] [(count (str key1)) key1])
+  ))) m)))
+(def keys-symbols (sort-map-key-len keys-symbols-unordered "↓"))
 
 (defn replace-map-h "input string + hash-map ⇒ string with all map-keys → map-values in input"
   [s_in m_in]
