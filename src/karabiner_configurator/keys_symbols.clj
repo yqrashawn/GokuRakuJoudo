@@ -34,6 +34,7 @@
   "▼" 	"down_arrow"
   "◀" 	"left_arrow"
   "▶" 	"right_arrow"
+  " " 	"" ; no-break space removed, used only for rudimentary alignment
 })
 (def keys-symbols-generated (into {} (
   mapcat      (fn [mod]
