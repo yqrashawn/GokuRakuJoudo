@@ -135,7 +135,8 @@
     (when (> (count edn-syntax-err) 0)
       (println "Syntax error in config:")
       (println edn-syntax-err)
-      (exit 1)))
+      ; (exit 1)
+      ))
   (update-to-karabiner-json (parse-edn (load-edn path)) dry-run dry-run-all))
 
 (defn open-log-file []
