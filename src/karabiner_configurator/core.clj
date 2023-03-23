@@ -130,7 +130,8 @@
 (defn parse
   "Root function to parse karabiner.edn and update karabiner.json."
   [path & [dry-run dry-run-all]]
-  (let [edn-syntax-err (:err (check-edn-syntax path))]
+  (let [edn-syntax-err-stream (check-edn-syntax path)]
+    (def edn-syntax-err (slurp edn-syntax-err-stream))
     (when (> (count edn-syntax-err) 0)
       (println "Syntax error in config:")
       (println edn-syntax-err)
