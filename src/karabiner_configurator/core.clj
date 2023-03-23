@@ -25,7 +25,7 @@
 (defn check-edn-syntax
   "Call joker to check syntax of karabiner.edn"
   [path]
-  (-> @(p/process [(System/getenv "SHELL") "-i" "-c" (format "joker --lint %s" path)])
+  (-> (p/process {:out :string :err :string}[(System/getenv "SHELL") "-i" "-c" (format "joker --lint %s" path)])
       :err))
 
 (defn exit
