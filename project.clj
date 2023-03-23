@@ -8,6 +8,7 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [org.clojure/tools.cli "1.0.206"]
                  [me.raynes/fs "1.4.6"]
+                 [org.clojure/core.match "1.0.1"]
                  [babashka/process "0.1.7"]
                  [cheshire "5.10.2"]
                  [com.github.clj-easy/graal-build-time "0.1.4"]]
