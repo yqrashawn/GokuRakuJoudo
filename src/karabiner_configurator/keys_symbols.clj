@@ -80,11 +80,24 @@
   (def keys_in_re  	(re-pattern                             keys_in_q_s)) 	;#"\Q⎇\E|\Q⎈\E"
   (string/replace s_in keys_in_re m_in))
 
+(defn contains-in?
+  [m ks]
+  (not= ::absent (get-in m ks ::absent)))
+(defn update-in-if-has
+  [m ks f & args]
+  (if (contains-in? m ks)
+    (apply (partial update-in m ks f) args)
+    m))
+
 (defn key-name-sub-or-self [k]
   (if (keyword? k)
     (keyword (string/replace (replace-map-h k keys-symbols) #"^:" ""))
-    k
-  ))
+    (if (map?   k)
+      (update-in-if-has k [:key] key-name-sub-or-self)
+      k
+      )
+  )
+)
 
 (def modi-re	#"[ACSTOQWERFP]+")
 (defn find-modi
@@ -138,7 +151,10 @@
   [k & {:keys [dbg] :or {dbg nil}}]
   (def sub1 (key-name-sub-or-self k))
   (if (not= k sub1)
-    (def sub (move-modi-prefix-front sub1))
+    (if (map? sub1)
+      (def sub (update-in-if-has sub1 [:key] move-modi-prefix-front))
+      (def sub (move-modi-prefix-front sub1))
+      )
     (def sub                                sub1 )
     )
   ; (if (and (some? dbg) (not= k sub)) (println (str "  " dbg "¦" k " ⟶⟶⟶ " sub)))
