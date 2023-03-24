@@ -23,18 +23,23 @@
   "﹖﹖"	"##","??""##"	; optional any
   "︔" 	"semicolon"
   "⸴" 	"comma"
+  "．" 	"period"
   "⎋" 	"escape"
-  "⭾" 	"tab"
-  "␠" 	"spacebar"
-  "␣" 	"spacebar"
-  "␈" 	"delete_or_backspace"
-  "⌫" 	"delete_or_backspace"
-  "⏎" 	"return_or_enter"
-  "▲" 	"up_arrow"
-  "▼" 	"down_arrow"
-  "◀" 	"left_arrow"
-  "▶" 	"right_arrow"
+  "⭾" 	"tab","↹""tab"
+  "₌" 	"equal_sign"
+  "⇞" 	"page_up","⇟""page_down"
+  "⇤" 	"home","⇥""end","⤒""home","⤓""end","↖""home","↘""end",
+  "ˋ" 	"grave_accent_and_tilde","˜""grave_accent_and_tilde"
+  "␠" 	"spacebar","␣""spacebar"
+  "␈" 	"delete_or_backspace","⌫""delete_or_backspace"
+  "␡" 	"delete_forward","⌦""delete_forward"
+  "⏎" 	"return_or_enter","↩""return_or_enter","⌤""return_or_enter","␤""return_or_enter",
+  "▲" 	"up_arrow","▼""down_arrow","◀""left_arrow","▶""right_arrow"
   " " 	"" ; no-break space removed, used only for rudimentary alignment
+  "🔢₁""keypad_1","🔢₂""keypad_2","🔢₃""keypad_3","🔢₄""keypad_4","🔢₅""keypad_5"
+  "🔢₆""keypad_6","🔢₇""keypad_7","🔢₈""keypad_8","🔢₉""keypad_9","🔢₀""keypad_0"
+  "🔢₌""keypad_equal_sign","🔢₋""keypad_hyphen","🔢₊""keypad_plus"
+  "🔢⁄""keypad_slash","🔢．""keypad_period","🔢∗""keypad_asterisk"
 })
 (def keys-symbols-generated (into {} (
   mapcat      (fn [mod]
