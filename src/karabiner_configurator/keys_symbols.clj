@@ -85,3 +85,51 @@
     (keyword (string/replace (replace-map-h k keys-symbols) #"^:" ""))
     k
   ))
+
+(def modi-re	#"[ACSTOQWERFP]+")
+(defn find-modi
+  [s prefix matches-found]
+  (def modi-prefix-re (re-pattern (str prefix modi-re)))
+  (def modi-match (re-find modi-prefix-re s))
+  (if (nil? modi-match)
+    [s matches-found]
+    (do
+      (if (vector? modi-match) ; [full-match G1...]
+        (def modi-match-str (first modi-match))
+        (def modi-match-str        modi-match )
+      )
+      (def matches-found-cc (conj matches-found modi-match-str))
+      (recur (string/replace-first s modi-match-str "") prefix matches-found-cc)
+      ))
+  )
+(defn move-modi-front
+  "Replace individual modifiers `!CC!TT` (prefix=!) into a single group with one `!CCTT`"
+  [k prefix]
+  (def s (if (keyword? k)
+    (name k)
+          k
+  ))
+  (def modi-must [])
+  (let [[s-remain modi-must] (find-modi s prefix modi-must)]
+    (def modi-must-str
+      (if (empty? modi-must)
+        ""
+        (str prefix (string/replace (string/join "" modi-must) prefix "")) ; :!CC!AA → :!CCAA
+    ))
+    (keyword (str modi-must-str s-remain))
+    )
+  )
+(defn move-modi-mandatory-front
+  [k]
+  (def prefix "!")
+  (move-modi-front k prefix)
+  )
+(defn move-modi-optional-front
+  [k]
+  (def prefix "#")
+  (move-modi-front k prefix)
+  )
+(defn move-modi-prefix-front
+  [k]
+  (move-modi-front (move-modi-front k "#") "!")
+  )
