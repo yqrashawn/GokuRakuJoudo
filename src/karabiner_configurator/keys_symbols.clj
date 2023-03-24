@@ -133,3 +133,14 @@
   [k]
   (move-modi-front (move-modi-front k "#") "!")
   )
+(defn key-sym-to-key
+  "Takes key with symbols as input and returns keys without; optional :dbg debug print value"
+  [k & {:keys [dbg] :or {dbg nil}}]
+  (def sub1 (key-name-sub-or-self k))
+  (if (not= k sub1)
+    (def sub (move-modi-prefix-front sub1))
+    (def sub                                sub1 )
+    )
+  (if (and (some? dbg) (not= k sub)) (println (str "  " dbg "¦" k " ⟶⟶⟶ " sub)))
+  sub
+)
