@@ -141,6 +141,6 @@
     (def sub (move-modi-prefix-front sub1))
     (def sub                                sub1 )
     )
-  (if (and (some? dbg) (not= k sub)) (println (str "  " dbg "¦" k " ⟶⟶⟶ " sub)))
+  ; (if (and (some? dbg) (not= k sub)) (println (str "  " dbg "¦" k " ⟶⟶⟶ " sub)))
   sub
 )
