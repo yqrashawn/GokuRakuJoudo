@@ -1,15 +1,15 @@
 ## New modifiers symbols vs Current
-  |↓Label type    	| Key→	|Shift	|Ctrl	|Ctrl	|Alt 	|Alt 	|Cmd 	|Cmd 	|
-  |:--------------	| :-  	|  :-:	| :-:	| :-:	| :-:	| :-:	| :-:	| :-:	|
-  |Any (mandatory)	|     	| ⇧   	|  ⎈ 	| ⌃  	|  ⎇ 	| ⌥  	| ⌘  	| ◆  	|
-  |+ Left         	|‹ `'`	| ‹⇧  	|    	|    	|    	|    	|    	|    	|
-  |+ Right        	|› `'`	| ⇧›  	|    	|    	|    	|    	|    	|    	|
-  |+ Optional     	|﹖ ?  	|   ⇧﹖	|    	|    	|    	|    	|    	|    	|
-  |Current Left   	|     	| S   	|  T 	| T  	|  O 	| O  	|  C 	| C  	| 
-  |...Right       	|     	| R   	|  W 	| W  	|  E 	| E  	|  Q 	| Q  	| 
-  |...Any         	|     	| SS  	|  TT	| TT 	|  OO	| OO 	|  CC	| CC 	| 
-  |+ Mandatory    	|!    	| !S  	|    	|    	|    	|    	|    	|    	|
-  |+ Optional     	|#    	| #S  	|    	|    	|    	|    	|    	|    	|
+  |↓Label type    	| Key→	|Shift	|Ctrl	|Ctrl	|Alt 	|Alt 	|Cmd 	|Cmd 	|Cmd 	|
+  |:--------------	| :-  	|  :-:	| :-:	| :-:	| :-:	| :-:	| :-:	| :-:	| :-:	|
+  |Any (mandatory)	|     	| ⇧   	|  ⎈ 	| ⌃  	|  ⎇ 	| ⌥  	| ⌘  	| ◆  	| ❖  	|
+  |+ Left         	|‹ `'`	| ‹⇧  	|    	|    	|    	|    	|    	|    	|    	|
+  |+ Right        	|› `'`	| ⇧›  	|    	|    	|    	|    	|    	|    	|    	|
+  |+ Optional     	|﹖ ?  	|   ⇧﹖	|    	|    	|    	|    	|    	|    	|    	|
+  |Current Left   	|     	| S   	|  T 	| T  	|  O 	| O  	|  C 	| C  	| C  	|
+  |...Right       	|     	| R   	|  W 	| W  	|  E 	| E  	|  Q 	| Q  	| Q  	|
+  |...Any         	|     	| SS  	|  TT	| TT 	|  OO	| OO 	|  CC	| CC 	| CC 	|
+  |+ Mandatory    	|!    	| !S  	|    	|    	|    	|    	|    	|    	|    	|
+  |+ Optional     	|#    	| #S  	|    	|    	|    	|    	|    	|    	|    	|
 
 Examples
 
