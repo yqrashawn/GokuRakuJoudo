@@ -13,16 +13,18 @@
 
 Examples
 
-  |New label      	| Side 	| Must/opt 	| Key    	|Old	|
-  |:--------------	| :-   	|  :-      	| :-     	| :-	|
-  |‹⇧             	| left 	| mandatory	| shift  	| !S	|
-  |⎈›             	| right	| mandatory	| control	| !W	|
-  |⎇›﹖            	| right	| optional 	| alt    	| #E	|
+  |New label      	| Side 	| Must/opt 	| Key    	|Old     	|
+  |:--------------	| :-   	|  :-      	| :-     	| :-     	|
+  |‹⇧             	| left 	| mandatory	| shift  	| !S     	|
+  |⎈›             	| right	| mandatory	| control	| !W     	|
+  |⎇›﹖            	| right	| optional 	| alt    	| #E     	|
+  |⎇›⇧            	| right	| optional 	| alt    	| !Eshift	|
 
 __NB!__
 
   - Left/Right side indicators __must__ be at their respective sides (‹Left, Right›)
   - Optional﹖ indicator __must__ bet at the Right side and __after__ the side indicator (✓`⎈›﹖` ✗`⎈﹖›`)
+  - Modifiers at the end of a key definition are treated as literal keys
 
 ### Other key symbols
 
