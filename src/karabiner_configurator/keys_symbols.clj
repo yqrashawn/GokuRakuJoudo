@@ -8,10 +8,10 @@
 ; R W E Q → right_shift right_control right_option right_command
 ; SS      → shift ...
 ; labels must = same position
-(def modi-sym	["⇧" 	 "⎈" 	"⌃" 	 "⎇" 	"⌥" 	 "⌘" 	"◆" ])
-(def modi-‹l 	["S" 	 "T" 	"T" 	 "O" 	"O" 	 "C" 	"C" ])
-(def modi-l› 	["R" 	 "W" 	"W" 	 "E" 	"E" 	 "Q" 	"Q" ])
-(def modi-l∀ 	["SS"	 "TT"	"TT"	 "OO"	"OO"	 "CC"	"CC" ])
+(def modi-sym	["⇧" 	 "⎈" 	"⌃" 	 "⎇" 	"⌥" 	 "⌘" 	"◆" 	"❖" ])
+(def modi-‹l 	["S" 	 "T" 	"T" 	 "O" 	"O" 	 "C" 	"C" 	"C" ])
+(def modi-l› 	["R" 	 "W" 	"W" 	 "E" 	"E" 	 "Q" 	"Q" 	"Q" ])
+(def modi-l∀ 	["SS"	 "TT"	"TT"	 "OO"	"OO"	 "CC"	"CC"	"CC" ])
 (def ‹key    	["‹" "'"])
 (def key›    	["›" "'"])
 (def key﹖    	["﹖" "?"])
