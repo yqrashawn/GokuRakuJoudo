@@ -8,13 +8,17 @@
 ; R W E Q → right_shift right_control right_option right_command
 ; SS      → shift ...
 ; labels must = same position
-(def modi-sym	["⇧" 	 "⎈" 	"⌃" 	 "⎇" 	"⌥" 	 "⌘" 	"◆" 	"❖" ])
-(def modi-‹l 	["S" 	 "T" 	"T" 	 "O" 	"O" 	 "C" 	"C" 	"C" ])
-(def modi-l› 	["R" 	 "W" 	"W" 	 "E" 	"E" 	 "Q" 	"Q" 	"Q" ])
-(def modi-l∀ 	["SS"	 "TT"	"TT"	 "OO"	"OO"	 "CC"	"CC"	"CC" ])
-(def ‹key    	["‹" "'"])
-(def key›    	["›" "'"])
-(def key﹖    	["﹖" "?"])
+(def modi-sym      	["⇧"    	 "⎈"      	"⌃"      	 "⎇"     	"⌥"     	 "⌘"      	"◆"      	"❖" ])
+(def modi-‹l       	["S"    	 "T"      	"T"      	 "O"     	"O"     	 "C"      	"C"      	"C" ])
+(def modi-l›       	["R"    	 "W"      	"W"      	 "E"     	"E"     	 "Q"      	"Q"      	"Q" ])
+(def modi-l∀       	["SS"   	 "TT"     	"TT"     	 "OO"    	"OO"    	 "CC"     	"CC"     	"CC" ])
+(def modi-l∀-as-key	["shift"	 "control"	"control"	 "option"	"option"	 "command"	"command"	"command" ])
+(def ‹key          	["‹" "'"])
+(def key›          	["›" "'"])
+(def key﹖          	["﹖" "?"])
+(def modi-‹l-as-key (mapv #(str "left_"  %) modi-l∀-as-key))
+(def modi-l›-as-key (mapv #(str "right_" %) modi-l∀-as-key))
+
 (def keys-symbols-other {
   "🌐" 	"!F","ƒ""!F","ⓕ""!F","Ⓕ""!F","🄵""!F","🅕""!F","🅵""!F"
   "⇪" 	"P"          	; capslock
@@ -64,6 +68,25 @@
          )) (concat ‹key '(nil))
   ))                modi-sym))
 )
+(def keys-symbols-generated-modi-as-key (into {} (
+  mapcat      (fn [mod]
+    (mapcat   (fn [‹]
+      (map    (fn [›]
+        (def mI	(.indexOf modi-sym mod)) ; modifier index to pick labels (which have the same position)
+        (def ‹l	(nth modi-‹l-as-key mI))
+        (def l›	(nth modi-l›-as-key mI))
+        (def l∀	(nth modi-l∀-as-key mI))
+        (match [ ; !mandatory ; #optional
+          (some? ‹) (some? ›)]
+          [true      false ]	{(str ‹ mod    )	‹l}
+          [false     true  ]	{(str   mod ›  )	l›}
+          [false     false ]	{(str   mod    )	l∀}
+          :else             	nil
+         )) (concat key› '(nil))
+         )) (concat ‹key '(nil))
+  ))                modi-sym))
+)
+
 (def keys-symbols-unordered (merge keys-symbols-generated keys-symbols-other))
 ; Sort by key length (BB > A) to match ⇧› before ⇧
 (defn sort-map-key-len
@@ -74,7 +97,8 @@
       (if (or (= ord "asc") (= ord "↑")) [(count (str key1)) key1] [(count (str key2)) key2])
       (if (or (= ord "asc") (= ord "↑")) [(count (str key2)) key2] [(count (str key1)) key1])
   ))) m)))
-(def keys-symbols (sort-map-key-len keys-symbols-unordered "↓"))
+(def keys-symbols             (sort-map-key-len keys-symbols-unordered             "↓"))
+(def keys-symbols-modi-as-key (sort-map-key-len keys-symbols-generated-modi-as-key "↓"))
 
 (defn replace-map-h "input string + hash-map ⇒ string with all map-keys → map-values in input"
   [s_in m_in]
