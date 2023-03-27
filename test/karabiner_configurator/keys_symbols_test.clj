@@ -36,6 +36,8 @@
   :Ⓕnon_us_backslash	:!Fnon_us_backslash
   :‹◆d              	:!Cd
   :⇧‹◆f10           	:!SSCf10
+  :⎇›⇧              	:!Eshift
+  :⎇›⇪              	:!Ecaps_lock
 })
 
 ;; convert map of keys with modifiers
