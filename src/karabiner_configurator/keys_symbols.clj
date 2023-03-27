@@ -3,6 +3,7 @@
   (:require
    [clojure.string :as string]
    [clojure.core.match :refer [match]]))
+(import [java.util.regex Pattern])
 
 ; S T O C → left_shift  left_control  left_option  left_command
 ; R W E Q → right_shift right_control right_option right_command
@@ -86,8 +87,12 @@
          )) (concat ‹key '(nil))
   ))                modi-sym))
 )
+(def keys-symbols-other-modi-as-key  {
+  "⇪"	"caps_lock"
+})
 
-(def keys-symbols-unordered (merge keys-symbols-generated keys-symbols-other))
+(def keys-symbols-unordered             (merge keys-symbols-generated             keys-symbols-other            ))
+(def keys-symbols-unordered-modi-as-key (merge keys-symbols-generated-modi-as-key keys-symbols-other-modi-as-key))
 ; Sort by key length (BB > A) to match ⇧› before ⇧
 (defn sort-map-key-len
   ([m    ] (sort-map-key-len m "asc"))
@@ -98,16 +103,19 @@
       (if (or (= ord "asc") (= ord "↑")) [(count (str key2)) key2] [(count (str key1)) key1])
   ))) m)))
 (def keys-symbols             (sort-map-key-len keys-symbols-unordered             "↓"))
-(def keys-symbols-modi-as-key (sort-map-key-len keys-symbols-generated-modi-as-key "↓"))
+(def keys-symbols-modi-as-key (sort-map-key-len keys-symbols-unordered-modi-as-key "↓"))
 
 (defn replace-map-h "input string + hash-map ⇒ string with all map-keys → map-values in input"
-  [s_in m_in]
-  (def keys_in     	(keys m_in))                                          	;{"⎇""A","⎈""C"} → "⎇""⎈"
-  (def keys_in_q   	(map #(java.util.regex.Pattern/quote %) keys_in))     	;"\\Q⎇\\E"   "\\Q⎈\\E"
-  (def keys_in_q_or	(interpose "|"                          keys_in_q))   	;"\\Q⎇\\E""|""\\Q⎈\\E"
-  (def keys_in_q_s 	(apply str                              keys_in_q_or))	;"\\Q⎇\\E|\\Q⎈\\E"
-  (def keys_in_re  	(re-pattern                             keys_in_q_s)) 	;#"\Q⎇\E|\Q⎈\E"
-  (string/replace s_in keys_in_re m_in))
+  [s_in m_in & {:keys [modi-as-key] :or {modi-as-key nil}}]
+  (def keys_in     	(keys m_in))                     	              	;{"⎇""A","⎈""C"} → "⎇""⎈"
+  (if modi-as-key  	                                 	              	;
+    (def keys_in_q 	(map #(str (Pattern/quote %) "$")	keys_in))     	;"\\Q⎇\\E"   "\\Q⎈\\E" + "$" if passed
+    (def keys_in_q 	(map #(     Pattern/quote %)     	keys_in))     	)
+  (def keys_in_q_or	(interpose "|"                   	keys_in_q))   	;"\\Q⎇\\E""|""\\Q⎈\\E"
+  (def keys_in_q_s 	(apply str                       	keys_in_q_or))	;"\\Q⎇\\E|\\Q⎈\\E"
+  (def keys_in_re  	(re-pattern                      	keys_in_q_s)) 	;#"\Q⎇\E|\Q⎈\E"
+  (string/replace s_in keys_in_re m_in)
+  )
 
 (defn contains-in?
   [m ks]
@@ -120,7 +128,11 @@
 
 (defn key-name-sub-or-self [k]
   (if (keyword? k)
-    (keyword (string/replace (replace-map-h k keys-symbols) #"^:" ""))
+    (do
+      (def k1 (replace-map-h k  keys-symbols-modi-as-key :modi-as-key true)) ; first replace modi-as-keys
+      (def k2 (replace-map-h k1 keys-symbols)) ; then replace other key symbols
+      (keyword (string/replace k2 #"^:" ""))
+      )
     (if (map?   k)
       (update-in-if-has k [:key] key-name-sub-or-self)
       k
