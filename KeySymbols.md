@@ -20,11 +20,24 @@ Examples
   |⎇›﹖            	| right	| optional 	| alt    	| #E     	|
   |⎇›⇧            	| right	| optional 	| alt    	| !Eshift	|
 
+You can also input keys as strings to include whitespace which is helpful to achieve vertical alignment like so:
+```edn
+{:des "Vertically aligned modifiers in the FROM keys, note the mandatory ‘ at the beginning" :rules [
+  ["‘‹⎈       k" :k]
+  ["‘  ‹⇧     k" :k]
+  ["‘   ⇧›    k" :k]
+  ["‘   ⇧   ⎇k" :k]
+  ["‘     ‹⌘  k" :k]
+  ["‘       ⎇k" :k]
+]}
+```
+
 __NB!__
 
   - Left/Right side indicators __must__ be at their respective sides (‹Left, Right›)
   - Optional﹖ indicator __must__ bet at the Right side and __after__ the side indicator (✓`⎈›﹖` ✗`⎈﹖›`)
   - Modifiers at the end of a key definition are treated as literal keys
+  - Keys-as-strings __must__ have a `‘` in the beginning to differentiate them from, e.g., strings that contain script commands
 
 ### Other key symbols
 

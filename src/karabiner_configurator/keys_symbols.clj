@@ -155,16 +155,22 @@
     (apply (partial update-in m ks f) args)
     m))
 
+(defn despace "replace all whitespace" [str_in]
+  (string/replace str_in #"[\s]" "")
+  )
 (defn key-name-sub-or-self [k]
-  (if (keyword? k)
+  (if     (keyword?  k)
     (do
       (def k1 (replace-map-h k  keys-symbols-modi-as-key :modi-as-key true)) ; first replace modi-as-keys
       (def k2 (replace-map-h k1 keys-symbols)) ; then replace other key symbols
       (keyword (string/replace k2 #"^:" ""))
       )
-    (if (map?   k)
+    (if   (map?      k)
       (update-in-if-has k [:key] key-name-sub-or-self)
-      k
+      (if (and (string?   k) (string/starts-with? k "‘"))
+        (key-name-sub-or-self (keyword (string/replace (despace k) #"^‘" "")))
+        k
+        )
       )
   )
 )
