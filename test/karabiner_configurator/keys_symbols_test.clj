@@ -48,6 +48,17 @@
   :⇧＼               	:!SSbackslash
 })
 
+;; convert keys as strings
+(def key-string-map {
+  "‘  	 ⇧ 	  	 	k"	:!SSk,
+  "‘  	‹⇧ 	  	 	k"	:!Sk,
+  "‘  	 ⇧›	  	 	k"	:!Rk,
+  "‘  	   	  	⎇	k"	:!OOk,
+  "‘  	   	‹⌘	 	k"	:!Ck,
+  "‘  	 ⇧ 	  	⎇	k"	:!SSOOk,
+  "‘‹⎈	   	  	 	k"	:!Tk
+})
+
 ;; convert map of keys with modifiers
 (def map-key-modi-map {
   {:key :⎈›a, :halt true}	{:key :!Wa, :halt true}
@@ -68,5 +79,9 @@
 
   (t/testing "convert map with :key with symbol modifiers to regular keys"
     (doseq [[k v] map-key-modi-map]
+      (t/is (= (sut/key-sym-to-key k) v))))
+
+  (t/testing "convert map with 'keys as strings'"
+    (doseq [[k v] key-string-map]
       (t/is (= (sut/key-sym-to-key k) v))))
   )
