@@ -22,29 +22,58 @@
 
 (def keys-symbols-other {
   "🌐" 	"!F","ƒ""!F","ⓕ""!F","Ⓕ""!F","🄵""!F","🅕""!F","🅵""!F"
-  "⇪" 	"P"          	; capslock
-  "∀" 	"!A"         	; any regardless of side
-  "✱" 	"!!"         	; hyper
-  "﹖﹖"	"##","??""##"	; optional any
+  "⇪" 	"P" 	; capslock
+  "∀" 	"!A"	; any regardless of side
+  "✱" 	"!!"	; hyper
+  "∀﹖"	"##","∀?""##","﹖﹖""##","??""##"; optional any
   "︔" 	"semicolon"
-  "⸴" 	"comma"
-  "．" 	"period"
-  "⎋" 	"escape"
-  "⭾" 	"tab","↹""tab"
-  "₌" 	"equal_sign"
-  "⇞" 	"page_up","⇟""page_down"
-  "⇤" 	"home","⇥""end","⤒""home","⤓""end","↖""home","↘""end",
-  "ˋ" 	"grave_accent_and_tilde","˜""grave_accent_and_tilde"
-  "␠" 	"spacebar","␣""spacebar"
-  "␈" 	"delete_or_backspace","⌫""delete_or_backspace"
-  "␡" 	"delete_forward","⌦""delete_forward"
-  "⏎" 	"return_or_enter","↩""return_or_enter","⌤""return_or_enter","␤""return_or_enter",
-  "▲" 	"up_arrow","▼""down_arrow","◀""left_arrow","▶""right_arrow"
-  " " 	"" ; no-break space removed, used only for rudimentary alignment
+  "“" 	"quote","”""quote","＂""quote","«""quote","»""quote"
+  "⧵" 	"backslash","＼""backslash"
+  "﹨" "non_us_backslash"
+  "【"	"open_bracket" ,"「""open_bracket" ,"〔""open_bracket" ,"⎡""open_bracket"
+  "】"	"close_bracket","」""close_bracket","〕""close_bracket","⎣""close_bracket"
+  "⸴"	"comma"
+  "．"	"period"
+  "⁄"	"slash"
+  "⎋"	"escape"
+  "⭾"	"tab","↹""tab"
+  "‐"	"hyphen"
+  "₌"	"equal_sign"
+  "£"	"non_us_pound"
+  "⇞"	"page_up","⇟""page_down"
+  "⇤"	"home","⇥""end","⤒""home","⤓""end","↖""home","↘""end",
+  "ˋ"	"grave_accent_and_tilde","˜""grave_accent_and_tilde"
+  "␠"	"spacebar","␣""spacebar"
+  "␈"	"delete_or_backspace","⌫""delete_or_backspace"
+  "␡"	"delete_forward","⌦""delete_forward"
+  "⏎"	"return_or_enter","↩""return_or_enter","⌤""return_or_enter","␤""return_or_enter",
+  "▲"	"up_arrow","▼""down_arrow","◀""left_arrow","▶""right_arrow"
+  " "	"" ; no-break space removed, used only for rudimentary alignment
   "🔢₁""keypad_1","🔢₂""keypad_2","🔢₃""keypad_3","🔢₄""keypad_4","🔢₅""keypad_5"
   "🔢₆""keypad_6","🔢₇""keypad_7","🔢₈""keypad_8","🔢₉""keypad_9","🔢₀""keypad_0"
   "🔢₌""keypad_equal_sign","🔢₋""keypad_hyphen","🔢₊""keypad_plus"
-  "🔢⁄""keypad_slash","🔢．""keypad_period","🔢∗""keypad_asterisk"
+  "🔢⁄""keypad_slash","🔢．""keypad_period","🔢∗""keypad_asterisk","🔢⏎""keypad_enter"
+  "🔊""volume_up"  ,"🔈+""volume_up"  ,"🔈➕""volume_up"  ,"🔈₊""volume_up"  ,"🔈⊕""volume_up"
+  "🔉""volume_down","🔈−""volume_down","🔈➖""volume_down","🔈₋""volume_down","🔈⊖""volume_down"
+  "🔇""mute","🔈⓪""mute","🔈⓿""mute","🔈₀""mute"
+  "🔆""vk_consumer_brightness_up"
+  "🔅""vk_consumer_brightness_down"
+  "⌨💡+""vk_consumer_illumination_up"  ,"⌨💡➕""vk_consumer_illumination_up"  ,"⌨💡₊""vk_consumer_illumination_up"  ,"⌨💡⊕""vk_consumer_illumination_up"
+  "⌨💡−""vk_consumer_illumination_down","⌨💡➖""vk_consumer_illumination_down","⌨💡₋""vk_consumer_illumination_down","⌨💡⊖""vk_consumer_illumination_down"
+  "▦""vk_launchpad"
+  "🎛""vk_dashboard"
+  "▭▯""vk_mission_control"
+  "◀◀""vk_consumer_previous"
+  "▶⏸""vk_consumer_play"
+  "▶▶""vk_consumer_next"
+  "▤""application","☰""application","𝌆""application"
+  "🖰1" "button1" ,"🖰2" "button2" ,"🖰3" "button3" ,"🖰4" "button4" ,"🖰5" "button5"
+  "🖰6" "button6" ,"🖰7" "button7" ,"🖰8" "button8" ,"🖰9" "button9" ,"🖰10""button10"
+  "🖰11""button11","🖰12""button12","🖰13""button13","🖰14""button14","🖰15""button15"
+  "🖰16""button16","🖰17""button17","🖰18""button18","🖰19""button19"
+  "🖰21""button21","🖰22""button22","🖰23""button23","🖰24""button24","🖰25""button25"
+  "🖰26""button26","🖰27""button27","🖰28""button28","🖰29""button29","🖰30""button30"
+  "🖰31""button31","🖰32""button32"
 })
 (def keys-symbols-generated (into {} (
   mapcat      (fn [mod]

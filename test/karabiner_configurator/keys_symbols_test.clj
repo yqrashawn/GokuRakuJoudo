@@ -38,6 +38,14 @@
   :⇧‹◆f10           	:!SSCf10
   :⎇›⇧              	:!Eshift
   :⎇›⇪              	:!Ecaps_lock
+  :⇧⁄               	:!SSslash
+  :⇧〔               	:!SSopen_bracket
+  :⇧【               	:!SSopen_bracket
+  :⇧「               	:!SSopen_bracket
+  :⇧‐               	:!SShyphen
+  :⇧﹨               	:!SSnon_us_backslash
+  :⇧⧵               	:!SSbackslash
+  :⇧＼               	:!SSbackslash
 })
 
 ;; convert map of keys with modifiers
