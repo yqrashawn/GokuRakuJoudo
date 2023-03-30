@@ -150,10 +150,13 @@
   [m ks]
   (not= ::absent (get-in m ks ::absent)))
 (defn update-in-if-has
-  [m ks f & args]
-  (if (contains-in? m ks)
-    (apply (partial update-in m ks f) args)
-    m))
+  [m_ ks f & args]
+  (def m m_)
+  (mapv #(if (contains-in? m [%])
+             (def m (apply (partial update-in m [%] f) args))
+           )
+    ks)
+  m)
 
 (defn despace "replace all whitespace" [str_in]
   (string/replace str_in #"[\s]" "")
@@ -166,10 +169,13 @@
       (keyword (string/replace k2 #"^:" ""))
       )
     (if   (map?      k)
-      (update-in-if-has k [:key] key-name-sub-or-self)
-      (if (and (string?   k) (string/starts-with? k "‘"))
-        (key-name-sub-or-self (keyword (string/replace (despace k) #"^‘" "")))
-        k
+      (update-in-if-has k [:key :sim] key-name-sub-or-self)
+      (if (vector?   k)
+        (mapv #(key-name-sub-or-self %) k)
+        (if (and (string?   k) (string/starts-with? k "‘"))
+          (key-name-sub-or-self (keyword (string/replace (despace k) #"^‘" "")))
+          k
+          )
         )
       )
   )
@@ -220,15 +226,17 @@
   )
 (defn move-modi-prefix-front
   [k]
-  (move-modi-front (move-modi-front k "#") "!")
-  )
+  (if (vector? k)
+    (mapv #(move-modi-mandatory-front %) (mapv #(move-modi-optional-front  %) k))
+    (       move-modi-mandatory-front           (move-modi-optional-front     k))
+  ))
 (defn key-sym-to-key
   "Takes key with symbols as input and returns keys without; optional :dbg debug print value"
   [k & {:keys [dbg] :or {dbg nil}}]
   (def sub1 (key-name-sub-or-self k))
   (if (not= k sub1)
     (if (map? sub1)
-      (def sub (update-in-if-has sub1 [:key] move-modi-prefix-front))
+      (def sub (update-in-if-has sub1 [:key :sim] move-modi-prefix-front))
       (def sub (move-modi-prefix-front sub1))
       )
     (def sub                                sub1 )

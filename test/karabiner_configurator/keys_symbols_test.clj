@@ -61,7 +61,10 @@
 
 ;; convert map of keys with modifiers
 (def map-key-modi-map {
-  {:key :⎈›a, :halt true}	{:key :!Wa, :halt true}
+  {:key :⎈›a, :halt true}   	{:key :!Wa, :halt true}
+  {:sim[:₌ :␈]}             	{:sim [:equal_sign :delete_or_backspace]},
+  {:sim[:₌ :␈] :modi :any}  	{:sim [:equal_sign :delete_or_backspace] :modi :any}
+  {:sim["‘₌" :␈] :modi :any}	{:sim [:equal_sign :delete_or_backspace] :modi :any}
 })
 
 (t/deftest convert-symbols
