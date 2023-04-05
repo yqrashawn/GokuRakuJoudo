@@ -49,6 +49,8 @@
   ; more complicated cases in vertically aligned pairs
   [:w {:set ["␠w" 1]  :repeat false} [:!␠w       ]] ; skip conversion of variable values
   [:w {:set ["␠w" 1], :repeat false} [:!spacebarw]]
+  [:⁄     [:say_␠h :repeat false]] ; skip conversion of user functions with _escaped symbols
+  [:slash [:say_␠h :repeat false]]
 })
 
 ;; convert keys as strings

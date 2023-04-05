@@ -38,6 +38,7 @@ __NB!__
   - Optional﹖ indicator __must__ bet at the Right side and __after__ the side indicator (✓`⎈›﹖` ✗`⎈﹖›`)
   - Modifiers at the end of a key definition are treated as literal keys
   - Keys-as-strings __must__ have a `‘` in the beginning to differentiate them from, e.g., strings that contain script commands
+  - User functions need to escape special symbols listed here with `_` (`[:e [:echo␠ "e"]]`→`[:e [:echo_␠ "e"]]`) to avoid conflict
 
 ### Other key symbols
 
