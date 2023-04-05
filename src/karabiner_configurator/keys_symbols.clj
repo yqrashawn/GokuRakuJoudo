@@ -202,18 +202,23 @@
   [k prefix]
   (def s (if (keyword? k)
     (name k)
+         (if (string? k)
           k
-  ))
-  (def modi-must [])
-  (let [[s-remain modi-must] (find-modi s prefix modi-must)]
-    (def modi-must-str
-      (if (empty? modi-must)
-        ""
-        (str prefix (string/replace (string/join "" modi-must) prefix "")) ; :!CC!AA → :!CCAA
+          nil
+  )))
+  (if (string? s) ; skip non-string keys like ["var" 1]
+    (do
+      (def modi-must [])
+      (let [[s-remain modi-must] (find-modi s prefix modi-must)]
+        (def modi-must-str
+          (if (empty? modi-must)
+            ""
+            (str prefix (string/replace (string/join "" modi-must) prefix "")) ; :!CC!AA → :!CCAA
+        ))
+        (keyword (str modi-must-str s-remain))
     ))
-    (keyword (str modi-must-str s-remain))
-    )
-  )
+    k
+  ))
 (defn move-modi-mandatory-front
   [k]
   (def prefix "!")

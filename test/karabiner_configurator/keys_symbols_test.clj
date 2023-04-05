@@ -46,6 +46,9 @@
   :⇧﹨               	:!SSnon_us_backslash
   :⇧⧵               	:!SSbackslash
   :⇧＼               	:!SSbackslash
+  ; more complicated cases in vertically aligned pairs
+  [:w {:set ["␠w" 1]  :repeat false} [:!␠w       ]] ; skip conversion of variable values
+  [:w {:set ["␠w" 1], :repeat false} [:!spacebarw]]
 })
 
 ;; convert keys as strings
