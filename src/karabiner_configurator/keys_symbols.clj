@@ -42,6 +42,7 @@
   "£"	"non_us_pound"
   "⇞"	"page_up","⇟""page_down"
   "⇤"	"home","⇥""end","⤒""home","⤓""end","↖""home","↘""end",
+  "⎀"	"insert",
   "ˋ"	"grave_accent_and_tilde","˜""grave_accent_and_tilde"
   "␠"	"spacebar","␣""spacebar"
   "␈"	"delete_or_backspace","⌫""delete_or_backspace"
