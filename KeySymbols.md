@@ -66,6 +66,7 @@ __NB!__
   |‐ ₌           	|`hyphen` `equal_sign`                     	|
   |▲ ▼ ◀ ▶       	|`up`/`down`/`left`/`right` `_arrow`
   |⇞ ⇟           	|`page_` `up`/`down`                    	|
+  |⎀             	|`insert`                               	|
   |⇤ ⤒ ↖         	|`home`                                 	|
   |⇥ ⤓ ↘         	|`end`                                  	|
   | ` `          	|no-break space removed                 	|
