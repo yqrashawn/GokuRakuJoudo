@@ -110,7 +110,7 @@ The only condition that Goku does not support is [keyboard type](https://pqrs.or
 ### Command a to Control 1
 
 ```clojure
-    {:main [{:des "command a to control 1" [:!Ca :!T1]}]}
+    {:main [{:des "command a to control 1" :rules [[:!Ca :!T1]]}]}
 
     ;; this is a little bit weird, but it's convenient
     ;; the rule [:!Ca :!T1]
