@@ -13,6 +13,6 @@ jobs:
       - name: Run tests
         run: |
           lein test
-          lein cloverage --no-html --coveralls || true
+          lein cloverage --no-html --coveralls
       - name: Coveralls
         run: curl -F json_file=@./target/coverage/coveralls.json https://coveralls.io/api/v1/jobs
