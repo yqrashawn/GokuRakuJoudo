@@ -3,7 +3,7 @@
             [karabiner-configurator.misc :refer [massert]]))
 
 ;; this file parses modifier definitions
-;; spec https://pqrs.org/osx/karabiner/json.html#from-event-definition-modifiers
+;; spec https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/modifiers/
 
 ;; user can define modifier combination in advance and use it in `froms`, `tos` or `rules`
 ;; it will generate a {:mandatory ["modifiers or empty"] :optional ["modifiers or any or empty"]} data structure
