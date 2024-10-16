@@ -8,6 +8,8 @@ All notable changes to this project will be documented in this file. This change
 ** 0.7.0 - 2024-10-16
 *** Added
 - BREAKING `software_function` support, [karabiner doc](https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to/software_function/)
+  - example can be found at https://github.com/yqrashawn/GokuRakuJoudo/commit/8dfe510eeaec58c3314afceab0e4b8ac20cfa4ba#diff-bdf007c27f040fdb32781729c690e316b78cb697fac1e9b4f14f19aeb0cff70fR92-R691
+- homebrew goku now supports arm devices
 
 ** 0.6.0 - 2022-07-17
 *** Fixed

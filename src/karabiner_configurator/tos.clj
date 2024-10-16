@@ -60,9 +60,6 @@
 ;;                        "id": "identifier of the message",
 ;;                        "text": "message text"
 ;;                    }
-;; :softf "software_function" : {
-;;            "open_application": bundle_identifier -> id
-;;        }
 
 (defn parse-to
   [tname tinfos]
