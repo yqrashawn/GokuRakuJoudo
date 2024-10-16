@@ -141,6 +141,5 @@ file.
 
 Use `lein repl` for developing.
 
-Change [Makefile.local.example](./Makefile.local.example)'s name to
-`Makefile.local`, change `GRAALVM` variable in the makefile to right path, run
-`make local` to test then generate `goku` binary file.  
+`make compile` to compile clojure file to jar
+`make bin` to compile jar to native file (make sure GRAALVM `native-image` binary is in `PATH`)
