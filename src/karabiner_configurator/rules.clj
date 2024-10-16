@@ -1,7 +1,7 @@
 (ns karabiner-configurator.rules
   (:require
    [karabiner-configurator.conditions :as conditions]
-   [karabiner-configurator.data :as d :refer [pkey? k? special-modi-k? conf-data pointing-k? consumer-k? noti? templates? devices? assoc-conf-data update-conf-data profile? raw-rule?]]
+   [karabiner-configurator.data :as d :refer [pkey? k? special-modi-k? conf-data pointing-k? consumer-k? noti? softf? templates? devices? assoc-conf-data update-conf-data profile? raw-rule?]]
    [karabiner-configurator.froms :as froms]
    [karabiner-configurator.misc :refer [massert contains??]]
    [karabiner-configurator.tos :as tos]))
@@ -57,6 +57,15 @@
 (defn parse-noti-with-tos [des to]
   (let [[_ id text] to]
     (first (tos/parse-to des [{:noti {:id id :text text}}]))))
+(defn parse-softf-with-tos [des to]
+  (let [[_ m] to]
+    (first (tos/parse-to des [{:softf m}]))))
+(defn parse-op-with-tos [des to]
+  (let [[_ path] to]
+    (first (tos/parse-to des [{:softf {:open {:file_path path}}}]))))
+(defn parse-oi-with-tos [des to]
+  (let [[_ id] to]
+    (first (tos/parse-to des [{:softf {:open {:bundle_identifier id}}}]))))
 
 (defn to-key-vector
   [des to _prevresult]
@@ -64,6 +73,12 @@
         [(parse-simple-set-variable des to)]
         (noti? to)
         [(parse-noti-with-tos des to)]
+        (d/op? to)
+        [(parse-op-with-tos des to)]
+        (d/oi? to)
+        [(parse-oi-with-tos des to)]
+        (d/softf? to)
+        [(parse-softf-with-tos des to)]
         :else
         (vec
          (flatten
@@ -72,6 +87,7 @@
               (massert (or (contains? (:tos @conf-data) v)
                            (k? v)
                            (noti? v)
+                           (softf? v)
                            (special-modi-k? v)
                            (vector? v)
                            (string? v)

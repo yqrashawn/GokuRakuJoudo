@@ -1,5 +1,6 @@
 (ns karabiner-configurator.tos
-  (:require [karabiner-configurator.data :refer [conf-data update-conf-data]]
+  (:require [clojure.set :as cset]
+            [karabiner-configurator.data :refer [conf-data update-conf-data]]
             [karabiner-configurator.keys :refer [parse-key]]
             [karabiner-configurator.misc :refer [massert]]))
 
@@ -58,13 +59,16 @@
 ;; :noti              "set_notification_message" : {
 ;;                        "id": "identifier of the message",
 ;;                        "text": "message text"
-;;                }
+;;                    }
+;; :softf "software_function" : {
+;;            "open_application": bundle_identifier -> id
+;;        }
 
 (defn parse-to
   [tname tinfos]
   (mapv
-   (fn [{:keys [set input shell lazy repeat halt hold_down_ms select_input_source noti] :as tinfo}]
-     (let [result         (parse-key tname tinfo true true)
+   (fn [{:keys [set input shell lazy repeat halt hold_down_ms select_input_source noti softf] :as tinfo}]
+     (let [result          (parse-key tname tinfo true true)
            _validate-shell (massert (or (and (vector? shell) (contains? (:templates @conf-data) (first shell))) (string? shell) (nil? shell))
                                     (str "invalid `shell` in to definition " tname " " shell ", should be string or keyword"))
            _validate-input (massert (or (nil? input) (and (keyword? input) (contains? (:input-sources @conf-data) input)))
@@ -78,43 +82,53 @@
                                                              (keyword? (get noti :text))
                                                              (string? (get noti :text)))))
                                     (str "invalid `noti`, must be a map with at least :id, :id must be string or keyword"))
-           result         (if (keyword? input)
-                            (assoc result :select_input_source (input (:input-sources @conf-data)))
-                            result)
-           result         (if (string? shell)
-                            (assoc result :shell_command shell)
-                            result)
-           result         (if (vector? shell)
-                            (assoc result
-                                   :shell_command (apply
-                                                   format
-                                                   (flatten
-                                                    [((first shell)
-                                                      (:templates @conf-data))
-                                                     (rest shell)
-                                             ;; optional arguments
-                                                     "" "" "" "" "" ""])))
-                            result)
-           result         (if (vector? set)
-                            (assoc result :set_variable {:name (first set) :value (second set)})
-                            result)
-           result         (if (false? repeat)
-                            (assoc result :repeat false)
-                            result)
-           result         (if (true? halt)
-                            (assoc result :halt true)
-                            result)
-           result         (if (and (number? hold_down_ms) (not (= 0 hold_down_ms)))
-                            (assoc result :hold_down_milliseconds hold_down_ms)
-                            result)
-           result         (if (boolean? lazy)
-                            (assoc result :lazy lazy)
-                            result)
-           result         (if noti
-                            (let [{:keys [id text]} noti]
-                              (assoc result :set_notification_message {:id id :text (or text "")}))
-                            result)
-           result         (if select_input_source tinfo result)]
+           _validate-softf (massert (or (nil? softf) (map? softf))
+                                    (str "invalid `softf`, must be a map with valid keys"))
+           result          (if (keyword? input)
+                             (assoc result :select_input_source (input (:input-sources @conf-data)))
+                             result)
+           result          (if (string? shell)
+                             (assoc result :shell_command shell)
+                             result)
+           result          (if (vector? shell)
+                             (assoc result
+                                    :shell_command (apply
+                                                    format
+                                                    (flatten
+                                                     [((first shell)
+                                                       (:templates @conf-data))
+                                                      (rest shell)
+                                                     ;; optional arguments
+                                                      "" "" "" "" "" ""])))
+                             result)
+           result          (if (vector? set)
+                             (assoc result :set_variable {:name (first set) :value (second set)})
+                             result)
+           result          (if (false? repeat)
+                             (assoc result :repeat false)
+                             result)
+           result          (if (true? halt)
+                             (assoc result :halt true)
+                             result)
+           result          (if (and (number? hold_down_ms) (not (= 0 hold_down_ms)))
+                             (assoc result :hold_down_milliseconds hold_down_ms)
+                             result)
+           result          (if (boolean? lazy)
+                             (assoc result :lazy lazy)
+                             result)
+           result          (if noti
+                             (let [{:keys [id text]} noti]
+                               (assoc result :set_notification_message {:id id :text (or text "")}))
+                             result)
+           softf           (when softf
+                             (cset/rename-keys softf {:dbc     :cg_event_double_click
+                                                      :sleep   :iokit_power_management_sleep_system
+                                                      :open    :open_application
+                                                      :setmpos :set_mouse_cursor_position}))
+           result          (cond-> result
+                             (map? softf)
+                             (assoc :software_function softf))
+           result          (if select_input_source tinfo result)]
        result))
    tinfos))
 

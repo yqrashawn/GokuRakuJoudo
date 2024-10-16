@@ -61,6 +61,29 @@
               (or (string? text)
                   (keyword? text)
                   (nil? text))))))
+(defn softf? [vec]
+  (and (vector? vec)
+       (let [[k m] vec]
+         (and (= k :softf)
+              (map? m)
+              (or (map? (:open_application m))
+                  (map? (:set_mouse_cursor_position m))
+                  (map? (:cg_event_double_click m))
+                  (map? (:iokit_power_management_sleep_system m))
+                  (map? (:open m))
+                  (map? (:setmpos m))
+                  (map? (:dbc m))
+                  (map? (:sleep m)))))))
+(defn op? [vec]
+  (and (vector? vec)
+       (let [[k p] vec]
+         (and (= k :op)
+              (string? p)))))
+(defn oi? [vec]
+  (and (vector? vec)
+       (let [[k i] vec]
+         (and (= k :oi)
+              (string? i)))))
 (defn raw-rule? [rule]
   (and (map? rule)
        (or (= :basic (:type rule))

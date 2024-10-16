@@ -88,7 +88,13 @@
                              [{:sim [:i :o] :modi {:mandatory [:left_command]
                                                    :optional [:left_shift]}} [:!Ci :o]]
                              [{:sim [:i :o] :modi {:optional [:left_command]}} [:i :o]]
-                             [{:sim [:i :o] :modi {:optional [:any]}} [:i :o]]]}])
+                             [{:sim [:i :o] :modi {:optional [:any]}} [:i :o]]]}
+                    {:des "software_function"
+                     :rules [[:1 [:op "/Applications/Emacs.app"]]
+                             [:2 [:oi "org.gnu.Emacs"]]
+                             [:3 [:softf {:dbc {:button 0}}]]
+                             [:4 [:softf {:sleep {:delay_milliseconds 500}}]]
+                             [:5 [:softf {:setmpos {:x 0 :y 0 :screen 0}}]]]}])
 
 (def
   result
@@ -656,7 +662,33 @@
                                                                    :key_up_when                     "any"}}
                                      :to   [{:key_code "i"}
                                             {:key_code "o"}]
-                                     :type "basic"}]}]
+                                     :type "basic"}]}
+                    {:description "software_function"
+                     :manipulators
+                     [{:from {:key_code "1"}
+                       :to
+                       [{:software_function
+                         {:open_application {:file_path "/Applications/Emacs.app"}}}]
+                       :type "basic"}
+                      {:from {:key_code "2"}
+                       :to
+                       [{:software_function
+                         {:open_application {:bundle_identifier "org.gnu.Emacs"}}}]
+                       :type "basic"}
+                      {:from {:key_code "3"},
+                       :to   [{:software_function {:cg_event_double_click {:button 0}}}]
+                       :type "basic"}
+                      {:from {:key_code "4"}
+                       :to
+                       [{:software_function
+                         {:iokit_power_management_sleep_system
+                          {:delay_milliseconds 500}}}]
+                       :type "basic"}
+                      {:from {:key_code "5"}
+                       :to
+                       [{:software_function
+                         {:set_mouse_cursor_position {:x 0, :y 0, :screen 0}}}]
+                       :type "basic"}]}]
    :test-profile   [{:description  "Auto generated layer conditions"
                      :manipulators [{:type            "basic"
                                      :to              [{:set_variable {:name  "chunkwm-move-mode"

@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file. This change
 
 [Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.6.0..HEAD
 
+** 0.7.0 - 2024-10-16
+*** Added
+- BREAKING `software_function` support, [karabiner doc](https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to/software_function/)
+
 ** 0.6.0 - 2022-07-17
 *** Fixed
 - BREAKING remove deps on ~watchexec~ (gokuw still use ~watchexec~)
