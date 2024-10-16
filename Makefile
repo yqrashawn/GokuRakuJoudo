@@ -18,7 +18,3 @@ test-binary:
 	cp ./resources/configurations/edn/yqrashawn.edn ~/.config/karabiner.edn
 	cp ./resources/configurations/json/empty-karabiner.json ~/.config/karabiner/karabiner.json
 	./goku
-local:
-	make -f Makefile.local
-local-bin:
-	make -f Makefile.local bin
