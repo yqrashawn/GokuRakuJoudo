@@ -292,10 +292,10 @@ Don't map a to b when there are three fingers on the trackpad.
                       :sim     250
                       ;; to_delayed_action_delay_milliseconds
                       ;; checkout karabiner's documentation
-                      ;; https://pqrs.org/osx/karabiner/json.html
+                      ;; https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to-delayed-action/
                       ;; basically it means time after which the key press is count delayed
                       :delay   500
-                      ;; https://pqrs.org/osx/karabiner/json.html#to-if-alone
+                      ;; https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to-if-alone/
                       ;; to_if_alone_timeout_milliseconds
                       ;; affects to_if_alone behavior
                       ;; simlayer is implemented with to_if_alone and simultaneous key press feature

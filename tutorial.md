@@ -19,7 +19,7 @@
 
 # Intro
 
-Goku supports (almost?) all the features that Karabiner Elements provides via its [JSON spec](https://pqrs.org/osx/karabiner/json.html).
+Goku supports (almost?) all the features that Karabiner Elements provides via its [JSON spec](https://karabiner-elements.pqrs.org/docs/json/root-data-structure/).
 
 If you have any question or advice on how to improve the tool, just open an issue or ask questions in the [Telegram group](https://t.me/joinchat/UDlL5H7VIwAVK0_7).
 
@@ -103,7 +103,7 @@ You can find all keycode definition in [this file](https://github.com/yqrashawn/
     ;; HHKB-BT keyboard.
 ```
 
-The only condition that Goku does not support is [keyboard type](https://pqrs.org/osx/karabiner/json.html#condition-definition-keyboard-type).
+The only condition that Goku does not support is [keyboard type](https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/conditions/keyboard-type/).
 
 <a id="basic4"></a>
 
@@ -254,7 +254,7 @@ The rules above are not really useful. Cause we lose `w` key in the first rule a
 
 ### froms and tos
 
-So in the karabiner.json spec, there're [from event definition](https://pqrs.org/osx/karabiner/json.html#from-event-definition) and [to event definition](https://pqrs.org/osx/karabiner/json.html#to-event-definition). We can predefine this in Goku as well.
+So in the karabiner.json spec, there're [from event definition](https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/) and [to event definition](https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to/). We can predefine this in Goku as well.
 
 1.  froms definition
 
@@ -329,7 +329,7 @@ In karabiner, there's two kinds of layers implementation. I'll just call them th
 
 There're two problems in old layer. When we type "w1" really fast, we trigger the "1" in w layer rather than insert "w1". When we keep press w key down, the w key won't repeat. There won't be a "wwwwwwwwwwwwwwwwwwww".
 
-The karabiner's simlayer is based on its [simultaneous](https://pqrs.org/osx/karabiner/json.html#simultaneous) functionality. It's like this. The `-->` is the symbol of time.
+The karabiner's simlayer is based on its [simultaneous](https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/simultaneous/) functionality. It's like this. The `-->` is the symbol of time.
 
 ```
         press w key down --> if in threshold milliseconds
@@ -375,8 +375,8 @@ This solves those two problems. But we need to trigger the second key fast, or t
 
         ;; so we have a <other options> here, and we know that <conditions> can be nil
 
-        ;; rule is actually the manipulator in karabienr.json, checkout here
-        ;; https://pqrs.org/osx/karabiner/json.html#complex_modifications-manipulator-definition
+        ;; rule is actually the manipulator in karabiner.json, checkout here
+        ;; https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/
 
         ;; We can see there are ~type~, ~from~, ~to~, ~to_if_alone~, ~to_if_held_down~,
         ;; ~to_after_key_up~, ~to_delayed_action~, ~description~, ~conditions~,
