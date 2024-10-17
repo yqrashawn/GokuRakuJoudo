@@ -245,5 +245,81 @@
    :vk_consumer_previous {:label "vk_consumer_previous (equal torewind)" :not-from true}
    :vk_consumer_play {:label "vk_consumer_play (equal toplay)" :not-from true}
    :vk_consumer_next {:label "vk_consumer_next (equal tofastforward)" :not-from true}
+   :al_voicemail {:not-to true :consumer-key true}
+   :al_desktop {:not-to true :consumer-key true}
+   :al_documents {:not-to true :consumer-key true}
+   :al_consumer_control_configuration {:consumer-key true}
+   :al_instant_messaging {:not-to true :consumer-key true}
+   :al_oem_feature_browser {:not-to true :consumer-key true}
+   :al_digital_wallet {:not-to true :consumer-key true}
+   :al_power_status {:not-to true :consumer-key true}
+   :al_newsreader {:not-to true :consumer-key true}
+   :al_presentation_app {:consumer-key true}
+   :al_research_or_search_browswer {:not-to true :consumer-key true}
+   :al_entertainment_content_browser {:not-to true :consumer-key true}
+   :al_movie_browser {:not-to true :consumer-key true}
+   :al_spreadsheet {:consumer-key true}
+   :al_navigation {:not-to true :consumer-key true}
+   :al_network_chat {:not-to true :consumer-key true}
+   :al_customized_corporate_news_browser {:not-to true :consumer-key true}
+   :al_oem_help {:not-to true :consumer-key true}
+   :al_preemptive_halt_task_or_application {:not-to true :consumer-key true}
+   :al_online_activity_browswer {:not-to true :consumer-key true}
+   :al_image_browser {:not-to true :consumer-key true}
+   :al_contextaware_desktop_assistant {:not-to true :consumer-key true}
+   :al_digital_rights_manager {:not-to true :consumer-key true}
+   :al_Calendar_Or_Schedule {:not-to true :consumer-key true}
+   :al_next_task_or_application {:not-to true :consumer-key true}
+   :al_task_or_project_manager {:not-to true :consumer-key true}
+   :al_contact_sync {:not-to true :consumer-key true}
+   :al_text_editor {:consumer-key true}
+   :al_process_or_task_manager {:not-to true :consumer-key true}
+   :al_previous_task_or_application {:not-to true :consumer-key true}
+   :al_calculator {:consumer-key true}
+   :al_virus_protection {:not-to true :consumer-key true}
+   :al_log_or_journal_or_timecard {:not-to true :consumer-key true}
+   :al_select_task_or_application {:not-to true :consumer-key true}
+   :al_internet_browser {:consumer-key true}
+   :al_clock {:not-to true :consumer-key true}
+   :al_checkbook_or_finance {:not-to true :consumer-key true}
+   :ac_forward {:not-to true :consumer-key true}
+   :al_alarms {:not-to true :consumer-key true}
+   :al_network_conference {:not-to true :consumer-key true}
+   :al_dictionary {:consumer-key true}
+   :al_audio_browser {:not-to true :consumer-key true}
+   :ac_bookmarks {:not-to true :consumer-key true}
+   :al_wireless_status {:not-to true :consumer-key true}
+   :al_lan_or_wan_browser {:not-to true :consumer-key true}
+   :al_database_app {:not-to true :consumer-key true}
+   :al_audio_player {:not-to true :consumer-key true}
+   :al_graphics_editor {:not-to true :consumer-key true}
+   :ac_home {:not-to true :consumer-key true}
+   :ac_back {:not-to true :consumer-key true}
+   :al_screen_saver {:not-to true :consumer-key true}
+   :ac_refresh {:not-to true :consumer-key true}
+   :al_control_panel {:not-to true :consumer-key true}
+   :al_logon_or_logoff {:not-to true :consumer-key true}
+   :al_market_monitor_or_finance_browser {:not-to true :consumer-key true}
+   :al_grammer_check {:not-to true :consumer-key true}
+   :al_smart_card_information_or_help {:not-to true :consumer-key true}
+   :al_spell_check {:not-to true :consumer-key true}
+   :al_telephony_or_dialer {:not-to true :consumer-key true}
+   :al_command_line_processor_or_run {:not-to true :consumer-key true}
+   :al_thesaurus {:not-to true :consumer-key true}
+   :al_online_community {:not-to true :consumer-key true}
+   :al_encryption {:not-to true :consumer-key true}
+   :al_logon {:not-to true :consumer-key true}
+   :al_online_shopping_browswer {:not-to true :consumer-key true}
+   :al_file_browser {:not-to true :consumer-key true}
+   :al_remote_networking_or_isp_connect {:not-to true :consumer-key true}
+   :al_contacts_or_address_book {:not-to true :consumer-key true}
+   :al_local_machine_browser {:consumer-key true}
+   :al_email_reader {:consumer-key true}
+   :al_logoff {:not-to true :consumer-key true}
+   :al_a_or_v_capture_or_playback {:not-to true :consumer-key true}
+   :al_keyboard_layout {:not-to true :consumer-key true}
+   :al_message_status {:not-to true :consumer-key true}
+   :al_integrated_help_center {:not-to true :consumer-key true}
+   :al_word_processor {:consumer-key true}
    :volume_down {:label "volume_down (equal tovolume_decrement)"}
    :volume_up {:label "volume_up (equal tovolume_increment`)"}})
