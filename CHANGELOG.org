@@ -3,11 +3,15 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.7.1..HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.7.2..HEAD
+
+** 0.7.2 - 2024-10-17
+*** Added
+- keys_info: support AL and AC keycodes Karabiner does #256
 
 ** 0.7.1 - 2024-10-16
 *** Fixed
-- fastforward->fast_forward
+- keys_info: fastforward->fast_forward
 
 ** 0.7.0 - 2024-10-16
 *** Added
