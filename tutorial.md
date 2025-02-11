@@ -138,7 +138,7 @@ The only condition that Goku does not support is [keyboard type](https://karabin
 
     ;; !CTSequal_sign  | mandatory command control shift =
     ;;                 | which is command control +
-    ;; !O#Sright_arrow | mandatory option optional any right_arrow
+    ;; !O#Sright_arrow | mandatory option optional left shift right_arrow
 
     ;; karabiner definition of mandatory and optional
     ;; https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/from/modifiers/
