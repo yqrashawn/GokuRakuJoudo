@@ -8,9 +8,11 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Setup GraalVM environment
-        uses: DeLaGuardo/setup-graalvm@master
+        uses: graalvm/setup-graalvm@v1
         with:
-          graalvm-version: "22.1.0.java17"
+          java-version: "21"
+          distribution: "graalvm"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/cache@v3
         id: maven-cache # use this to check for `cache-hit` (`steps.yarn-and-maven-cache.outputs.cache-hit != 'true'`)
         with:
@@ -18,17 +20,15 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('./deps.edn') }}
           restore-keys: |
             ${{ runner.os }}-maven-
-      - name: Install native image
-        run: gu install native-image
       - name: Setup Clojure
-        uses: DeLaGuardo/setup-clojure@master
+        uses: DeLaGuardo/setup-clojure@13.0
         with:
           lein: latest
       - name: Install joker
         run: |
           brew install candid82/brew/joker
       - name: Checkout Code
-        uses: actions/checkout@v3.0.1
+        uses: actions/checkout@v4
       - name: Install dependencies
         run: lein deps
       - name: Compile
@@ -43,7 +43,7 @@ jobs:
           chmod +x gokuw
       - name: Pack
         run: zip -r goku.zip goku.zip goku gokuw # https://github.com/actions/virtual-environments/issues/2619#issuecomment-778827140
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: goku-zip
           path: goku.zip
@@ -54,7 +54,7 @@ jobs:
     needs: build
     runs-on: macos-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: goku-zip
       - name: Delete Other Draft Releases
@@ -66,28 +66,19 @@ jobs:
         id: sha256
         run: echo "::set-output name=checksum::$(shasum -a 256 goku.zip)"
 
-      - name: Create Draft Release
-        id: create_draft_release
-        uses: actions/create-release@v1
+      - name: Draft release
+        id: draft-release
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.sha }}
-          release_name: Release ${{ github.sha }}
-          body: |
-            - sha256 `${{ steps.sha256.outputs.checksum }}`
+          name: Release ${{ github.sha }}
           draft: true
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_draft_release.outputs.upload_url }}
-          asset_path: ./goku.zip
-          asset_name: goku.zip
-          asset_content_type: application/gzip
+          files: goku.zip
+          body: |
+            - sha256 `${{ steps.sha256.outputs.checksum }}`
 
   release:
     name: Release
@@ -95,32 +86,23 @@ jobs:
     needs: build
     runs-on: macos-latest
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: goku-zip
       - name: Get sha256
         id: sha256
         run: echo "::set-output name=checksum::$(shasum -a 256 goku.zip)"
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+        id: create-release
+        uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          name: Release ${{ github.ref }}
           body: |
             Checkout the changelog at https://github.com/yqrashawn/GokuRakuJoudo/blob/master/CHANGELOG.org
             - sha256 `${{ steps.sha256.outputs.checksum }}`
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./goku.zip
-          asset_name: goku.zip
-          asset_content_type: application/gzip
+          files: goku.zip
