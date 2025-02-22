@@ -64,6 +64,12 @@
   (let [[_ path] to]
     (first (tos/parse-to des [{:softf {:open {:file_path path}}}]))))
 (defn parse-oi-with-tos [des to]
+  (let [[_ idx] to]
+    (first
+     (tos/parse-to
+      des
+      [{:softf {:open {:frontmost_application_history_index idx}}}]))))
+(defn parse-oid-with-tos [des to]
   (let [[_ id] to]
     (first (tos/parse-to des [{:softf {:open {:bundle_identifier id}}}]))))
 
@@ -75,6 +81,8 @@
         [(parse-noti-with-tos des to)]
         (d/op? to)
         [(parse-op-with-tos des to)]
+        (d/oid? to)
+        [(parse-oid-with-tos des to)]
         (d/oi? to)
         [(parse-oi-with-tos des to)]
         (d/softf? to)

@@ -3,98 +3,100 @@
             [karabiner-configurator.data :refer [init-conf-data update-conf-data]]
             [karabiner-configurator.rules :as sut]))
 
-(def example-mains [{:des "a to 1"                                            :rules [[:condi :chunkwm-move-mode]
-                                                                                      [:profiles :Default :test-profile-2]
-                                                                                      [:a :1]]} ;; a to 1
-                    {:des "[left] command a to control 1"                            :rules [[:!C#Pa :!T1]
-                                                                                             [:!CC#Pa :!TT1]
-                                                                                             [:!CCTTOOSS#Pa :!TT1]]}
-                    {:des "right command a to control 1"                            :rules [[:!Q#Pa :!T1]]} ;; command a to control 1
-                    {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
-                    {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]}  ;; key to key
-                    {:des "c to example osascript"                            :rules [[:c "osascript -e 'display dialog \"example apple script\"'"]]} ;; key to shell script
-                    {:des "d to 1 then example osascript"                     :rules [[:d [:1 [:example-template "example apple script"]]]]} ;; key to key then shell script
-                    {:des "simultaneous e f to 3"                             :rules [[[:e :f] :3]]} ;; simultaneous key to key
-                    {:des "g to 4 when variable vi-mode is 1"                 :rules [[:g :4 :vi-mode]]} ;; vi-mode is 1
-                    {:des "h to 5 when variable vi-mode is not 1"             :rules [[:h :5 :!vi-mode]]} ;; vi-mode is not 1
-                    {:des "i to 6 only for device hhkb-bt"                    :rules [[:i :6 [:hhkb-bt :hhkb]]]} ;; key to key in layer b (in layer a) specific to hhkb-bt device
-                    {:des "j to 7 on hhkb-bt when variable vi-mode is 1"      :rules [[:j :7 [:vi-mode :hhkb-bt]]]} ;; multiple condition
-                    {:des "press h insert 8 then set variable some-mode to 0" :rules [[:h [:8 {:set ["some-mode" 0]}]]]}
-                    {:des "capslock to control as modifier to escape when press alone" :rules [[:##caps_lock :left_control nil {:alone :escape}]]}
-                    {:des "Quit application by pressing command-q twice" :rules [[:!C#Pq :!Cq ["command-q" 1]]
-                                                                                 [:!C#Pq
-                                                                                  [[:noti :cmdq "Press Cmd-Q to Quit"] ["command-q" 1]]
-                                                                                  nil
-                                                                                  {:delayed {:invoked [[:noti :cmdq] ["command-q" 0]] :canceled [[:noti :cmdq] ["commandq" 0]]}}]]}
-                    {:des "Quit application by holding command-q" :rules [[:!C#Pq nil nil {:held {:key :q :modi :left_command :repeat false}}]]}
-                    {:des "Quit Safari by pressing command-q twice" :rules [[:!C#Pq :!Cq [:safari ["command-q" 1]]]
-                                                                            [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :canceled ["command-q" 0]}}]]}
-                    {:des "Mouse button"
-                     :rules [[{:pkey :button5} :mission_control]
-                             [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]
-                             [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!Agrave_accent_and_tilde]]]}
-                    {:des "Change input source"
-                     :rules [[:i :us :q-mode]
-                             [:o :squirrel :q-mode]]}
-                    {:des "x-mode"
-                     :rules [[:i :a :x-mode]]}
-                    {:des "y-mode"
-                     :rules [[:i :a :y-mode]]}
-                    {:des "tab-mode"
-                     :rules [:test-profile
-                             :chunkwm-move-mode
-                             [:h "/usr/local/bin/chunkc tiling::window --warp west"]
-                             :Default
-                             :chunkwm-scale-mode
-                             [:h "/usr/local/bin/chunkc tiling::window --use-temporary-ratio 0.03 --adjust-window-edge west"]
-                             [:profiles :test-profile :test-profile-2]
-                             :tab-mode
-                             [:h "/usr/local/bin/chunkc tiling::window --focus west"]
-                             [:condi :chunkwm-move-mode :chunkwm-scale-mode]
-                             [:l "/usr/local/bin/chunkc tiling::window --focus east"]]}
-                    {:des "input source as condition"
-                     :rules [[:a :a :us]]}
-                    {:des "any keycode"
-                     :rules [[{:any :key_code} :a]
-                             [{:any :consumer_key_code} :a]
-                             [{:any :pointing_button} :a]]}
-                    {:des "double press and held key in simlayer (to_delayed_action to_if_held_down)"
-                     :rules [[:j "say 'j double press'" [["q-mode" 1] ["q-mode-j-dbpress-mode" 1]]]
-                             :q-mode
-                             [:j ["say 'j press down'" ["q-mode-j-dbpress-mode" 1]] nil {:delayed {:canceled ["q-mode-j-dbpress-mode" 0]
-                                                                                                   :invoked ["q-mode-j-dbpress-mode" 0]}
-                                                                                         :held "say 'j held down'"}]]}
-                    {:des "QWER in to right modifier keys" :rules [[:!QWERa :a]]}
-                    {:des "raw rules"
-                     :rules [{:type :mouse_motion_to_scroll :from {:modifiers {:mandatory [:left_control]}}}
-                             {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}
-                    {:des "raw rules test-profile"
-                     :rules [:test-profile
-                             {:type :mouse_motion_to_scroll :from {:modifiers {:mandatory [:left_control]}}}
-                             {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}
-                    {:des "more than two sim keys"
-                     :rules [[[:a :b :c] :d]]}
-                    {:des "redefine params or condis in simlayer issue #30"
-                     :rules [:vi-mode
-                             [:##j :down_arrow nil {:params {:sim 432}}]
-                             [:##j :down_arrow :chrome]
-                             [:##j :down_arrow :chromes {:params {:sim 432}}]]}
-                    {:des "sim pkey in from"
-                     :rules [[[{:pkey :button5} {:pkey :button2}] {:pkey :button1}]]}
-                    {:des "select input source in tos"
-                     :rules [[[:i :o] :select_abc]]}
-                    {:des "sim key with modifier"
-                     :rules [[{:sim [:i :o] :modi [:left_command]} [:i :o]]
-                             [{:sim [:i :o] :modi {:mandatory [:left_command]
-                                                   :optional [:left_shift]}} [:!Ci :o]]
-                             [{:sim [:i :o] :modi {:optional [:left_command]}} [:i :o]]
-                             [{:sim [:i :o] :modi {:optional [:any]}} [:i :o]]]}
-                    {:des "software_function"
-                     :rules [[:1 [:op "/Applications/Emacs.app"]]
-                             [:2 [:oi "org.gnu.Emacs"]]
-                             [:3 [:softf {:dbc {:button 0}}]]
-                             [:4 [:softf {:sleep {:delay_milliseconds 500}}]]
-                             [:5 [:softf {:setmpos {:x 0 :y 0 :screen 0}}]]]}])
+(def example-mains
+  [{:des "a to 1"                                            :rules [[:condi :chunkwm-move-mode]
+                                                                     [:profiles :Default :test-profile-2]
+                                                                     [:a :1]]} ;; a to 1
+   {:des "[left] command a to control 1"                            :rules [[:!C#Pa :!T1]
+                                                                            [:!CC#Pa :!TT1]
+                                                                            [:!CCTTOOSS#Pa :!TT1]]}
+   {:des "right command a to control 1"                            :rules [[:!Q#Pa :!T1]]} ;; command a to control 1
+   {:des "my spacebar to control 1"                          :rules [[:my-spacebar :!T1]]} ;; my-spacebar to control 1
+   {:des "press b to insert 12"                              :rules [[:b [:1 :2]]]} ;; key to key
+   {:des "c to example osascript"                            :rules [[:c "osascript -e 'display dialog \"example apple script\"'"]]} ;; key to shell script
+   {:des "d to 1 then example osascript"                     :rules [[:d [:1 [:example-template "example apple script"]]]]} ;; key to key then shell script
+   {:des "simultaneous e f to 3"                             :rules [[[:e :f] :3]]} ;; simultaneous key to key
+   {:des "g to 4 when variable vi-mode is 1"                 :rules [[:g :4 :vi-mode]]} ;; vi-mode is 1
+   {:des "h to 5 when variable vi-mode is not 1"             :rules [[:h :5 :!vi-mode]]} ;; vi-mode is not 1
+   {:des "i to 6 only for device hhkb-bt"                    :rules [[:i :6 [:hhkb-bt :hhkb]]]} ;; key to key in layer b (in layer a) specific to hhkb-bt device
+   {:des "j to 7 on hhkb-bt when variable vi-mode is 1"      :rules [[:j :7 [:vi-mode :hhkb-bt]]]} ;; multiple condition
+   {:des "press h insert 8 then set variable some-mode to 0" :rules [[:h [:8 {:set ["some-mode" 0]}]]]}
+   {:des "capslock to control as modifier to escape when press alone" :rules [[:##caps_lock :left_control nil {:alone :escape}]]}
+   {:des "Quit application by pressing command-q twice" :rules [[:!C#Pq :!Cq ["command-q" 1]]
+                                                                [:!C#Pq
+                                                                 [[:noti :cmdq "Press Cmd-Q to Quit"] ["command-q" 1]]
+                                                                 nil
+                                                                 {:delayed {:invoked [[:noti :cmdq] ["command-q" 0]] :canceled [[:noti :cmdq] ["commandq" 0]]}}]]}
+   {:des "Quit application by holding command-q" :rules [[:!C#Pq nil nil {:held {:key :q :modi :left_command :repeat false}}]]}
+   {:des "Quit Safari by pressing command-q twice" :rules [[:!C#Pq :!Cq [:safari ["command-q" 1]]]
+                                                           [:!C#Pq ["command-q" 1] :safari {:delayed {:invoked ["command-q" 0] :canceled ["command-q" 0]}}]]}
+   {:des "Mouse button"
+    :rules [[{:pkey :button5} :mission_control]
+            [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!grave_accent_and_tilde]]
+            [{:pkey :button4} [{:pkey :button1} {:pkey :button1} :!!Agrave_accent_and_tilde]]]}
+   {:des "Change input source"
+    :rules [[:i :us :q-mode]
+            [:o :squirrel :q-mode]]}
+   {:des "x-mode"
+    :rules [[:i :a :x-mode]]}
+   {:des "y-mode"
+    :rules [[:i :a :y-mode]]}
+   {:des "tab-mode"
+    :rules [:test-profile
+            :chunkwm-move-mode
+            [:h "/usr/local/bin/chunkc tiling::window --warp west"]
+            :Default
+            :chunkwm-scale-mode
+            [:h "/usr/local/bin/chunkc tiling::window --use-temporary-ratio 0.03 --adjust-window-edge west"]
+            [:profiles :test-profile :test-profile-2]
+            :tab-mode
+            [:h "/usr/local/bin/chunkc tiling::window --focus west"]
+            [:condi :chunkwm-move-mode :chunkwm-scale-mode]
+            [:l "/usr/local/bin/chunkc tiling::window --focus east"]]}
+   {:des "input source as condition"
+    :rules [[:a :a :us]]}
+   {:des "any keycode"
+    :rules [[{:any :key_code} :a]
+            [{:any :consumer_key_code} :a]
+            [{:any :pointing_button} :a]]}
+   {:des "double press and held key in simlayer (to_delayed_action to_if_held_down)"
+    :rules [[:j "say 'j double press'" [["q-mode" 1] ["q-mode-j-dbpress-mode" 1]]]
+            :q-mode
+            [:j ["say 'j press down'" ["q-mode-j-dbpress-mode" 1]] nil {:delayed {:canceled ["q-mode-j-dbpress-mode" 0]
+                                                                                  :invoked ["q-mode-j-dbpress-mode" 0]}
+                                                                        :held "say 'j held down'"}]]}
+   {:des "QWER in to right modifier keys" :rules [[:!QWERa :a]]}
+   {:des "raw rules"
+    :rules [{:type :mouse_motion_to_scroll :from {:modifiers {:mandatory [:left_control]}}}
+            {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}
+   {:des "raw rules test-profile"
+    :rules [:test-profile
+            {:type :mouse_motion_to_scroll :from {:modifiers {:mandatory [:left_control]}}}
+            {:type :basic :from {:key_code :h :modifiers {:mandatory [:left_control]}} :to [{:key_code :delete_or_backspace}]}]}
+   {:des "more than two sim keys"
+    :rules [[[:a :b :c] :d]]}
+   {:des "redefine params or condis in simlayer issue #30"
+    :rules [:vi-mode
+            [:##j :down_arrow nil {:params {:sim 432}}]
+            [:##j :down_arrow :chrome]
+            [:##j :down_arrow :chromes {:params {:sim 432}}]]}
+   {:des "sim pkey in from"
+    :rules [[[{:pkey :button5} {:pkey :button2}] {:pkey :button1}]]}
+   {:des "select input source in tos"
+    :rules [[[:i :o] :select_abc]]}
+   {:des "sim key with modifier"
+    :rules [[{:sim [:i :o] :modi [:left_command]} [:i :o]]
+            [{:sim [:i :o] :modi {:mandatory [:left_command]
+                                  :optional [:left_shift]}} [:!Ci :o]]
+            [{:sim [:i :o] :modi {:optional [:left_command]}} [:i :o]]
+            [{:sim [:i :o] :modi {:optional [:any]}} [:i :o]]]}
+   {:des "software_function"
+    :rules [[:1 [:op "/Applications/Emacs.app"]]
+            [:2 [:oid "org.gnu.Emacs"]]
+            [:3 [:oi 1]]
+            [:4 [:softf {:dbc {:button 0}}]]
+            [:5 [:softf {:sleep {:delay_milliseconds 500}}]]
+            [:6 [:softf {:setmpos {:x 0 :y 0 :screen 0}}]]]}])
 
 (def
   result
@@ -675,16 +677,21 @@
                        [{:software_function
                          {:open_application {:bundle_identifier "org.gnu.Emacs"}}}]
                        :type "basic"}
-                      {:from {:key_code "3"},
+                      {:from {:key_code "3"}
+                       :to
+                       [{:software_function
+                         {:open_application {:frontmost_application_history_index 1}}}]
+                       :type "basic"}
+                      {:from {:key_code "4"},
                        :to   [{:software_function {:cg_event_double_click {:button 0}}}]
                        :type "basic"}
-                      {:from {:key_code "4"}
+                      {:from {:key_code "5"}
                        :to
                        [{:software_function
                          {:iokit_power_management_sleep_system
                           {:delay_milliseconds 500}}}]
                        :type "basic"}
-                      {:from {:key_code "5"}
+                      {:from {:key_code "6"}
                        :to
                        [{:software_function
                          {:set_mouse_cursor_position {:x 0, :y 0, :screen 0}}}]

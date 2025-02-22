@@ -3,7 +3,15 @@ All notable changes to this project will be documented in this file. This change
 
 ** Unreleased
 
-[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.7.2..HEAD
+[Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.8.0..HEAD
+
+** 0.8.0 - 2025-02-22
+*** Added
+  *BREAKING*
+  ~:oi~ changed from ~bundle_identifier~ to ~frontmost_application_history_index~
+  ~:oid~ is now ~bundle_identifier~
+
+- software_function.open_application.frontmost_application_history_index
 
 ** 0.7.2 - 2024-10-17
 *** Added
@@ -15,7 +23,7 @@ All notable changes to this project will be documented in this file. This change
 
 ** 0.7.0 - 2024-10-16
 *** Added
-- BREAKING `software_function` support, [karabiner doc](https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to/software_function/)
+- *BREAKING* `software_function` support, [karabiner doc](https://karabiner-elements.pqrs.org/docs/json/complex-modifications-manipulator-definition/to/software_function/)
   - example can be found at https://github.com/yqrashawn/GokuRakuJoudo/commit/8dfe510eeaec58c3314afceab0e4b8ac20cfa4ba#diff-bdf007c27f040fdb32781729c690e316b78cb697fac1e9b4f14f19aeb0cff70fR92-R691
 - homebrew goku now supports arm devices
 

@@ -83,7 +83,14 @@
   (and (vector? vec)
        (let [[k i] vec]
          (and (= k :oi)
+              (int? i)))))
+
+(defn oid? [vec]
+  (and (vector? vec)
+       (let [[k i] vec]
+         (and (= k :oid)
               (string? i)))))
+
 (defn raw-rule? [rule]
   (and (map? rule)
        (or (= :basic (:type rule))
