@@ -25,7 +25,7 @@
 (defn check-edn-syntax
   "Call joker to check syntax of karabiner.edn"
   [path]
-  (-> @(p/process [(System/getenv "SHELL") "-i" "-c" (format "joker --lint %s" path)])
+  (-> (p/process {:out :string :err :string}[(System/getenv "SHELL") "-i" "-c" (format "joker --lint %s" path)])
       :err))
 
 (defn exit
@@ -130,11 +130,13 @@
 (defn parse
   "Root function to parse karabiner.edn and update karabiner.json."
   [path & [dry-run dry-run-all]]
-  (let [edn-syntax-err (:err (check-edn-syntax path))]
+  (let [edn-syntax-err-stream (check-edn-syntax path)]
+    (def edn-syntax-err (slurp edn-syntax-err-stream))
     (when (> (count edn-syntax-err) 0)
       (println "Syntax error in config:")
       (println edn-syntax-err)
-      (exit 1)))
+      ; (exit 1)
+      ))
   (update-to-karabiner-json (parse-edn (load-edn path)) dry-run dry-run-all))
 
 (defn open-log-file []
