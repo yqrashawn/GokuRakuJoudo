@@ -3,6 +3,7 @@
    [karabiner-configurator.conditions :as conditions]
    [karabiner-configurator.data :as d :refer [pkey? k? special-modi-k? conf-data pointing-k? consumer-k? noti? softf? templates? devices? assoc-conf-data update-conf-data profile? raw-rule?]]
    [karabiner-configurator.froms :as froms]
+   [karabiner-configurator.keys-symbols :as keysym]
    [karabiner-configurator.misc :refer [massert contains??]]
    [karabiner-configurator.tos :as tos]))
 
@@ -14,8 +15,9 @@
 ;; {...}   | fallback to `froms` definition
 (defn from-key
   "generate normal from key config"
-  [des from]
+  [des from_]
   (let [result nil
+        from (keysym/key-sym-to-key from_ :dbg "from")
         _validate-from (massert (or (and (vector? from) (>= (count from) 2) (not-any? #(not (or (pkey? %) (k? %))) from))
                                     (and (keyword? from) (or (k? from) (special-modi-k? from) (contains? (:froms @conf-data) from)))
                                     (map? from))
@@ -90,8 +92,10 @@
         :else
         (vec
          (flatten
-          (for [v to] ;; this for only return flatten vector
+          (for [v_ to] ;; this for only return flatten vector
             (do
+              (def v v_)
+              (if (keyword? v) (def v (keysym/key-sym-to-key v :dbg "to[]")) )
               (massert (or (contains? (:tos @conf-data) v)
                            (k? v)
                            (noti? v)
@@ -140,8 +144,9 @@
 ;; [{:set ["variable name" "variable value"]}] | set variable's value to string (fallback to `tos` definition)
 (defn to-key
   "generate to config"
-  [des to]
+  [des to_]
   (let [result nil
+        to (keysym/key-sym-to-key to_ :dbg "to  ")
         _validate-to (massert (or (and (keyword? to) (or (k? to)
                                                          (special-modi-k? to)
                                                          (contains? (:input-sources @conf-data) to)
