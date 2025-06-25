@@ -195,7 +195,7 @@ use ~left_control+w~ as simlayer key
                  [:!Tk :up_arrow]
 
                  ;; press ctrl + l will invoke return_or_enter and set "in-alfred" to 0
-                 [:!Tl [:return_or_enter ["in-alfred 0"]]]]}]}
+                 [:!Tl [:return_or_enter ["in-alfred" 0]]]]}]}
 #+end_src
 
 ** double-tap right shift twice to enter double shift mode
