@@ -304,7 +304,7 @@ The simultaneous<sub>options</sub> won't be used frequently. You can find the th
 
     Tos is used more often than froms. It's the same idea as froms definition. You can find the detailed [tos documentation](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/src/karabiner_configurator/tos.clj#L7) in the implementation file. There are shortcuts for tos in rules, like string to shell commands and multiple to definitions in vector.
 
-    You only need to use to definition if you want to use or set `select_input_source`, `mouse_key`, `lazy`, `repeat`, `halt`, `hold_down_milliseconds`.
+    You only need to use to definition if you want to use or set `select_input_source`, `mouse_key`, `lazy`, `repeat`, `halt`, `hold_down_milliseconds`, `sticky_modifier`.
 
 <a id="advance3"></a>
 

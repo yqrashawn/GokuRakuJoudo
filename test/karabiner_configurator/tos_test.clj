@@ -28,7 +28,12 @@
    :17 {:key :!CT#OFa}
    :18 {:shell [:launch "Mail"]}
    :19 {:select_input_source
-        {:input_source_id "^com\\.apple\\.keylayout\\.ABC$"}}})
+        {:input_source_id "^com\\.apple\\.keylayout\\.ABC$"}}
+   :20 {:sticky {:right_shift :toggle}}
+   :21 {:sticky {:left_command :on}}
+   :22 {:sticky {:fn :off}}
+   :23 [{:sticky {:left_control :toggle}}
+        {:sticky {:right_option :on}}]})
 
 (def result {:applications {}
              :tos {:18 [{:shell_command "osascript -e 'tell application \"Alfred 3\" to run trigger \"launchMail\" in workflow \"yqrashawn.workflow.launcher\" with argument \"\"'"}]
@@ -80,7 +85,12 @@
                         :key_code "d"}]
                    :6 [{:modifiers ["left_command" "right_shift"]
                         :key_code "d"}]
-                   :19 [{:select_input_source {:input_source_id "^com\\.apple\\.keylayout\\.ABC$"}}]}
+                   :19 [{:select_input_source {:input_source_id "^com\\.apple\\.keylayout\\.ABC$"}}]
+                   :20 [{:sticky_modifier {"right_shift" "toggle"}}]
+                   :21 [{:sticky_modifier {"left_command" "on"}}]
+                   :22 [{:sticky_modifier {"fn" "off"}}]
+                   :23 [{:sticky_modifier {"left_control" "toggle"}}
+                        {:sticky_modifier {"right_option" "on"}}]}
              :input-sources {:squirrel {:input_mode_id "com.googlecode.rimeime.inputmethod.Squirrel"
                                         :input_source_id "com.googlecode.rimeime.inputmethod.Squirrel.Rime"
                                         :language "zh-Hans"}

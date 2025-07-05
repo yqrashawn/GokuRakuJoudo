@@ -60,11 +60,14 @@
 ;;                        "id": "identifier of the message",
 ;;                        "text": "message text"
 ;;                    }
+;; :sticky            "sticky_modifier": {
+;;                        "{modifier_name}": "on | off | toggle"
+;;                    }
 
 (defn parse-to
   [tname tinfos]
   (mapv
-   (fn [{:keys [set input shell lazy repeat halt hold_down_ms select_input_source noti softf] :as tinfo}]
+   (fn [{:keys [set input shell lazy repeat halt hold_down_ms select_input_source noti softf sticky] :as tinfo}]
      ;; validate-shell
      (massert (or (and (vector? shell)
                        (contains? (:templates @conf-data) (first shell)))
@@ -96,6 +99,21 @@
      ;; validate-softf
      (massert (or (nil? softf) (map? softf))
               (str "invalid `softf`, must be a map with valid keys"))
+     ;; validate-sticky
+     (massert (or (nil? sticky) (map? sticky))
+              (str "invalid `sticky`, must be a map with modifier keys and values"))
+     (when sticky
+       (let [sticky-keys (keys sticky)
+             sticky-values (vals sticky)]
+         (massert (= 1 (count sticky-keys))
+                  (str "sticky modifier must specify exactly one modifier in " tname))
+         (massert (every? #(contains? #{:left_control :left_shift :left_option :left_command
+                                        :right_control :right_shift :right_option :right_command :fn} %)
+                          sticky-keys)
+                  (str "invalid sticky modifier key in " tname ". Must be one of: left_control, left_shift, left_option, left_command, right_control, right_shift, right_option, right_command, fn"))
+         (massert (every? #(contains? #{:on :off :toggle} %)
+                          sticky-values)
+                  (str "invalid sticky modifier value in " tname ". Must be one of: on, off, toggle"))))
      (let [softf
            (when softf
              (cset/rename-keys softf {:dbc     :cg_event_double_click
@@ -141,7 +159,11 @@
                                                :text (or (:text noti) "")})
 
              (map? softf)
-             (assoc :software_function softf))]
+             (assoc :software_function softf)
+
+             (map? sticky)
+             (assoc :sticky_modifier
+                    (into {} (map (fn [[k v]] [(name k) (name v)]) sticky))))]
        (if select_input_source tinfo result)))
    tinfos))
 
