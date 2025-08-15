@@ -5,7 +5,7 @@ on: push
 jobs:
   build:
     name: Build
-    runs-on: [macos-latest, macos-13]
+    runs-on: [macos-latest, ubuntu-latest]
     steps:
       - name: Setup GraalVM environment
         uses: graalvm/setup-graalvm@v1
