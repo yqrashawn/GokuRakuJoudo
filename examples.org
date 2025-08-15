@@ -285,7 +285,7 @@ Don't map a to b when there are three fingers on the trackpad.
    the karabiner GUI (no need to change anything in Goku).  
    
 #+begin_src clojure
-{:profiles {:Default {;; "default true means" rules default goes into this rule if no profiles specified
+{:profiles {:Default {;; "default true means" rules default goes into this profile if no profiles specified
                       :default true
                       ;; simultaneous key press threshold
                       ;; simlayer is implemented with to_if_alone and simultaneous key press feature

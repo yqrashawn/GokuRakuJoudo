@@ -71,7 +71,7 @@ significantly as you can create new rules as little as few characters.
 
 Make sure you have a profile named "Default" in Karabiner's GUI tool. You can
 specify your own profile name [using `:profiles`
-keyword](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org#profiles-wip). 
+keyword](https://github.com/yqrashawn/GokuRakuJoudo/blob/master/examples.org#profiles). 
 
 ![img](./resources/images/karabiner-profile.jpg)
 
