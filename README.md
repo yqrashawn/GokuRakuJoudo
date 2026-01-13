@@ -109,6 +109,7 @@ questions there.
 
 ## Note
 
+- From/to key definitions can contain key symbols like ‹⇧ instead of !S for a left shift, more details at [List of supported key symbols](./KeySymbols.md)
 -  ~~Using `#_` to comment out rules [like
    this](https://github.com/yqrashawn/yqdotfiles/blob/2699f833f9431ca197d50f6905c825712f7aee8d/.config/karabiner.edn#L41)
    will leave a null rule (see below) in karabiner.json, it won't cause any
