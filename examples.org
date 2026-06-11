@@ -412,3 +412,43 @@ This setup can be used for keybindings where you press one key, then quickly ano
            ; when another key is invoked, or after a timeout, set the mode back to zero
            :delayed {:invoked ["right-shift-mode" 0] :canceled ["right-shift-mode" 0]}}]]}
 #+END_SRC
+
+** Sticky Modifiers
+
+Sticky modifiers allow you to press a modifier key once to make it "stick" until the next key press. This is useful for accessibility or when you want to avoid holding down modifier keys.
+
+#+NAME: sticky modifiers
+#+BEGIN_SRC clojure
+{:tos {:sticky-right-shift {:sticky {:right_shift :toggle}}
+       :sticky-left-cmd {:sticky {:left_command :on}}
+       :sticky-fn-off {:sticky {:fn :off}}}
+ :main
+ [{:des "sticky modifier examples"
+   :rules [
+           ; Press right_shift alone to toggle sticky right_shift
+           [:right_shift :right_shift nil {:alone :sticky-right-shift}]
+           ; Press caps_lock to turn on sticky left_command
+           [:caps_lock :sticky-left-cmd]
+           ; Press escape to turn off sticky fn
+           [:escape :sticky-fn-off]]}]}
+#+END_SRC
+
+Available sticky modifier keys:
+- left_control, left_shift, left_option, left_command
+- right_control, right_shift, right_option, right_command
+- fn
+
+Available sticky modifier values:
+- :on - always activates the sticky modifier
+- :off - always deactivates the sticky modifier
+- :toggle - toggles the sticky modifier (recommended for most cases)
+
+Note: You can only specify one modifier key per sticky modifier definition. If you want to activate multiple sticky modifiers, put multiple sticky_modifier definitions in a vector:
+
+#+BEGIN_SRC clojure
+{:tos {:multi-sticky [{:sticky {:left_control :toggle}}
+                      {:sticky {:left_shift :toggle}}]}
+ :main
+ [{:des "activate multiple sticky modifiers"
+   :rules [[:spacebar :multi-sticky]]}]}
+#+END_SRC
