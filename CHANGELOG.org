@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of [[http://keepachangelog.com/][keepachangelog.com]]
 
 ** Unreleased
+*** Fixed
+  - ~:scan_next_track~ and ~:scan_previous_track~ are valid consumer keys, including as bare keywords and with special modifiers (#184)
 
 [Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.8.0..HEAD
 

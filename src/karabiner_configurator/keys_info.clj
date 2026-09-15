@@ -146,6 +146,9 @@
    :rewind {:not-from true :consumer-key true}
    :play_or_pause {:not-from true :consumer-key true}
    :fast_forward {:not-from true :consumer-key true}
+   ;; :consumer-only — Karabiner has no key_code alias, so a bare keyword must emit consumer_key_code
+   :scan_next_track {:consumer-key true :consumer-only true}
+   :scan_previous_track {:consumer-key true :consumer-only true}
    :dictation {:not-from true :consumer-key true}
    :mute {:consumer-key true}
    :volume_decrement {:consumer-key true}

@@ -150,6 +150,11 @@
   (k? k)
   (true? (:consumer-key (k keys-info))))
 
+(defn consumer-only-k?
+  "Consumer keys Karabiner rejects as key_code (e.g. scan_next_track)."
+  [k]
+  (and (keyword? k) (true? (:consumer-only (k keys-info)))))
+
 (defn pointing-k?
   [k]
   (k? k)

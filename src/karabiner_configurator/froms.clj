@@ -1,6 +1,6 @@
 (ns karabiner-configurator.froms
   (:require
-   [karabiner-configurator.data :refer [conf-data from-k? k? pkey? update-conf-data]]
+   [karabiner-configurator.data :refer [conf-data consumer-only-k? from-k? k? pkey? update-conf-data]]
    [karabiner-configurator.keys :refer [parse-key]]
    [karabiner-configurator.misc :refer [contains?? massert]]
    [karabiner-configurator.tos :as tos]))
@@ -94,7 +94,8 @@
   (massert (vector? vec) (str "invalid vector " vec))
   (mapv (fn [v] (massert (or (from-k? v) (pkey? v))
                          (str "in " fname " keycode " v " can't be used as from keycode"))
-          (cond (k? v) {:key_code (name v)}
+          (cond (consumer-only-k? v) {:consumer_key_code (name v)}
+                (k? v) {:key_code (name v)}
                 :else (parse-key fname v)))
         vec))
 
