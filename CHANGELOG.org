@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file. This change log follows the conventions of [[http://keepachangelog.com/][keepachangelog.com]]
 
 ** Unreleased
+*** Fixed
+- ~goku --version~ printed ~0.5.7~ from the 0.8.0 release onward: the string was
+  hard-coded in ~validate-args~ and never bumped. It now comes from a single
+  ~(def version ...)~ in ~src/karabiner_configurator/core.clj~, and the release
+  workflow fails when that value disagrees with the ~v*~ tag being built.
 
 [Unreleased Commits]: https://github.com/yqrashawn/GokuRakuJoudo/compare/v0.8.0..HEAD
 

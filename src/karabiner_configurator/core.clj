@@ -15,6 +15,14 @@
    [me.raynes.fs :as fs])
   (:gen-class))
 
+;; version
+;; Single source of truth for `-V` / `--version`. Bump this in the same commit
+;; that cuts a release tag: the `Build & Release` workflow compares it with the
+;; tag on `v*` builds, so a stale value fails the build instead of shipping a
+;; binary that reports an old version (the v0.8.0 release shipped a 0.5.7
+;; constant and `goku --version` printed 0.5.7).
+(def version "0.8.0")
+
 ;; helper function
 (defn update-static-conf
   "Helper function to update conf-data from reading rules"
@@ -201,7 +209,7 @@
       (:version options)
       {:action       "exit-with-message"
        :ok?          true
-       :exit-message "0.5.7"}
+       :exit-message version}
       ;; log
       (:log options)
       {:action       "log"

@@ -29,6 +29,17 @@ jobs:
           brew install candid82/brew/joker
       - name: Checkout Code
         uses: actions/checkout@v4
+      - name: Check version constant matches the release tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          constant=$(grep -oE '(def version "[0-9]+\.[0-9]+\.[0-9]+")' src/karabiner_configurator/core.clj \
+                     | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
+          echo "release tag: $tag / core.clj constant: $constant"
+          if [ "$tag" != "$constant" ]; then
+            echo "::error::(def version ...) in src/karabiner_configurator/core.clj is \"$constant\" but the release tag is \"$tag\"; bump it in the release commit"
+            exit 1
+          fi
       - name: Install dependencies
         run: lein deps
       - name: Compile
